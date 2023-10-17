@@ -18,3 +18,11 @@
         -   [ ] Sort by: date created, meal type, cuisine.
         -   [ ] Filter by: meal type,
 -   [ ] Analytics: # of recipies, most popular ingredients, most cooked
+
+# Recipe database
+
+- name: text
+- description: text
+- ingredients: [ingredient: text, quantity: text, acquired: boolean]
+- instructions: text
+- rating: 1-5

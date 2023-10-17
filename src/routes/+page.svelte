@@ -1,5 +1,8 @@
 <script>
-	
+	import Auth from "$lib/components/Auth.svelte"
+	import RecipeList from "$lib/components/RecipeList.svelte"
+	import { user } from "../stores/authStore"
+    user
 
 </script>
 
@@ -9,3 +12,12 @@
         <h2 class="max-w-sm my-2">Track your favourite recipes and get randomized suggestions for what to eat.</h2>
     </div>
 </main>
+
+<RecipeList/>
+{#if $user}
+    <RecipeList/>
+{:else}
+    <Auth/>
+{/if}
+
+

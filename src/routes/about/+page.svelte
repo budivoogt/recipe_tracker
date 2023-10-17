@@ -2,8 +2,8 @@
 
 </script>
 
-<div class="flex flex-col items-center mt-6">
-    <h1 class="text-lg">A recipe tracker made by <a href="https://budivoogt.com/" target="_blank" class="hover:underline hover:text-orange-500">Budi Voogt</a>.</h1>
+<div class="flex flex-col mt-6 text-justify mx-auto">
+    <h1 class="">A recipe tracker made by <a href="https://budivoogt.com/" target="_blank" class="hover:underline hover:text-orange-500">Budi Voogt</a>.</h1>
     <ul class="list-disc list-inside my-4">
         <h2 class="my-2">Tech stack includes:</h2>
         <li>

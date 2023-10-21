@@ -1,7 +1,9 @@
 <script lang="ts">
     import { page } from "$app/stores"
     import { Button } from "flowbite-svelte"
-    import handleSignOut from "./Auth.svelte"
+    import { handleSignOut, user } from "../../stores/authStore"
+
+    export let data
 
     $: isActive = (path: string) => $page.url.pathname === path ? 'bg-orange-400' : ""
 
@@ -12,5 +14,9 @@
     <Button size="sm" href="/browse" class={`shadow ${isActive('/browse')}`}>Browse recipes</Button>
     <Button size="sm" href="/about" class={`shadow ${isActive('/about')}`}>About</Button>
     <!-- Make this conditional based on whether a user's logged in or not.-->
-    <Button size="sm" class="shadow" on:click="{handleSignOut}">Logout</Button>
+    {#if $user}
+    <Button size="sm" class="shadow" on:click="{() => handleSignOut (supabase)}">Logout</Button>
+    {:else if !$user}
+    <Button size="sm" class="shadow" href="/login">Login</Button>
+    {/if}
 </nav>

@@ -2,11 +2,8 @@ import type { SupabaseClient, User } from "@supabase/supabase-js"
 import { writable } from "svelte/store"
 
 export const user = writable<User | null>()
-export let data: SupabaseClient
 
-const supabase = data
-
-export const handleSignUp = async (email: string, password: string) => {
+export const handleSignUp = async (email: string, password: string, supabase: SupabaseClient) => {
 	await supabase.auth.signUp({
 		email,
 		password,
@@ -17,7 +14,7 @@ export const handleSignUp = async (email: string, password: string) => {
 	console.log("User signed up with: ", email, password)
 }
 
-export const handleSignIn = async (email: string, password: string) => {
+export const handleSignIn = async (email: string, password: string, supabase: SupabaseClient) => {
 	await supabase.auth.signInWithPassword({
 		email,
 		password
@@ -26,7 +23,7 @@ export const handleSignIn = async (email: string, password: string) => {
 	console.log("User logged in with: ", email)
 }
 
-export const handleSignOut = async () => {
+export const handleSignOut = async (supabase: SupabaseClient) => {
 	await supabase.auth.signOut()
 	console.log("User logged out")
 }

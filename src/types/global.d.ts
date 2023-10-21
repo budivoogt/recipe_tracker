@@ -1,3 +1,5 @@
+// Global types that aren't specific to SvelteKit.
+
 type Recipe = {
 	name: Text
 	description: Text | null

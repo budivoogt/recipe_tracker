@@ -2,6 +2,7 @@ import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "$env/static/publi
 import { createSupabaseServerClient } from "@supabase/auth-helpers-sveltekit"
 import type { Handle } from "@sveltejs/kit"
 
+// The data from this handler is available easily in all our server-side load functions.
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
 		supabaseUrl: PUBLIC_SUPABASE_URL,
@@ -19,9 +20,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession()
 
-		const initialUser = session?.user ?? null
+		const user = session?.user ?? null
+		event.locals.user = user
 
-		return { session, initialUser }
+		return { session, user }
 	}
 
 	return resolve(event, {

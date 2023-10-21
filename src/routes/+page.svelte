@@ -1,9 +1,7 @@
-<script>
-	import Auth from "$lib/components/Auth.svelte"
-	import RecipeList from "$lib/components/RecipeList.svelte"
-	import { user } from "../stores/authStore"
-    user
-
+<script lang="ts">
+    import Auth from '$lib/components/Auth.svelte'
+    import RecipeList from '$lib/components/RecipeList.svelte'
+    import { user } from '../stores/authStore'
 </script>
 
 <main>
@@ -13,8 +11,8 @@
     </div>
 </main>
 
-<RecipeList/>
 {#if $user}
+    <p class="mx-auto my-4 text-lg">Welcome, {$user.email}</p>
     <RecipeList/>
 {:else}
     <Auth/>

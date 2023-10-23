@@ -3,36 +3,15 @@
   import { handleSignIn, handleSignOut, handleSignUp } from '../../stores/authStore.js'
   
   export let data
-  let { supabase } = data
+
+  let { supabase, session } = data
   $: {
-      ({ supabase } = data)
-      console.log("Auth supabase", supabase)
+    ({ supabase, session } = data)
   }
 
   let email: string
   let password: string
 
-//   const handleSignUp = async () => {
-//     await supabase.auth.signUp({
-//       email,
-//       password,
-//       options: {
-//         emailRedirectTo: `${location.origin}/auth/callback`,
-//       },
-//     })
-//   }
-
-//   const handleSignIn = async () => {
-//     await supabase.auth.signInWithPassword({
-//       email,
-//       password,
-//     })
-//   }
-
-//   const handleSignOut = async () => {
-//     await supabase.auth.signOut()
-//     console.log("signed out"); 
-//   }
 </script>
 
 <form on:submit="{() => handleSignUp (email, password, supabase)}">

@@ -1,17 +1,17 @@
 <script lang="ts">
+    import { enhance } from "$app/forms"
     import { Button, Modal } from "flowbite-svelte"
-    import { handleSignIn, handleSignUp } from "../../stores/authStore"
     
-    export let email: string
-    export let password: string
+    let email: string
+    let password: string
 
     let clickOutsideModal: boolean = false
 </script>
 
     <div class="flex flex-col">
-        <h2 class=" text-xl font-bold mx-auto mt-8">Authenticate</h2>
-        <form on:submit={() => handleSignUp(email, password)} class="flex flex-col w-2/6 mx-auto my-2">
-          <input name="email" bind:value="{email}" placeholder="your@email.com" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text shadow-sm placeholder-slate-400
+        <h2 class=" text-xl font-bold mx-auto mt-8">Login</h2>
+        <form method="POST" action="/auth?/login" use:enhance class="flex flex-col w-1/2 sm:w-1/4 mx-auto my-2">
+          <input type="email" name="email" bind:value="{email}" placeholder="your@email.com" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text shadow-sm placeholder-slate-400
       focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
       invalid:border-pink-500 invalid:text-pink-600
       focus:invalid:border-pink-500 focus:invalid:ring-pink-5000"/>
@@ -19,10 +19,16 @@
       focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
       invalid:border-pink-500 invalid:text-pink-600
       focus:invalid:border-pink-500 focus:invalid:ring-pink-5000"/>
-          <Button>Sign up</Button>
+          <button class="shadow text-white p-1 rounded-lg bg-orange-500 border-none hover:bg-orange-600">Login</button>
+            <div class="flex flex-col sm:flex-row gap-2 my-2">
+                <a href="/auth/register" class="w-full sm:w-1/2">
+                    <button class="shadow py-1 w-full text-center text-white rounded-lg bg-orange-400 border-none hover:bg-orange-500">Register</button>
+                </a>
+                <a href="/auth/reset" class="w-full sm:w-1/2">
+                    <button class="shadow py-1 w-full text-center text-white rounded-lg bg-orange-400 border-none hover:bg-orange-500">Reset password</button>
+                </a>
+            </div>
         </form>
-        <p class="mx-auto mb-2">Or if you have an account</p>
-        <Button on:click={() => handleSignIn(email, password)} class="w-2/6 mx-auto mb-2">Sign in</Button>
     </div>
 
     <Modal title="Confirm your email" bind:open={clickOutsideModal} autoclose outsideclose>

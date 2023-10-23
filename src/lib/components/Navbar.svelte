@@ -3,8 +3,6 @@
     import { Button } from "flowbite-svelte"
     import { handleSignOut, user } from "../../stores/authStore"
 
-    export let data
-
     $: isActive = (path: string) => $page.url.pathname === path ? 'bg-orange-400' : ""
 
 </script>
@@ -15,8 +13,8 @@
     <Button size="sm" href="/about" class={`shadow ${isActive('/about')}`}>About</Button>
     <!-- Make this conditional based on whether a user's logged in or not.-->
     {#if $user}
-    <Button size="sm" class="shadow" on:click="{() => handleSignOut (supabase)}">Logout</Button>
+    <Button size="sm" class="shadow" on:click="{handleSignOut}">Logout</Button>
     {:else if !$user}
-    <Button size="sm" class="shadow" href="/login">Login</Button>
+    <Button size="sm" class="shadow" href="/auth/login">Login</Button>
     {/if}
 </nav>

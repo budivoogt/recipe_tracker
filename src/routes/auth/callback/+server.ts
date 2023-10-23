@@ -6,6 +6,10 @@ export const GET = async ({ url, locals: { supabase } }) => {
 	if (code) {
 		await supabase.auth.exchangeCodeForSession(code)
 	}
+	console.log("Callback code is", code)
 
-	throw redirect(303, "/")
+	const next: string | null = url.searchParams.get("next") || null
+	console.log("Next URL is: ", next)
+
+	throw redirect(303, `${next || "/"}`)
 }

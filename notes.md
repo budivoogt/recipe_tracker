@@ -29,6 +29,14 @@
 
 # Progress report
 
+## 2023-10-21
+
+Studied Supabase authentication and Sveltekit Routing today.
+
+I want to experiment with routing using /login, /signup and /logout pages.
+
+Separately going to set up a Svelte store for the Supabase client so that I can more easily use it inside components. This will be the easiest way to maximize Svelte's composability.
+
 ## 2023-10-20
 
 Struggling to understand the difference between the server- and client-side loading functions and how to access the data. I have experimented with creating a writable User store, which doesn't appear to be working even though I'm successfully logged in. Reason may be that it's not initiating properly and only triggering on a re-load. Need to investigate.

@@ -22,7 +22,7 @@
           <button class="shadow text-white p-1 rounded-lg bg-orange-500 border-none hover:bg-orange-600">Login</button>
             <div class="flex flex-col sm:flex-row gap-2 my-2">
                 <a href="/auth/register" class="w-full sm:w-1/2">
-                    <button class="shadow py-1 w-full text-center text-white rounded-lg bg-orange-400 border-none hover:bg-orange-500">Register</button>
+                    <button class="shadow py-1 w-full text-center text-white rounded-lg bg-orange-400 border-none hover:bg-orange-500">Create account</button>
                 </a>
                 <a href="/auth/reset" class="w-full sm:w-1/2">
                     <button class="shadow py-1 w-full text-center text-white rounded-lg bg-orange-400 border-none hover:bg-orange-500">Reset password</button>

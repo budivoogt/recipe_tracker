@@ -29,6 +29,15 @@
 
 # Progress report
 
+## 2023-10-23
+
+-   [ ] Standardize form styling across Auth, /login, /reset, /register.
+-   [ ] Add redirects after form submission and/or success messages.
+-   [ ] Get modal functional on /login and /register.
+-   [ ] Study fetch methods more. Understand client-side logic.
+
+Today I better learned the difference between server and client-side functions and rendering, as well as about how objects can be returned -- and how you can call an internal API using a fetch method.
+
 ## 2023-10-21
 
 Studied Supabase authentication and Sveltekit Routing today.

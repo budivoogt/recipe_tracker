@@ -7,7 +7,7 @@
     $: isActive = (path: string) => $page.url.pathname === path ? 'bg-orange-400' : ""
 </script>
 
-<nav class="flex flex-row justify-center gap-2 mt-4">
+<nav class="flex flex-row justify-center gap-2 my-4">
     <Button size="sm" href="/" class={`shadow ${isActive('/')}`}>Home</Button>
     <Button size="sm" href="/browse" class={`shadow ${isActive('/browse')}`}>Browse recipes</Button>
     <Button size="sm" href="/about" class={`shadow ${isActive('/about')}`}>About</Button>

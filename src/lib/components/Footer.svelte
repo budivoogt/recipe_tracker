@@ -2,7 +2,9 @@
 import { Section } from 'flowbite-svelte-blocks'
 </script>
 
-<Section>
+
+
+<!-- <Section>
   <Footer class="bg-orange-500 py-2">
     <FooterCopyright spanClass="block text-sm text-white sm:text-center dark:text-gray-400"  href="https://budivoogt.com/" by="Budi Voogt" copyrightMessage=" - All Rights Reserved" target="_blank"/>
     <FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 mr-4 text-sm text-white dark:text-gray-400 sm:mt-0">
@@ -20,4 +22,4 @@ import { Section } from 'flowbite-svelte-blocks'
       </FooterLink>
     </FooterLinkGroup>
   </Footer>
-</Section>
+</Section> -->

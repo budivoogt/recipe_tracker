@@ -13,7 +13,6 @@
 
 	$: {
 		({ supabase, session } = data)
-		console.log("supabase: ", supabase, "session: ", session, "initialUser: ", initialUser)
 	}
 
 	onMount(() => {

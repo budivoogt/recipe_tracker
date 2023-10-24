@@ -18,6 +18,8 @@ export const actions = {
 			return fail(500, { message: "Server error. Try again later.", success: false, email })
 		}
 
+		console.log("User signed up with: ", email, password)
+
 		return {
 			message: "Please check your email for a magic link to log into the website.",
 			success: true
@@ -37,6 +39,8 @@ export const actions = {
 			return fail(500, { message: "Server error. Try again later.", success: false, email })
 		}
 
+		console.log("User logged in with: ", email)
+
 		return {
 			message: "Please check your email for a magic link to log into the website.",
 			success: true
@@ -50,6 +54,7 @@ export const actions = {
 		}
 
 		console.log("User logged out")
+
 		return {
 			message: "Logged out.",
 			success: true
@@ -63,14 +68,14 @@ export const actions = {
 			redirectTo: `${url.origin}/auth/callback?next=/auth/reset/newpw`
 		})
 
+		if (error) {
+			return fail(500, { message: "Server error. Try again later.", success: false, email })
+		}
+
 		console.log(
 			"Password reset email sent with redirect URL:",
 			`${url.origin}/auth/callback?next=/auth/reset/newpw`
 		)
-
-		if (error) {
-			return fail(500, { message: "Server error. Try again later.", success: false, email })
-		}
 
 		return {
 			message: "Please check your email for a magic link to log into the website.",
@@ -88,6 +93,8 @@ export const actions = {
 		if (error) {
 			return fail(500, { message: "Server error. Try again later.", success: false })
 		}
+
+		console.log("Password updated.")
 
 		return {
 			message: "Password updated.",

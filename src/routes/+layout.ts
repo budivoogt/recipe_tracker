@@ -1,7 +1,7 @@
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "$env/static/public"
 import { createSupabaseLoadClient } from "@supabase/auth-helpers-sveltekit"
 import type { User } from "@supabase/supabase-js"
-import { supabaseStore, user } from "../stores/authStore.js"
+import { user } from "../stores/authStore.js"
 import type { Database } from "../types/supabase.js"
 
 export const load = async ({ fetch, data, depends }) => {
@@ -13,8 +13,6 @@ export const load = async ({ fetch, data, depends }) => {
 		event: { fetch },
 		serverSession: data.session
 	})
-
-	supabaseStore.set(supabase)
 
 	const {
 		data: { session }

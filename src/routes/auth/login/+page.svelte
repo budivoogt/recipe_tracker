@@ -3,6 +3,8 @@
     import { user } from "../../../stores/authStore.js"
     
     export let form
+    $: console.log("form: ", form);
+    
 </script>
 
 <div class="m-6 flex flex-col mx-auto">
@@ -22,6 +24,3 @@
     </form>
     {/if}
 </div>
-<!-- {#if success === false}
-<span>Login failed.</span>
-{/if} -->

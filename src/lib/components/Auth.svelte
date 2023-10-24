@@ -1,11 +1,9 @@
 <script lang="ts">
     import { enhance } from "$app/forms"
-    import { Button, Modal } from "flowbite-svelte"
-    
+        
     let email: string
     let password: string
 
-    let clickOutsideModal: boolean = false
 </script>
 
     <div class="flex flex-col mt-6">
@@ -32,10 +30,3 @@
         </form>
     </div>
 
-    <Modal title="Confirm your email" bind:open={clickOutsideModal} autoclose outsideclose>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">Check your inbox for a verification email to activate your account.</p>
-    <svelte:fragment slot="footer">
-    <Button on:click={() => alert('Handle "success"')}>I accept</Button>
-    <Button color="alternative">Decline</Button>
-    </svelte:fragment>
-</Modal>

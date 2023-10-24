@@ -19,6 +19,7 @@ export const actions = {
 		}
 
 		console.log("User signed up with: ", email, password)
+		redirect(302, "/")
 
 		return {
 			message: "Please check your email for a magic link to log into the website.",

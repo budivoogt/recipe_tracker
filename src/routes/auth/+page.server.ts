@@ -1,6 +1,6 @@
-import { fail, redirect } from "@sveltejs/kit"
+import { fail, redirect, type Actions } from "@sveltejs/kit"
 
-export const actions = {
+export const actions: Actions = {
 	signup: async ({ request, url, locals: { supabase } }) => {
 		const formData = await request.formData()
 		const email = formData.get("email") as string
@@ -15,7 +15,7 @@ export const actions = {
 		})
 
 		if (error) {
-			return fail(500, { message: "Server error. Try again later.", success: false, email })
+			return fail(500, { message: "Error. Try again.", success: false, email })
 		}
 
 		console.log("User signed up with: ", email, password)
@@ -37,13 +37,16 @@ export const actions = {
 		})
 
 		if (error) {
-			return fail(500, { message: "Server error. Try again later.", success: false, email })
+			return fail(500, {
+				message: "Error. Try again.",
+				success: false,
+				email,
+				type: "failure"
+			})
 		}
 
 		console.log("User logged in with: ", email)
-
-		throw redirect(302, "/")
-
+		redirect(302, "/")
 		return {
 			success: true
 		}
@@ -54,7 +57,7 @@ export const actions = {
 		const { error } = await supabase.auth.signOut()
 
 		if (error) {
-			return fail(500, { message: "Server error. Try again later.", success: false })
+			return fail(500, { message: "Error. Try again.", success: false })
 		}
 
 		console.log("User logged out")
@@ -73,7 +76,7 @@ export const actions = {
 		})
 
 		if (error) {
-			return fail(500, { message: "Server error. Try again later.", success: false, email })
+			return fail(500, { message: "Error. Try again.", success: false, email })
 		}
 
 		console.log(

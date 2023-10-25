@@ -1,5 +1,6 @@
 <script lang="ts">
     import { enhance } from "$app/forms"
+    import { Alert } from "flowbite-svelte"
         
     export let form
 
@@ -23,7 +24,9 @@
         <input type="password" name="password" placeholder="your new password" bind:value={password} class="rounded-lg px-3"/>
         <input type="password" name="password" placeholder="your new password" bind:value={confirmPassword} class="rounded-lg px-3"/>
         {#if !passwordsMatch}
-        <span>Passwords do not match</span>
+        <Alert>
+            <span>Passwords do not match.</span>
+        </Alert>
         {/if}
         <button class="shadow text-white p-1 rounded-lg bg-orange-500 border-none hover:bg-orange-600" disabled={!passwordsMatch}>Change password</button>
     </form>

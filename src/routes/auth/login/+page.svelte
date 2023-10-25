@@ -2,9 +2,6 @@
     import Auth from "$lib/components/Auth.svelte"
     import { user } from "../../../stores/authStore.js"
     
-    export let form
-    $: console.log("form: ", form);
-    
 </script>
 
 <div class="">

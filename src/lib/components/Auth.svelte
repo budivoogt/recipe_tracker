@@ -5,7 +5,6 @@
     let password: string
 
 </script>
-
     <div class="flex flex-col mt-6">
         <h2 class=" text-xl font-bold mx-auto mb-4">Login</h2>
         <p class="mb-4 text-center w-1/2 sm:w-1/5 mx-auto">Login below or create an account to get started.</p>

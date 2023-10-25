@@ -1,7 +1,7 @@
 # Roadmap
 
 -   [ ] Descriptive landing page
--   [ ] Supabase authentication with username and password
+-   [x] Supabase authentication with username and password
 -   [ ] Page structure: Dashboard, Recipe Explorer
 -   [ ] Dashboard page: Add recipe, get recommendation, analytics
     -   [ ] Add recipe button with pop-out. Component should be re-used in Recipe Explorer
@@ -31,6 +31,27 @@
 
 ## 2023-10-24
 
+### How to structure app
+
+On the browse page, users should be able to add recipes.
+
+On the recommendation page, users should see recommendations for recipes and be able to filter accordingly.
+
+On the browse page, a user should be able to add a recipe. On the home page, a user should too. I need to create a component for adding recipes.
+
+The recipe add flow should be:
+
+-   Add recipe button which opens modal.
+-   Modal has form with fields for name, description, ingredients, instructions, image.
+-   On submit, recipe is added to database and user is redirected to recipe page.
+-   List of recipes on home page should be clickable and redirect to recipe page, has seamless editing.
+
+Architecturally I need to:
+
+-   Create a writable store for recipes
+-   Create a Supabase database for recipes
+-   Initialize the Supabase database and set the recipe store to it
+-   Subscribe to Supabase updates and update the store accordingly
 
 ## 2023-10-23
 

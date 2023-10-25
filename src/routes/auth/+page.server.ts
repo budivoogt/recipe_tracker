@@ -81,6 +81,10 @@ export const actions = {
 			`${url.origin}/auth/callback?next=/auth/reset/newpw`
 		)
 
+		alert(
+			`Password reset email sent with redirect URL: ${url.origin}/auth/callback?next=/auth/reset/newpw`
+		)
+
 		return {
 			message: "Please check your email for a magic link to log into the website.",
 			success: true

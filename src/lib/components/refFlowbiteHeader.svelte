@@ -1,9 +1,9 @@
-<!-- <script>
-  import { onMount } from 'svelte';
-  import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch, Button, Dropdown, DropdownItem, Checkbox, ButtonGroup } from 'flowbite-svelte';
-  import { Section } from 'flowbite-svelte-blocks';
-  import paginationData from '../utils/advancedTable.json'
-  import { PlusSolid, ChevronDownSolid, FilterSolid, ChevronRightOutline, ChevronLeftOutline } from 'flowbite-svelte-icons';
+<script lang="ts">
+  import { Button, ButtonGroup, Checkbox, Dropdown, DropdownItem, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte'
+  import { Section } from 'flowbite-svelte-blocks'
+  import { ChevronDownSolid, ChevronLeftOutline, ChevronRightOutline, FilterSolid, PlusSolid } from 'flowbite-svelte-icons'
+  import { onMount } from 'svelte'
+  import { recipes } from '../../stores/recipeStore'
 
   let divClass='bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden';
   let innerDivClass='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4';
@@ -11,23 +11,23 @@
   let svgDivClass='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none';
   let classInput="text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2  pl-10";
 
-  let searchTerm = '';
-  let currentPosition = 0;
-  const itemsPerPage = 10;
-  const showPage = 5;
-  let totalPages = 0;
+  let searchTerm: string = '';
+  let currentPosition: number = 0;
+  const itemsPerPage: number = 10;
+  const showPage: number = 5;
+  let totalPages: number = 0;
   let pagesToShow = [];
-  let totalItems = paginationData.length;
-  let startPage;
-  let endPage;
+  let totalItems: number = $recipes.length
+  let startPage: number
+  let endPage: number
 
   const updateDataAndPagination = () => {
-    const currentPageItems = paginationData.slice(currentPosition, currentPosition + itemsPerPage);
+    const currentPageItems = $recipes.slice(currentPosition, currentPosition + itemsPerPage);
     renderPagination(currentPageItems.length);
   }
 
   const loadNextPage = () => {
-    if (currentPosition + itemsPerPage < paginationData.length) {
+    if (currentPosition + itemsPerPage < $recipes.length) {
       currentPosition += itemsPerPage;
       updateDataAndPagination();
     }
@@ -40,8 +40,8 @@
     }
   }
 
-  const renderPagination = (totalItems) => {
-    totalPages = Math.ceil(paginationData.length / itemsPerPage);
+  const renderPagination = (totalItems: number) => {
+    totalPages = Math.ceil($recipes.length / itemsPerPage);
     const currentPage = Math.ceil((currentPosition + 1) / itemsPerPage);
 
     startPage = currentPage - Math.floor(showPage / 2);
@@ -51,7 +51,7 @@
     pagesToShow = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
   }
 
-  const goToPage = (pageNumber) => {
+  const goToPage = (pageNumber: number) => {
     currentPosition = (pageNumber - 1) * itemsPerPage;
     updateDataAndPagination();
   }
@@ -61,11 +61,11 @@
 
   onMount(() => {
     // Call renderPagination when the component initially mounts
-    renderPagination(paginationData.length);
+    renderPagination($recipes.length);
   });
 
-  $: currentPageItems = paginationData.slice(currentPosition, currentPosition + itemsPerPage);
-  $: filteredItems = paginationData.filter((item) => item.product_name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+  $: currentPageItems = $recipes.slice(currentPosition, currentPosition + itemsPerPage);
+  $: filteredItems = $recipes.filter((item) => item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 </script>
 
 <Section name="advancedTable" classSection='bg-gray-50 dark:bg-gray-900 p-3 sm:p-5'>
@@ -82,7 +82,7 @@
         </Dropdown>
       <Button color='alternative'>Filter<FilterSolid class="w-3 h-3 ml-2 " /></Button>
         <Dropdown class="w-48 p-3 space-y-2 text-sm">
-          <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose brand</h6>
+          <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose mealType</h6>
           <li>
             <Checkbox>Apple (56)</Checkbox>
           </li>
@@ -101,28 +101,28 @@
         </Dropdown>
     </div>
       <TableHead>
-        <TableHeadCell padding="px-4 py-3" scope="col">Product name</TableHeadCell>
-        <TableHeadCell padding="px-4 py-3" scope="col">Brand</TableHeadCell>
-        <TableHeadCell padding="px-4 py-3" scope="col">Category</TableHeadCell>
-        <TableHeadCell padding="px-4 py-3" scope="col">Price</TableHeadCell>
+        <TableHeadCell padding="px-4 py-3" scope="col">Recipe</TableHeadCell>
+        <TableHeadCell padding="px-4 py-3" scope="col">Meal type</TableHeadCell>
+        <TableHeadCell padding="px-4 py-3" scope="col">Cuisine</TableHeadCell>
+        <TableHeadCell padding="px-4 py-3" scope="col">Rating</TableHeadCell>
       </TableHead>
       <TableBody class="divide-y">
         {#if searchTerm !== ''}
           {#each filteredItems as item (item.id)}
             <TableBodyRow>
-              <TableBodyCell tdClass="px-4 py-3">{item.product_name}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3">{item.brand}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3">{item.category}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3">{item.price}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.name}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.mealType}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.cuisine}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.rating}</TableBodyCell>
             </TableBodyRow>
           {/each}
         {:else}
           {#each currentPageItems as item (item.id)}
             <TableBodyRow>
-              <TableBodyCell tdClass="px-4 py-3">{item.product_name}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3">{item.brand}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3">{item.category}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3">{item.price}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.name}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.mealType}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.cuisine}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-3">{item.rating}</TableBodyCell>
             </TableBodyRow>
           {/each}
         {/if}
@@ -143,4 +143,4 @@
         </ButtonGroup>
       </div>
     </TableSearch>
-</Section> -->
+</Section>

@@ -7,6 +7,7 @@ import type { Database } from "../types/supabase.js"
 
 export const load = async ({ fetch, data, depends }) => {
 	recipes.set(data.initialRecipes)
+	console.log("Loaded initialRecipes from client: ", data.initialRecipes)
 
 	depends("supabase:auth")
 

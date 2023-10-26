@@ -29,6 +29,19 @@
 
 # Progress report
 
+## 2023-10-26
+
+Browse page should show a list of recipes. Each recipe should be clickable and redirect to a recipe page.
+
+Each recipe card should have: NAME | MEAL TYPE | CUISINE | RATING | (Optional images).
+
+First thing I should solve is that the adding of tasks works, and that they display correctly in the table.
+
+- Clicking 'add recipe' should open a modal where you can input the relevant information.
+- Recipes will then appear in the list and will be dynamically searchable. You should be able to open a pop-over which opens a bigger version of the recipe upon click. From there, you can edit the fields too.
+- There should be sorting based on NAME, MEAL TYPE, CUISINE and RATING.
+
+
 ## 2023-10-24
 
 ### How to structure app
@@ -50,8 +63,8 @@ Architecturally I need to:
 
 -   [x] Create a writable store for recipes
 -   [x] Create a Supabase database for recipes
--   [ ] Initialize the Supabase database and set the recipe store to it
--   [ ] Subscribe to Supabase updates and update the store accordingly
+-   [x] Initialize the Supabase database and set the recipe store to it
+-   [x] Subscribe to Supabase updates and update the store accordingly
 
 With respect to Supabase updates:
 

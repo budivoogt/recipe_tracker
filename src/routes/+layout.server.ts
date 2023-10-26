@@ -12,9 +12,12 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 			.select("*")
 			.order("id", { ascending: true })
 
+		console.log("data: ", data, "Error: ", error)
+
 		if (error) throw error
 
 		initialRecipes = data || []
+		console.log("Loaded initialRecipes from server: ", initialRecipes)
 	} catch (err) {
 		console.error(err)
 	}

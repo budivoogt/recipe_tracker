@@ -28,14 +28,15 @@ export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 			}
 
 			for (const deletedRecipe of deletedRecipes) {
-				await supabaseClient.from("recipes").delete().match({ id: deletedRecipe.id })
+				await supabaseClient.from("recipes").delete().match({
+					id: deletedRecipe.id
+				})
 			}
 
 			for (const updatedRecipe of updatedRecipes) {
-				await supabaseClient
-					.from("recipes")
-					.upsert(updatedRecipe)
-					.match({ id: updatedRecipe.id })
+				await supabaseClient.from("recipes").upsert(updatedRecipe).match({
+					id: updatedRecipe.id
+				})
 			}
 
 			currentRecipes = $recipes

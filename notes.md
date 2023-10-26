@@ -48,10 +48,14 @@ The recipe add flow should be:
 
 Architecturally I need to:
 
--   Create a writable store for recipes
--   Create a Supabase database for recipes
--   Initialize the Supabase database and set the recipe store to it
--   Subscribe to Supabase updates and update the store accordingly
+-   [x] Create a writable store for recipes
+-   [x] Create a Supabase database for recipes
+-   [ ] Initialize the Supabase database and set the recipe store to it
+-   [ ] Subscribe to Supabase updates and update the store accordingly
+
+With respect to Supabase updates:
+
+If the primary database I work with is the Svelte store, then I can update the Supabase db with any local changes. That way I don't need the real-time listener as the first place to input will be the local store. And I'll initialize that local store upon mount and then set up a subscribe to it which will update the Supabase db.
 
 ## 2023-10-23
 

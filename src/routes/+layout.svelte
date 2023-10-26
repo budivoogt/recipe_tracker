@@ -2,20 +2,27 @@
 	import { invalidate } from "$app/navigation"
 	import Footer from "$lib/components/Footer.svelte"
 	import Navbar from "$lib/components/Navbar.svelte"
-	import { onMount } from "svelte"
+	import { onDestroy, onMount } from "svelte"
 	import { get } from "svelte/store"
 	import "../app.css"
 	import { user } from "../stores/authStore"
+	import { syncWithSupabase } from "../stores/recipeStore"
+	import type { PageData } from "./$types"
 
-	export let data
+	export let data: PageData
 	
-	let { supabase, session, initialUser } = data
+	let { supabase, session } = data
+	let unsubscribeFromRecipes: () => void
 
 	$: {
 		({ supabase, session } = data)
 	}
 
 	onMount(() => {
+		// Initiate database sync
+		unsubscribeFromRecipes = syncWithSupabase(supabase)
+
+		// Listen for auth state changes
 		const {
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange((event, _session) => {
@@ -32,6 +39,11 @@
 
 		return () => subscription.unsubscribe()
 	});
+
+	onDestroy(() => {
+		if(unsubscribeFromRecipes) unsubscribeFromRecipes()
+	})
+
 	</script>
 
 <svelte:head>

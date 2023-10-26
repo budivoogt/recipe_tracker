@@ -1,14 +1,14 @@
 // Global types that aren't specific to SvelteKit.
 
 type Recipe = {
-	name: Text
-	description: Text | null
-	instructions: Text | null
+	id: number
+	name: string
+	description: string | null
+	instructions: string | null
 	acquired: boolean
 	ingedients: {
-		item: Text
-		quantity: Text
+		item: string
+		quantity: string
 	} | null
-	id: number
 	order: number | null
 }

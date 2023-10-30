@@ -24,7 +24,11 @@ export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 			if (updatedRecipes) console.log("updatedRecipes: ", updatedRecipes)
 
 			for (const newRecipe of newRecipes) {
-				await supabaseClient.from("recipes").insert(newRecipe)
+				const serializedRecipe = {
+					...newRecipe,
+					ingredients: JSON.stringify(newRecipe.ingredients)
+				}
+				await supabaseClient.from("recipes").insert(serializedRecipe)
 			}
 
 			for (const deletedRecipe of deletedRecipes) {

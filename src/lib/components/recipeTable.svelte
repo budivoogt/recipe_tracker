@@ -18,7 +18,16 @@
     { value: 'snack', name: 'Snack' },
     { value: 'drink', name: 'Drink' },
     ];
-    let rating: number
+    
+    let rating: number = 0
+    const setRating = (num: number) => {
+        rating = num
+    }
+    const handleKeyDown = (event, num) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            setRating(num)
+        }
+    }
 
     $: console.log("recipeTable.svelte recipes: ", $recipes)
 </script>
@@ -67,6 +76,21 @@
         <div>
             <Label for="cuisine" class="mb-2">Cuisine</Label>
             <Input type="text" id="cuisine" placeholder="Italian, Greek, etc." required />
+        </div>
+        <div class="text-xl cursor-pointer flex flex-col items-center">
+            <span class="text-sm font-medium block text-gray-900 dark:text-gray-300 mb-3">Rating</span>
+            <div class="">
+            {#each [1, 2, 3, 4, 5] as num}
+                <span 
+                tabindex="0"
+                on:click={() => setRating(num)} 
+                on:keydown={(e) => handleKeyDown(e, num)}
+                aria-label={`Rate ${num} out of 5`}
+                role="button">
+                    {rating >= num ? '⭐' : '☆'}
+                </span>
+            {/each}
+            </div>
         </div>
         <div class="sm:col-span-2">
           <Label for="description" class="mb-2">Description</Label>

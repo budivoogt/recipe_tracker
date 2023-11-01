@@ -30,6 +30,8 @@
 		} = supabase.auth.onAuthStateChange((event, _session) => {
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth')
+				console.log("Supabase Auth invalidated.");
+				
 			} else if (_session && event === "SIGNED_IN" && _session?.user !== get(user)) {
 				user.set(_session.user)
 				console.log("Signed in user: ", _session.user.email)

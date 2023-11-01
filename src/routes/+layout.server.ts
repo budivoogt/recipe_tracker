@@ -13,7 +13,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 			.select("*")
 			.order("id", { ascending: true })
 
-		console.log("data: ", data, "Error: ", error)
+		console.log("Reading 'recipes' Supabase db; data: ", data, "Error: ", error)
 
 		// Supabase returns the ingredients as a stringified JSON array, so we need to parse it.
 		if (data) {

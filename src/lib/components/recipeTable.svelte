@@ -59,8 +59,6 @@
 
     const resetNewRecipe = () => {
         newRecipe.set(defaultNewRecipe)}
-
-    $: console.log("recipeTable.svelte recipes: ", $recipes)
 </script>
 
 <!-- Recipe table -->

@@ -2,10 +2,9 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import { writable } from "svelte/store"
 
 export const recipes = writable<Recipe[]>([])
+let currentRecipes: Recipe[] = []
 
 export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
-	let currentRecipes: Recipe[] = []
-
 	const unsubscribe = recipes.subscribe(async ($recipes) => {
 		if (JSON.stringify($recipes) !== JSON.stringify(currentRecipes)) {
 			const newRecipes = $recipes.filter((r) => !currentRecipes.some((cr) => r.id === cr.id))

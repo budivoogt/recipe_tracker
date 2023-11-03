@@ -27,26 +27,36 @@
 -   instructions: text
 -   rating: 1-5
 
-# Progress report
-
-## 2023-11-1
-
 ### Bugs
 
 -   [x] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
--   [ ] newRecipes isn't clearing after successful submission of recipes.
+-   [x] newRecipes isn't clearing after successful submission of recipes.
 
 I suspect the issue is that currentRecipes isn't being updated with the latest recipes.
 
--   [ ] When successfully adding a recipe, field values aren't reset.
--   [ ] It's also calling the deletedRecipes and updatedRecipes logs, while it shouldn't.
+-   [x] When refreshing the page it's not loading the stored data?
+-   [x] It's also calling the deletedRecipes and updatedRecipes logs, while it shouldn't.
+-   [x] Resolve the ingredients having unnecessary parentheses in the stingified JSON.
+-   [x] When successfully adding a recipe, field values aren't reset.
 -   [ ] When on the /recipes page, logging out doesn't redirect you.
 -   [ ] Make serialized ingredients JSONB instead of JSON.
--   [ ] Resolve the ingredients having unnecessary parentheses in the stingified JSON.
 -   [ ] Figure out how to avoid instantiating an empty ingredient for each recipe. Currently this is necessary to have Svelte's conditional rendering to display the different ingredients.
--   [ ] Redirect from /recipes to /home when a user isn't logged in (or logs out)
 
--   [ ] When refreshing the page it's not loading the stored data?
+# Progress report
+
+## 2023-11-3
+
+I had overcomplicated the Supabase logic. I should have instead _first_ built the basic logic for adding, updating and removing recipes using Svelte stores.
+
+I haven't stuck to the Single Responsibility Principle and created recursiveness in a few places:
+
+-   The default value for a form submission wasn't properly reset.
+-   The store subscription had recursiveness, where each function that updated the store triggered the original subscription again.
+-   I hadn't separated the different functions: adding, updating, removing and synching local stores <> Supabase.
+
+It was helpful to build UI tools that allowed me to easily reset the local stores and experiment with different isolated parts of the app. Therefore, it's smart to build things slowly and from the ground up moving forward. Instead when building this app I had built much of the logic without building the front-end and that resulted in issues.
+
+I also updated the Supabase package from auth-helpers to their new -ssr package.
 
 ## 2023-10-26
 

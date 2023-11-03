@@ -13,8 +13,6 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 			.select("*")
 			.order("id", { ascending: true })
 
-		console.log("Reading 'recipes' Supabase db; data: ", data, "Error: ", error)
-
 		// Supabase returns the ingredients as a stringified JSON array, so we need to parse it.
 		if (data) {
 			deserializedRecipes = data.map((recipe) => ({
@@ -26,7 +24,6 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		if (error) throw error
 
 		initialRecipes = deserializedRecipes || []
-		console.log("Loaded initialRecipes from server: ", initialRecipes)
 	} catch (err) {
 		console.error(err)
 	}

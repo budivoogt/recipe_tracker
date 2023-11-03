@@ -2,12 +2,13 @@ import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "$env/static/publi
 import { createSupabaseLoadClient } from "@supabase/auth-helpers-sveltekit"
 import type { User } from "@supabase/supabase-js"
 import { user } from "../stores/authStore.js"
-import { recipes } from "../stores/recipeStore.js"
+import { recipesStore } from "../stores/recipeStore.js"
 import type { Database } from "../types/supabase.js"
 
 export const load = async ({ fetch, data, depends }) => {
-	recipes.set(data.initialRecipes)
-	console.log("Loaded initialRecipes from client: ", data.initialRecipes)
+	recipesStore.set(data.initialRecipes)
+	if (data.initialRecipes.length > 0)
+		console.log("Loaded initialRecipes from client: ", data.initialRecipes)
 
 	depends("supabase:auth")
 

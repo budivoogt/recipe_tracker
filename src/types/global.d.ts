@@ -1,7 +1,7 @@
 // Global types that aren't specific to SvelteKit.
 
 type Recipe = {
-	id: number | null
+	id?: number
 	name: string
 	mealType: string
 	cuisine: string
@@ -17,5 +17,3 @@ type Ingredient = {
 	quantity: string
 	acquired: boolean
 }
-
-

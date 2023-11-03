@@ -2,10 +2,9 @@
 	import { Button, Checkbox, Input, Label, Modal, Select, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Textarea } from "flowbite-svelte"
 	import { Section } from 'flowbite-svelte-blocks'
 	import { writable } from "svelte/store"
-	import { recipes } from '../../stores/recipeStore'
+	import { recipesStore } from '../../stores/recipeStore'
 
     const defaultNewRecipe: Recipe = {
-        id: null,
         name: "",
         mealType: "",
         cuisine: "",
@@ -14,18 +13,31 @@
         ingredients: [{ item: "", quantity: "", acquired: false }],
         rating: null,
         order: null
+      }
+      
+      function getDefaultNewRecipe () {
+        return {
+          name: "",
+          mealType: "",
+          cuisine: "",
+          description: "",
+          instructions: "",
+          ingredients: [{ item: "", quantity: "", acquired: false }],
+          rating: null,
+          order: null
+      }
     }
+
     const newRecipe = writable<Recipe>(defaultNewRecipe)
 
     let defaultModal = false;
     const handleSubmit = () => {
-        recipes.update($recipes => [...$recipes, $newRecipe])
-        alert('Form submited.');
+        recipesStore.update(cr => [...cr, $newRecipe])
+        console.log("Form submitted with $newRecipe: ", $newRecipe, "$recipesStore: ", $recipesStore);
         resetNewRecipe()
         defaultModal = false
     };
     
-    let selectedMealType: { value: string; name: string;}
     let mealTypes = [
     { value: 'breakfast', name: 'Breakfast' },
     { value: 'lunch', name: 'Lunch' },
@@ -58,7 +70,19 @@
     }
 
     const resetNewRecipe = () => {
-        newRecipe.set(defaultNewRecipe)}
+        newRecipe.set(getDefaultNewRecipe())
+    }
+
+    const resetRecipes = () => {
+        recipesStore.set([])
+    }
+
+    const resetAllRecipes = () => {
+        resetNewRecipe()
+        resetRecipes()
+        console.log("All recipes reset");
+        
+    }
 </script>
 
 <!-- Recipe table -->
@@ -71,12 +95,12 @@
             <TableHeadCell>Rating</TableHeadCell>
         </TableHead>
         <TableBody>
-            {#each $recipes as recipe}
+            {#each $recipesStore as recipe}
                 <TableBodyRow>
                     <TableBodyCell>{recipe.name}</TableBodyCell>
                     <TableBodyCell>{recipe.mealType}</TableBodyCell>
                     <TableBodyCell>{recipe.cuisine}</TableBodyCell>
-                    <TableBodyCell>{recipe.rating}</TableBodyCell>
+                    <TableBodyCell>{recipe.rating || ""}</TableBodyCell>
                 </TableBodyRow>
             {/each}
         </TableBody>
@@ -88,8 +112,11 @@
   <div class="flex justify-center m-5">
     <Button on:click={() => (defaultModal = true)}>Add recipe</Button>
   </div>
+  <div class="flex justify-center m-5">
+    <Button on:click={resetAllRecipes}>Reset all stores</Button>
+  </div>
   <Modal title="Add recipe" bind:open={defaultModal} class="min-w-full" outsideclose>
-    <form on:submit={handleSubmit}>
+    <form on:submit|preventDefault={handleSubmit}>
       <div class="grid gap-4 mb-4 sm:grid-cols-2">
         <div>
           <Label for="name" class="mb-2">Name</Label>

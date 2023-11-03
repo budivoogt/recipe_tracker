@@ -3,7 +3,7 @@
   import { Section } from 'flowbite-svelte-blocks'
   import { ChevronDownSolid, ChevronLeftOutline, ChevronRightOutline, FilterSolid, PlusSolid } from 'flowbite-svelte-icons'
   import { onMount } from 'svelte'
-  import { recipes } from '../../stores/recipeStore'
+  import { recipesStore } from '../../stores/recipeStore'
 
   let divClass='bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden';
   let innerDivClass='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4';
@@ -17,17 +17,17 @@
   const showPage: number = 5;
   let totalPages: number = 0;
   let pagesToShow = [];
-  let totalItems: number = $recipes.length
+  let totalItems: number = $recipesStore.length
   let startPage: number
   let endPage: number
 
   const updateDataAndPagination = () => {
-    const currentPageItems = $recipes.slice(currentPosition, currentPosition + itemsPerPage);
+    const currentPageItems = $recipesStore.slice(currentPosition, currentPosition + itemsPerPage);
     renderPagination(currentPageItems.length);
   }
 
   const loadNextPage = () => {
-    if (currentPosition + itemsPerPage < $recipes.length) {
+    if (currentPosition + itemsPerPage < $recipesStore.length) {
       currentPosition += itemsPerPage;
       updateDataAndPagination();
     }
@@ -41,7 +41,7 @@
   }
 
   const renderPagination = (totalItems: number) => {
-    totalPages = Math.ceil($recipes.length / itemsPerPage);
+    totalPages = Math.ceil($recipesStore.length / itemsPerPage);
     const currentPage = Math.ceil((currentPosition + 1) / itemsPerPage);
 
     startPage = currentPage - Math.floor(showPage / 2);
@@ -61,11 +61,11 @@
 
   onMount(() => {
     // Call renderPagination when the component initially mounts
-    renderPagination($recipes.length);
+    renderPagination($recipesStore.length);
   });
 
-  $: currentPageItems = $recipes.slice(currentPosition, currentPosition + itemsPerPage);
-  $: filteredItems = $recipes.filter((item) => item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+  $: currentPageItems = $recipesStore.slice(currentPosition, currentPosition + itemsPerPage);
+  $: filteredItems = $recipesStore.filter((item) => item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 </script>
 
 <Section name="advancedTable" classSection='bg-gray-50 dark:bg-gray-900 p-3 sm:p-5'>

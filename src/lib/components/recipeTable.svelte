@@ -1,10 +1,13 @@
 <script lang="ts">
+	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Input, Label, Modal, Select, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Textarea } from "flowbite-svelte"
 	import { Section } from 'flowbite-svelte-blocks'
 	import { writable } from "svelte/store"
-	import { recipesStore } from '../../stores/recipeStore'
+	import { addRecipe, recipesStore } from '../../stores/recipeStore'
+  
+  export let supabase: SupabaseClient
 
-    const defaultNewRecipe: Recipe = {
+  const defaultNewRecipe: Recipe = {
         name: "",
         mealType: "",
         cuisine: "",
@@ -32,8 +35,8 @@
 
     let defaultModal = false;
     const handleSubmit = () => {
-        recipesStore.update(cr => [...cr, $newRecipe])
-        console.log("Form submitted with $newRecipe: ", $newRecipe, "$recipesStore: ", $recipesStore);
+        addRecipe(supabase, $newRecipe)
+        console.log("Form submitted with $newRecipe: ", $newRecipe);
         resetNewRecipe()
         defaultModal = false
     };

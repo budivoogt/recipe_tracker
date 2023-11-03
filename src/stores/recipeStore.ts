@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { get, writable } from "svelte/store"
+import { writable } from "svelte/store"
 
 export const recipesStore = writable<Recipe[]>([])
 let currentRecipes: Recipe[] = []
@@ -32,7 +32,10 @@ export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 						...newRecipe,
 						ingredients: JSON.stringify(newRecipe.ingredients)
 					}
-					const response = await supabaseClient.from("recipes").insert(serializedRecipe)
+					const response = await supabaseClient
+						.from("recipes")
+						.insert(serializedRecipe)
+						.select()
 					console.log("SB response upon inserting recipe: ", response)
 					const { data, error } = response
 					if (error) throw error
@@ -58,6 +61,7 @@ export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 						.match({
 							id: updatedRecipe.id
 						})
+						.select()
 					if (error) throw error
 					if (data) {
 						console.log("Data inserted to Supabase: ", data)
@@ -77,7 +81,8 @@ export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 					if (error) throw error
 					console.log("deletedRecipe: ", deletedRecipe)
 				}
-				currentRecipes = get(recipesStore)
+				currentRecipes = [...recipes]
+				console.log("currentRecipes updated: ", currentRecipes)
 			}
 		} catch (error) {
 			console.error("Supabase sync error: ", error)
@@ -85,4 +90,30 @@ export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 	})
 
 	return () => unsubscribe()
+}
+
+function serializeRecipe(recipe: Recipe) {
+	return {
+		...recipe,
+		ingredients: JSON.stringify(recipe.ingredients)
+	}
+}
+
+export async function addRecipe(supabaseClient: SupabaseClient, newRecipe: Recipe) {
+	const response = await supabaseClient
+		.from("recipes")
+		.insert(serializeRecipe(newRecipe))
+		.select()
+	console.log("SB response upon inserting recipe: ", response)
+	const { data, error } = response
+	if (error) {
+		console.error("Error adding recipe: ", error)
+		throw error
+	}
+	if (data) {
+		const insertedRecipe = data[0]
+		recipesStore.update((cr) => [...cr, insertedRecipe])
+		console.log("New recipe inserted: ", insertedRecipe);
+		
+	}
 }

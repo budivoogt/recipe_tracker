@@ -6,7 +6,6 @@
 	import { get } from "svelte/store"
 	import "../app.css"
 	import { user } from "../stores/authStore"
-	import { syncWithSupabase } from "../stores/recipeStore"
 	import type { PageData } from "./$types"
 
 	export let data: PageData
@@ -22,7 +21,7 @@
 		console.log("onMount() called with data: ", data);
 
 		// Initiate database sync
-		unsubscribeFromRecipes = syncWithSupabase(supabase)
+		// unsubscribeFromRecipes = syncWithSupabase(supabase)
 
 		// Listen for auth state changes
 		const {

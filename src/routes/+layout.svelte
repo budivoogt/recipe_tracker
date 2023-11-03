@@ -19,11 +19,7 @@
 
 	onMount(() => {
 		console.log("onMount() called with data: ", data);
-
-		// Initiate database sync
-		// unsubscribeFromRecipes = syncWithSupabase(supabase)
-
-		// Listen for auth state changes
+		
 		const {
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange((event, _session) => {

@@ -18,18 +18,18 @@
         order: null
       }
       
-      function getDefaultNewRecipe () {
-        return {
-          name: "",
-          mealType: "",
-          cuisine: "",
-          description: "",
-          instructions: "",
-          ingredients: [{ item: "", quantity: "", acquired: false }],
-          rating: null,
-          order: null
-      }
-    }
+  function getDefaultNewRecipe () {
+    return {
+      name: "",
+      mealType: "",
+      cuisine: "",
+      description: "",
+      instructions: "",
+      ingredients: [{ item: "", quantity: "", acquired: false }],
+      rating: null,
+      order: null
+  }
+}
 
     const newRecipe = writable<Recipe>(defaultNewRecipe)
 

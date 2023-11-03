@@ -33,7 +33,7 @@
 
 ### Bugs
 
--   [X] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
+-   [x] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
 -   [ ] newRecipes isn't clearing after successful submission of recipes.
 
 I suspect the issue is that currentRecipes isn't being updated with the latest recipes.
@@ -44,6 +44,7 @@ I suspect the issue is that currentRecipes isn't being updated with the latest r
 -   [ ] Make serialized ingredients JSONB instead of JSON.
 -   [ ] Resolve the ingredients having unnecessary parentheses in the stingified JSON.
 -   [ ] Figure out how to avoid instantiating an empty ingredient for each recipe. Currently this is necessary to have Svelte's conditional rendering to display the different ingredients.
+-   [ ] Redirect from /recipes to /home when a user isn't logged in (or logs out)
 
 -   [ ] When refreshing the page it's not loading the stored data?
 

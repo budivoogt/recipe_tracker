@@ -7,8 +7,6 @@ let currentRecipes: Recipe[] = []
 // This is called in +layout.svelte so via onMount so will be called upon each page load.
 export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 	const unsubscribe = recipesStore.subscribe(async (recipes) => {
-		console.log("Supabase sync running...")
-
 		try {
 			// Compare currentRecipes with recipes store to see which are new.
 			if (JSON.stringify(recipes) !== JSON.stringify(currentRecipes)) {
@@ -34,9 +32,9 @@ export const syncWithSupabase = (supabaseClient: SupabaseClient) => {
 						...newRecipe,
 						ingredients: JSON.stringify(newRecipe.ingredients)
 					}
-					const { data, error } = await supabaseClient
-						.from("recipes")
-						.insert(serializedRecipe)
+					const response = await supabaseClient.from("recipes").insert(serializedRecipe)
+					console.log("SB response upon inserting recipe: ", response)
+					const { data, error } = response
 					if (error) throw error
 					if (data) {
 						console.log("Data inserted to Supabase: ", data)

@@ -2,7 +2,10 @@
     import RecipeList from '$lib/components/RecipeList.svelte'
     import { Button } from 'flowbite-svelte'
 
+    // Make the Supabase client available on the page.
     export let data
+    let { supabase } = data
+    $: ({ supabase } = data)
 </script>
 
 <main>

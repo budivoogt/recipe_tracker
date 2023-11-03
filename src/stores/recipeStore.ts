@@ -2,6 +2,32 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import { writable } from "svelte/store"
 
 export const recipesStore = writable<Recipe[]>([])
+
+const defaultNewRecipe: Recipe = {
+	name: "",
+	mealType: "",
+	cuisine: "",
+	description: "",
+	instructions: "",
+	ingredients: [{ item: "", quantity: "", acquired: false }],
+	rating: null,
+	order: null
+}
+
+export const newRecipe = writable<Recipe>(defaultNewRecipe)
+
+export function getDefaultNewRecipe() {
+	return {
+		name: "",
+		mealType: "",
+		cuisine: "",
+		description: "",
+		instructions: "",
+		ingredients: [{ item: "", quantity: "", acquired: false }],
+		rating: null,
+		order: null
+	}
+}
 // let currentRecipes: Recipe[] = []
 
 // // This is called in +layout.svelte so via onMount so will be called upon each page load.

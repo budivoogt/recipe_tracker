@@ -44,6 +44,12 @@ I suspect the issue is that currentRecipes isn't being updated with the latest r
 
 # Progress report
 
+## 2023-11-4
+
+### RecipeDetailsModal
+
+-   [ ] Need to make it possible to update `acquired` status of an ingredient.
+
 ## 2023-11-3
 
 I had overcomplicated the Supabase logic. I should have instead _first_ built the basic logic for adding, updating and removing recipes using Svelte stores.
@@ -57,6 +63,10 @@ I haven't stuck to the Single Responsibility Principle and created recursiveness
 It was helpful to build UI tools that allowed me to easily reset the local stores and experiment with different isolated parts of the app. Therefore, it's smart to build things slowly and from the ground up moving forward. Instead when building this app I had built much of the logic without building the front-end and that resulted in issues.
 
 I also updated the Supabase package from auth-helpers to their new -ssr package.
+
+Modularized the Svelte components, where I separated the NewRecipeModal from the RecipeTable.svelte.
+
+Tomorrow I should continue with creating a modal that displays the properties of every recipe and making those fields editable.
 
 ## 2023-10-26
 

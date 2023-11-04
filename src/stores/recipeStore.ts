@@ -28,6 +28,64 @@ export function getDefaultNewRecipe() {
 		order: null
 	}
 }
+
+function serializeRecipe(recipe: Recipe) {
+	return {
+		...recipe,
+		ingredients: JSON.stringify(recipe.ingredients)
+	}
+}
+
+export async function addRecipe(supabaseClient: SupabaseClient, newRecipe: Recipe) {
+	const response = await supabaseClient
+		.from("recipes")
+		.insert(serializeRecipe(newRecipe))
+		.select()
+	console.log("SB response upon inserting recipe: ", response)
+	const { data, error } = response
+	if (error) {
+		console.error("Error adding recipe: ", error)
+		throw error
+	}
+	if (data) {
+		const insertedRecipe = data[0]
+		recipesStore.update((cr) => [...cr, insertedRecipe])
+		console.log("New recipe inserted: ", insertedRecipe)
+	}
+}
+
+export async function updateRecipe(supabaseClient: SupabaseClient, updatedRecipe: Recipe) {
+	const response = await supabaseClient
+		.from("recipes")
+		.upsert(serializeRecipe(updatedRecipe))
+		.match({
+			id: updatedRecipe.id
+		})
+		.select()
+	console.log("SB response upon updating recipe: ", response)
+	const { data, error } = response
+	if (error) {
+		console.error("Error updating recipe: ", error)
+		throw error
+	}
+	if (data) {
+		const updatedRecipe = data[0]
+		recipesStore.update((cr) => [...cr, updatedRecipe])
+		console.log("Recipe updated: ", updatedRecipe)
+	}
+}
+
+export async function deleteRecipe(supabaseClient: SupabaseClient, deletedRecipe: Recipe) {
+	const { error } = await supabaseClient.from("recipes").delete().match({
+		id: deletedRecipe.id
+	})
+	if (error) {
+		console.error("Error deleting recipe: ", error)
+		throw error
+	}
+	console.log("Recipe deleted: ", deletedRecipe)
+}
+
 // let currentRecipes: Recipe[] = []
 
 // // This is called in +layout.svelte so via onMount so will be called upon each page load.
@@ -117,60 +175,3 @@ export function getDefaultNewRecipe() {
 
 // 	return () => unsubscribe()
 // }
-
-function serializeRecipe(recipe: Recipe) {
-	return {
-		...recipe,
-		ingredients: JSON.stringify(recipe.ingredients)
-	}
-}
-
-export async function addRecipe(supabaseClient: SupabaseClient, newRecipe: Recipe) {
-	const response = await supabaseClient
-		.from("recipes")
-		.insert(serializeRecipe(newRecipe))
-		.select()
-	console.log("SB response upon inserting recipe: ", response)
-	const { data, error } = response
-	if (error) {
-		console.error("Error adding recipe: ", error)
-		throw error
-	}
-	if (data) {
-		const insertedRecipe = data[0]
-		recipesStore.update((cr) => [...cr, insertedRecipe])
-		console.log("New recipe inserted: ", insertedRecipe)
-	}
-}
-
-export async function updateRecipe(supabaseClient: SupabaseClient, updatedRecipe: Recipe) {
-	const response = await supabaseClient
-		.from("recipes")
-		.upsert(serializeRecipe(updatedRecipe))
-		.match({
-			id: updatedRecipe.id
-		})
-		.select()
-	console.log("SB response upon updating recipe: ", response)
-	const { data, error } = response
-	if (error) {
-		console.error("Error updating recipe: ", error)
-		throw error
-	}
-	if (data) {
-		const updatedRecipe = data[0]
-		recipesStore.update((cr) => [...cr, updatedRecipe])
-		console.log("Recipe updated: ", updatedRecipe)
-	}
-}
-
-export async function deleteRecipe(supabaseClient: SupabaseClient, deletedRecipe: Recipe) {
-	const { error } = await supabaseClient.from("recipes").delete().match({
-		id: deletedRecipe.id
-	})
-	if (error) {
-		console.error("Error deleting recipe: ", error)
-		throw error
-	}
-	console.log("Recipe deleted: ", deletedRecipe)
-}

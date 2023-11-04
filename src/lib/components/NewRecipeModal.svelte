@@ -5,7 +5,7 @@
     import { addRecipe, newRecipe } from "../../stores/recipeStore"
 
     export let supabase: SupabaseClient
-    export let addRecipeModal: boolean // bool passed from parent component
+    export let showAddRecipe: boolean // bool passed from parent component
     
     let mealTypes = [
     { value: 'breakfast', name: 'Breakfast' },
@@ -20,7 +20,7 @@
         addRecipe(supabase, $newRecipe)
         console.log("Form submitted with $newRecipe: ", $newRecipe);
         resetNewRecipe()
-        addRecipeModal = false
+        showAddRecipe = false
     };
 
     // Star rating logic
@@ -46,7 +46,7 @@
     }
 </script>
 
-<Modal title="Add recipe" bind:open={addRecipeModal} class="min-w-full" outsideclose>
+<Modal title="Add recipe" bind:open={showAddRecipe} class="min-w-full" outsideclose>
   <form on:submit|preventDefault={handleSubmit}>
     <div class="grid gap-4 mb-4 sm:grid-cols-2">
       <div>
@@ -79,11 +79,11 @@
       </div>
       <div class="sm:col-span-2">
         <Label for="description" class="mb-2">Description</Label>
-        <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description"  />
+        <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description" bind:value={$newRecipe.description}/>
       </div>
       <div class="sm:col-span-2">
         <Label for="instructions" class="mb-2">Instructions</Label>
-        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="4" name="instructions"  />
+        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="4" name="instructions" bind:value={$newRecipe.instructions}/>
       </div>
       <div class="sm:col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>

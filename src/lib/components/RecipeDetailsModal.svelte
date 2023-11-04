@@ -1,0 +1,45 @@
+<script lang="ts">
+	import type { SupabaseClient } from "@supabase/supabase-js"
+	import { Checkbox, Modal } from "flowbite-svelte"
+
+    export let showRecipeDetails: boolean
+    export let supabase: SupabaseClient
+    export let selectedRecipe: Recipe | null
+
+    
+</script>
+
+<Modal bind:open={showRecipeDetails} class="min-w-full" outsideclose>
+    <div class="">
+        <h1 class="text-xl font-bold text-gray-700">{selectedRecipe?.name}</h1>
+    </div>
+    <dl class="grid grid-cols-3 gap-4 text-gray-700">
+        <dt class="font-semibold mt-4">Meal type</dt>
+        <dd class="row-start-2">{selectedRecipe?.mealType}</dd>
+        <dt class="font-semibold mt-4">Cuisine</dt>
+        <dd class="row-start-2">{selectedRecipe?.cuisine}</dd>
+        <dt class="font-semibold mt-4">Rating</dt>
+        <dd class="row-start-2">{selectedRecipe?.rating || "None"}</dd>
+    </dl>
+    <dl class="grid grid-cols-1 gap-4 text-gray-700">
+        <!-- Discover how to make these dd fields rich text -->
+        <dt class="font-semibold mt-4">Description</dt>
+        <dd class="">{selectedRecipe?.description}</dd>
+        <dt class="font-semibold mt-4">Instructions</dt>
+        <dd class="">{selectedRecipe?.instructions}</dd>
+    </dl>
+    <div class="">
+        <h1 class="font-semibold text-gray-700 mt-4">Ingredients</h1>
+    </div>
+    <dl class="grid grid-cols-3 gap-4 text-gray-700">
+        <dt class="font-semibold">Item</dt>
+        <dt class="font-semibold">Quantity</dt>
+        <dt class="font-semibold">Acquired</dt>
+        {#each selectedRecipe?.ingredients as ingredient}
+            <dd class="">{ingredient.item}</dd>
+            <dd class="">{ingredient.quantity}</dd>
+            <Checkbox checked={ingredient.acquired} class=""/>
+        {/each}
+    </dl>
+    
+</Modal>

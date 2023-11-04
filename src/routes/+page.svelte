@@ -1,5 +1,4 @@
 <script lang="ts">
-    import RecipeList from '$lib/components/RecipeList.svelte'
     import { Button } from 'flowbite-svelte'
 
     // Make the Supabase client available on the page.
@@ -17,7 +16,6 @@
     <div class="mx-auto mt-4 flex flex-col items-center">
         <span class="text-lg text-justify italic">Welcome, {data.initialUser?.email}!</span>
     </div>
-    <RecipeList/>
     {:else}
     <div class="flex flex-col text-justify my-4 items-center">
         <Button href="/auth/login" class="">Login to get started</Button>

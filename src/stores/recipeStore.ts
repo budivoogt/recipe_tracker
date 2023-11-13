@@ -54,7 +54,15 @@ function deserializeRecipe(recipe: Recipe): Recipe | null {
 }
 
 function updateRecipeHelper(recipe: Recipe) {
-	recipesStore.update((cr) => [...cr, recipe])
+	recipesStore.update((cr) => {
+		const index = cr.findIndex((r) => r.id === recipe.id)
+		if (index === -1) {
+			cr = [...cr, recipe]
+		} else {
+			cr[index] = recipe
+		}
+		return cr
+	})
 }
 
 export async function addRecipe(supabaseClient: SupabaseClient, newRecipe: Recipe) {
@@ -62,7 +70,6 @@ export async function addRecipe(supabaseClient: SupabaseClient, newRecipe: Recip
 		.from("recipes")
 		.insert(serializeRecipe(newRecipe))
 		.select()
-	console.log("SB response upon inserting recipe: ", response)
 	const { data, error } = response
 	if (error) {
 		console.error("Error adding recipe: ", error)
@@ -83,7 +90,6 @@ export async function updateRecipe(supabaseClient: SupabaseClient, updatedRecipe
 			id: updatedRecipe.id
 		})
 		.select()
-	console.log("SB response upon updating recipe: ", response)
 	const { data, error } = response
 	if (error) {
 		console.error("Error updating recipe: ", error)

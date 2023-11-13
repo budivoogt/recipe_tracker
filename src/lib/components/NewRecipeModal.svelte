@@ -87,6 +87,10 @@
       </div>
       <div class="sm:col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
+          <!-- <div class="">
+            <Label for="mealType" class="mb-2">For how many people?</Label>
+            <Textarea id="servingSize" placeholder="How many people does this recipe serve?" name="servingSize" bind:value={$newRecipe.servingSize}/>
+          </div> -->
           {#each $newRecipe.ingredients as ingredient, index}
           <div class="flex items-center gap-2 my-2">
               <Input type="text" placeholder="Item" bind:value={ingredient.item} />

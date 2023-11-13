@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SupabaseClient } from "@supabase/supabase-js"
-	import { Checkbox, Modal } from "flowbite-svelte"
+	import { Button, Checkbox, Modal } from "flowbite-svelte"
 	import { updateRecipe } from "../../stores/recipeStore"
 
     export let showRecipeDetails: boolean
@@ -14,10 +14,6 @@
             console.log("selectedRecipe is null")
         }
     }
-
-    $: if(showRecipeDetails && selectedRecipe) {
-        console.log("selectedRecipe: ", selectedRecipe)
-    } 
 </script>
 
 <Modal bind:open={showRecipeDetails} class="min-w-full" outsideclose>
@@ -52,5 +48,6 @@
             <Checkbox bind:checked={ingredient.acquired} on:change={updateHandler}/>
         {/each}
     </dl>
+    <Button color='red'>Delete recipe</Button>
     
 </Modal>

@@ -14,6 +14,10 @@
             console.log("selectedRecipe is null")
         }
     }
+
+    $: if(showRecipeDetails && selectedRecipe) {
+        console.log("selectedRecipe: ", selectedRecipe)
+    } 
 </script>
 
 <Modal bind:open={showRecipeDetails} class="min-w-full" outsideclose>

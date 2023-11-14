@@ -65,6 +65,19 @@ function updateRecipeHelper(recipe: Recipe) {
 	})
 }
 
+function deleteRecipeHelper(recipe: Recipe) {
+	try {
+		recipesStore.update((cr) => {
+			return cr.filter((r) => r.id !== recipe.id)
+		})
+		console.log("Recipe deleted: ", recipe)
+		return
+	} catch (error) {
+		console.log("Failed to delete recipe", error)
+		return null
+	}
+}
+
 export async function addRecipe(supabaseClient: SupabaseClient, newRecipe: Recipe) {
 	const response = await supabaseClient
 		.from("recipes")
@@ -103,12 +116,18 @@ export async function updateRecipe(supabaseClient: SupabaseClient, updatedRecipe
 }
 
 export async function deleteRecipe(supabaseClient: SupabaseClient, deletedRecipe: Recipe) {
-	const { error } = await supabaseClient.from("recipes").delete().match({
-		id: deletedRecipe.id
-	})
+	const { data, error } = await supabaseClient
+		.from("recipes")
+		.delete()
+		.match({
+			id: deletedRecipe.id
+		})
+		.select()
 	if (error) {
 		console.error("Error deleting recipe: ", error)
 		throw error
 	}
-	console.log("Recipe deleted: ", deletedRecipe)
+	if (data) {
+		deleteRecipeHelper(deletedRecipe)
+	}
 }

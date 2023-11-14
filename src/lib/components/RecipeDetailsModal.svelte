@@ -1,17 +1,26 @@
 <script lang="ts">
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Modal } from "flowbite-svelte"
-	import { updateRecipe } from "../../stores/recipeStore"
+	import { deleteRecipe, updateRecipe } from "../../stores/recipeStore"
 
     export let showRecipeDetails: boolean
     export let supabase: SupabaseClient
-    export let selectedRecipe: Recipe | null
+    export let selectedRecipe: Recipe
     
     function updateHandler () {
         if(selectedRecipe) {
             updateRecipe(supabase, selectedRecipe)
         } else {
             console.log("selectedRecipe is null")
+        }
+    }
+
+    async function deleteHandler () {
+        if (selectedRecipe) {
+            await deleteRecipe(supabase, selectedRecipe)
+            showRecipeDetails = false
+        } else {
+            console.log("selectedRecipe is null");
         }
     }
 </script>
@@ -48,6 +57,10 @@
             <Checkbox bind:checked={ingredient.acquired} on:change={updateHandler}/>
         {/each}
     </dl>
-    <Button color='red'>Delete recipe</Button>
+    <dl class="my-4 border-t-2 border-slate-300 pt-4" >
+        <Button color='red' 
+        on:click={deleteHandler}
+        >Delete recipe</Button>
+    </dl>
     
 </Modal>

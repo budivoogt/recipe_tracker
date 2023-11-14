@@ -9,6 +9,7 @@ const defaultNewRecipe: Recipe = {
 	cuisine: "",
 	description: "",
 	instructions: "",
+	servingSize: null,
 	ingredients: [{ item: "", quantity: "", acquired: false }],
 	rating: null,
 	order: null
@@ -23,6 +24,7 @@ export function getDefaultNewRecipe() {
 		cuisine: "",
 		description: "",
 		instructions: "",
+		servingSize: null,
 		ingredients: [{ item: "", quantity: "", acquired: false }],
 		rating: null,
 		order: null

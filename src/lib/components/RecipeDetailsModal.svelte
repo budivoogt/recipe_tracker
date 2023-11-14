@@ -57,10 +57,12 @@
             <Checkbox bind:checked={ingredient.acquired} on:change={updateHandler}/>
         {/each}
     </dl>
-    <dl class="my-4 border-t-2 border-slate-300 pt-4" >
+    <div class="flex flex-row my-4 border-t-2 border-slate-300 pt-4 gap-4" >
+        <Button color='green' 
+        >Edit recipe</Button>
         <Button color='red' 
         on:click={deleteHandler}
         >Delete recipe</Button>
-    </dl>
+    </div>
     
 </Modal>

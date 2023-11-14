@@ -44,11 +44,17 @@ I suspect the issue is that currentRecipes isn't being updated with the latest r
 
 # Progress report
 
+## 2023-11-14
+
+### Edit functionality
+
 ## 2023-11-13
 
 -   [ ] Need to add servingSize to each recipe, inc. the Supabase item and the types.
 -   [ ] Have to add edit and delete buttons to the recipes.
 -   [ ] Need to think about the easiest way to edit the recipes.
+-   [ ] Clear all feature for ingredients after you cooked the recipe.
+-   [ ] Confirmation modal for delete recipe.
 
 ## 2023-11-4
 

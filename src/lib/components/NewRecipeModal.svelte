@@ -16,6 +16,8 @@
     { value: 'drink', name: 'Drink' },
     ];
 
+    let servingSize = [1,2,3,4,5,6,7,8]
+
     const handleSubmit = () => {
         addRecipe(supabase, $newRecipe)
         console.log("Form submitted with $newRecipe: ", $newRecipe);
@@ -85,12 +87,13 @@
         <Label for="instructions" class="mb-2">Instructions</Label>
         <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="4" name="instructions" bind:value={$newRecipe.instructions}/>
       </div>
+      <div class="sm:col-span-2">
+          <Label for="servingSize" class="mb-2">Serving size
+          <Select class="mt-2" items={servingSize} bind:value={$newRecipe.servingSize} required />
+        </Label>
+      </div>
       <div class="sm:col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
-          <!-- <div class="">
-            <Label for="mealType" class="mb-2">For how many people?</Label>
-            <Textarea id="servingSize" placeholder="How many people does this recipe serve?" name="servingSize" bind:value={$newRecipe.servingSize}/>
-          </div> -->
           {#each $newRecipe.ingredients as ingredient, index}
           <div class="flex items-center gap-2 my-2">
               <Input type="text" placeholder="Item" bind:value={ingredient.item} />
@@ -99,11 +102,10 @@
               <Button on:click={() => removeIngredient(index)} size="xs" color="red">X</Button>
           </div>
           {/each}
-          <Button on:click={() => addIngredient()} class="my-4" size="sm">Add ingredient</Button>
+          <Button on:click={() => addIngredient()} class="my-4" size="sm" color='green'>Add ingredient</Button>
       </div>
       <Button type="submit" class="w-52">
-        <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>
-        Add new product
+        Save recipe
       </Button>
     </div>
   </form>

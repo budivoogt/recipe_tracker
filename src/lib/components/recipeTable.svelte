@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { resetAllRecipes } from "$lib/utils/resetRecipes"
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from "flowbite-svelte"
 	import { writable } from "svelte/store"
@@ -21,10 +20,7 @@
 
 <div class="flex flex-row mx-auto gap-2 mt-6">
   <div class="">
-    <Button on:click={() => (showAddRecipe.set(true))}>Add recipe</Button>
-  </div>
-  <div class="">
-    <Button on:click={resetAllRecipes}>Reset local stores</Button>
+    <Button on:click={() => (showAddRecipe.set(true))} color='green'>Add recipe</Button>
   </div>
 </div>
 

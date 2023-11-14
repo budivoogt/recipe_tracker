@@ -7,6 +7,7 @@ type Recipe = {
 	cuisine: string
 	description: string | null
 	instructions: string | null
+	servingSize: number | null
 	ingredients: Ingredient[] | null
 	rating: number | null
 	order: number | null

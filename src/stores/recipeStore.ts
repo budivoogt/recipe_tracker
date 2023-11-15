@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import { writable } from "svelte/store"
 
 export const recipesStore = writable<Recipe[]>([])
+export const selectedRecipe = writable<Recipe> () // should this be instantiated as "null"?
 
 const defaultNewRecipe: Recipe = {
 	name: "",

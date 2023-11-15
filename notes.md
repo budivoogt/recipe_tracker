@@ -7,13 +7,13 @@
     -   [ ] Add recipe button with pop-out. Component should be re-used in Recipe Explorer
     -   [ ] Recommendation engine: 1 random suggestion, optional filtering.
 -   [ ] Recipe structure: description, ingredients, cuisine, meal type, image, comments
-    -   [ ] Create writable and type
-    -   [ ] Create Supabase database
+    -   [X] Create writable and type
+    -   [X] Create Supabase database
     -   [ ] Integrate cloud image hosting provider
-    -   [ ] Checklist for buying ingredients
+    -   [X] Checklist for buying ingredients
 -   [ ] Recipe Explorer page
     -   [ ] Search bar
-    -   [ ] List of recipes
+    -   [X] List of recipes
     -   [ ] Sort & filter
         -   [ ] Sort by: date created, meal type, cuisine.
         -   [ ] Filter by: meal type,
@@ -27,13 +27,17 @@
 -   instructions: text
 -   rating: 1-5
 
+### Features to add
+
+#### RecipeDetailsModal
+
+-   [ ] Confirmation modal for delete recipe.
+-   [ ] Clear all feature for ingredients after you cooked the recipe.
+
 ### Bugs
 
 -   [x] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
 -   [x] newRecipes isn't clearing after successful submission of recipes.
-
-I suspect the issue is that currentRecipes isn't being updated with the latest recipes.
-
 -   [x] When refreshing the page it's not loading the stored data?
 -   [x] It's also calling the deletedRecipes and updatedRecipes logs, while it shouldn't.
 -   [x] Resolve the ingredients having unnecessary parentheses in the stingified JSON.
@@ -44,17 +48,16 @@ I suspect the issue is that currentRecipes isn't being updated with the latest r
 
 # Progress report
 
-## 2023-11-14
+## 2023-11-15
 
-### Edit functionality
+-   [ ] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
+
 
 ## 2023-11-13
 
--   [ ] Need to add servingSize to each recipe, inc. the Supabase item and the types.
--   [ ] Have to add edit and delete buttons to the recipes.
--   [ ] Need to think about the easiest way to edit the recipes.
--   [ ] Clear all feature for ingredients after you cooked the recipe.
--   [ ] Confirmation modal for delete recipe.
+-   [X] Need to add servingSize to each recipe, inc. the Supabase item and the types.
+-   [X] Have to add edit and delete buttons to the recipes.
+-   [X] Need to think about the easiest way to edit the recipes.
 
 ## 2023-11-4
 

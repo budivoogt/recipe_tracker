@@ -33,6 +33,8 @@
     };
 
     // Star rating logic
+    $: rating = $newRecipe.rating || 0
+
     const setRating = (num: number) => {
         $newRecipe.rating = num
     }
@@ -44,6 +46,8 @@
     }
 
     // Ingredient logic
+    $: ingredients = $newRecipe.ingredients || []
+
     const addIngredient = () => {
         $newRecipe.ingredients?.push({item: "", quantity: "", acquired: false})
         newRecipe.set($newRecipe)
@@ -81,7 +85,7 @@
               on:keydown={(e) => handleKeyDown(e, num)}
               aria-label={`Rate ${num} out of 5`}
               role="button">
-                  {$newRecipe.rating >= num ? '⭐' : '☆'}
+                  {rating >= num ? '⭐' : '☆'}
               </span>
           {/each}
           </div>
@@ -102,7 +106,7 @@
       </div>
       <div class="sm:col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
-          {#each $newRecipe.ingredients as ingredient, index}
+          {#each ingredients as ingredient, index}
           <div class="flex items-center gap-2 my-2">
               <Input type="text" placeholder="Item" bind:value={ingredient.item} />
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />

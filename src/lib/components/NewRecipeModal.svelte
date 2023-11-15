@@ -1,7 +1,8 @@
 <script lang="ts">
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
     import type { SupabaseClient } from "@supabase/supabase-js"
-    import { Button, Checkbox, Input, Label, Modal, Select, Textarea } from "flowbite-svelte"
+    import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
+    import { writable } from "svelte/store"
     import { addRecipe, newRecipe } from "../../stores/recipeStore"
 
     export let supabase: SupabaseClient
@@ -16,7 +17,13 @@
     { value: 'drink', name: 'Drink' },
     ];
 
-    let servingSize = [1,2,3,4,5,6,7,8]
+    // servingSize logic
+    const servingSizeValue = writable($newRecipe.servingSize || 2)
+
+    function updateServingSize (newValue: number) {
+      servingSizeValue.set(newValue)
+      $newRecipe.servingSize = newValue
+    }
 
     const handleSubmit = () => {
         addRecipe(supabase, $newRecipe)
@@ -89,7 +96,8 @@
       </div>
       <div class="sm:col-span-2">
           <Label for="servingSize" class="mb-2">Serving size
-          <Select class="mt-2" items={servingSize} bind:value={$newRecipe.servingSize} required />
+            <Range id="servingSize" min="1" max="8" bind:value={$servingSizeValue} on:change={(e) => updateServingSize($servingSizeValue)} class="my-2"/>
+            <span class=" font-light italic ">Serves {$servingSizeValue} {$servingSizeValue === 1 ? `person` : `people`}</span>
         </Label>
       </div>
       <div class="sm:col-span-2 gap-2">

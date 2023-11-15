@@ -1,16 +1,19 @@
 <script lang="ts">
+    import { mealTypes, showNewRecipe } from "$lib/utils/recipeModals"
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
     import { writable } from "svelte/store"
     import { addRecipe, newRecipe } from "../../stores/recipeStore"
-    import { mealTypes } from "$lib/utils/recipeModals"
-    import { showNewRecipe } from "$lib/utils/recipeModals"
 
     export let supabase: SupabaseClient
 
     // servingSize logic
-    const servingSizeValue = writable($newRecipe.servingSize || 2)
+    let servingSizeValue = writable($newRecipe.servingSize)
+
+    $: if (!$servingSizeValue) {
+      $servingSizeValue = 2
+    }
 
     function updateServingSize (newValue: number) {
       servingSizeValue.set(newValue)
@@ -42,12 +45,12 @@
 
     const addIngredient = () => {
         $newRecipe.ingredients?.push({item: "", quantity: "", acquired: false})
-        newRecipe.set($newRecipe)
+        newRecipe.set({...$newRecipe})
     }
 
     const removeIngredient = (index: number) => {
         $newRecipe.ingredients?.splice(index, 1)
-        newRecipe.set($newRecipe)
+        newRecipe.set({...$newRecipe})
     }
 </script>
 
@@ -100,15 +103,15 @@
           <Label for="ingredients" class="mb-2">Ingredients</Label>
           {#each ingredients as ingredient, index}
           <div class="flex items-center gap-2 my-2">
-              <Input type="text" placeholder="Item" bind:value={ingredient.item} />
+              <Input type="text" placeholder="Item" bind:value={ingredient.item}/>
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />
               <Checkbox bind:checked={ingredient.acquired} class="p-2"/>
               <Button on:click={() => removeIngredient(index)} size="xs" color="red">X</Button>
           </div>
           {/each}
-          <Button on:click={() => addIngredient()} class="my-4" size="sm" color='green'>Add ingredient</Button>
+          <Button on:click={() => addIngredient()} class="my-4" size="sm">Add ingredient</Button>
       </div>
-      <Button type="submit" class="w-52">
+      <Button type="submit" class="w-52" color='green'>
         Save recipe
       </Button>
     </div>

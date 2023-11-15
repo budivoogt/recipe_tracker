@@ -1,35 +1,25 @@
 <script lang="ts">
-    import type { SupabaseClient } from "@supabase/supabase-js";
-    import { Modal, Label, Input, Range, Textarea, Button, Select, Checkbox } from "flowbite-svelte";
-    import { mealTypes } from "$lib/utils/recipeModals";
-    import { writable } from "svelte/store";
-    import { selectedRecipe } from "../../stores/recipeStore";
-    import { showEditRecipe } from "$lib/utils/recipeModals";
+    import { mealTypes, showEditRecipe } from "$lib/utils/recipeModals"
+    import type { SupabaseClient } from "@supabase/supabase-js"
+    import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
+    import { writable } from "svelte/store"
+    import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
 
-    export let supabase: SupabaseClient
-
-    $: localSelectedRecipe = $selectedRecipe
-
-    // servingSize logic
-    const servingSizeValue = writable(selectedRecipe.servingSize || 2)
-
-    function updateServingSize (newValue: number) {
-      servingSizeValue.set(newValue)
-      $newRecipe.servingSize = newValue
-    }
+    export let supabase: SupabaseClient    
 
     const handleSubmit = () => {
-        addRecipe(supabase, $newRecipe)
-        console.log("Form submitted with $newRecipe: ", $newRecipe);
-        resetNewRecipe()
-        showAddRecipe = false
+        $selectedRecipeForEditing.ingredients = $ingredients
+        updateRecipe(supabase, $selectedRecipeForEditing)
+        selectedRecipe.set({...$selectedRecipeForEditing}) // trigger reactivity on the parent RecipeDetailsModal component
+        console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
+        showEditRecipe.set(false)
     };
 
     // Star rating logic
-    $: rating = $newRecipe.rating || 0
+    $: rating = $selectedRecipeForEditing.rating || 0
 
     const setRating = (num: number) => {
-        $newRecipe.rating = num
+        $selectedRecipeForEditing.rating = num
     }
     
     const handleKeyDown = (event: KeyboardEvent, num: number) => {
@@ -37,36 +27,67 @@
             setRating(num)
         }
     }
-
+    
     // Ingredient logic
-    $: ingredients = $newRecipe.ingredients || []
+    const ingredients = writable<Ingredient[]>([])
+    let lastInitializedRecipeId: number | undefined = undefined
 
-    const addIngredient = () => {
-        $newRecipe.ingredients?.push({item: "", quantity: "", acquired: false})
-        newRecipe.set($newRecipe)
+    // Only refresh ingredients when selecting a new Recipe
+    $: if ($selectedRecipeForEditing.ingredients && $selectedRecipeForEditing.id !== lastInitializedRecipeId) { 
+      ingredients.set($selectedRecipeForEditing.ingredients.map((i) => ({...i})))
+      lastInitializedRecipeId = $selectedRecipeForEditing.id
+      console.log("Ingredients updated to: ", $ingredients);
     }
 
-    const removeIngredient = (index: number) => {
-        $newRecipe.ingredients?.splice(index, 1)
-        newRecipe.set($newRecipe)
+    const addIngredient = () => {
+        const newIngredient = {item: "", quantity: "", acquired: false}
+        $ingredients.push(newIngredient)
+        ingredients.set($ingredients.map((i) => ({...i})))
+        console.log("Ingredient added. Ingredients now: ", $ingredients);
+        
+        // selectedRecipeForEditing.set(ingredients)
+        // $selectedRecipeForEditing.ingredients?.push({item: "", quantity: "", acquired: false})
+        // selectedRecipeForEditing.set({...$selectedRecipeForEditing})
+      }
+      
+      const removeIngredient = (index: number) => {
+        $ingredients.splice(index, 1)
+        ingredients.set($ingredients.map((i) => ({...i})))
+        console.log("Ingredient removed.");
+        
+        // $selectedRecipeForEditing.ingredients?.splice(index, 1)
+        // selectedRecipeForEditing.set({...$selectedRecipeForEditing})
+    }
+
+    // Handle discards
+    function discardHandler () {
+        let originalRecipe: Recipe = {...$recipesStore.find(r => r.id === $selectedRecipeForEditing.id)}
+        selectedRecipeForEditing.set(originalRecipe)
+        ingredients.set($selectedRecipeForEditing.ingredients.map((i) => ({...i})))
+        showEditRecipe.set(false)
+        console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
+    }
+
+    $: if (!$showEditRecipe) {
+      discardHandler()
     }
 </script>
 
-<Modal title="Add recipe" bind:open={$showEditRecipe} class="min-w-full" outsideclose>
+<Modal title="Edit recipe" bind:open={$showEditRecipe} class="min-w-full" outsideclose>
   <form on:submit|preventDefault={handleSubmit}>
     <div class="grid gap-4 mb-4 sm:grid-cols-2">
       <div>
         <Label for="name" class="mb-2">Name</Label>
-        <Input type="text" id="name" placeholder="Recipe name" bind:value={selectedRecipe.name} required />
+        <Input type="text" id="name" placeholder="Recipe name" bind:value={$selectedRecipeForEditing.name} required />
       </div>
       <div>
         <Label for="mealType" class="mb-2">Meal type
-          <Select class="mt-2" items={mealTypes} bind:value={selectedRecipe.mealType} required />
+          <Select class="mt-2" items={mealTypes} bind:value={$selectedRecipeForEditing.mealType} required />
         </Label>
       </div>
       <div>
           <Label for="cuisine" class="mb-2">Cuisine</Label>
-          <Input type="text" id="cuisine" placeholder="Italian, Greek, etc." bind:value={selectedRecipe.cuisine} required />
+          <Input type="text" id="cuisine" placeholder="Italian, Greek, etc." bind:value={$selectedRecipeForEditing.cuisine} required />
       </div>
       <div class="text-xl cursor-pointer flex flex-col items-center">
           <span class="text-sm font-medium block text-gray-900 dark:text-gray-300 mb-3">Rating</span>
@@ -85,32 +106,38 @@
       </div>
       <div class="sm:col-span-2">
         <Label for="description" class="mb-2">Description</Label>
-        <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description" bind:value={selectedRecipe.description}/>
+        <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description" bind:value={$selectedRecipeForEditing.description}/>
       </div>
       <div class="sm:col-span-2">
         <Label for="instructions" class="mb-2">Instructions</Label>
-        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="4" name="instructions" bind:value={selectedRecipe.instructions}/>
+        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="4" name="instructions" bind:value={$selectedRecipeForEditing.instructions}/>
       </div>
       <div class="sm:col-span-2">
           <Label for="servingSize" class="mb-2">Serving size
-            <Range id="servingSize" min="1" max="8" bind:value={$servingSizeValue} on:change={(e) => updateServingSize($servingSizeValue)} class="my-2"/>
-            <span class=" font-light italic ">Serves {$servingSizeValue} {$servingSizeValue === 1 ? `person` : `people`}</span>
+            <Range id="servingSize" min="1" max="8" bind:value={$selectedRecipeForEditing.servingSize} class="my-2"/>
+            <!-- <Range id="servingSize" min="1" max="8" bind:value={servingSizeValue} on:change={() => updateServingSize(servingSizeValue)} class="my-2"/> -->
+            <span class=" font-light italic ">Serves {$selectedRecipeForEditing.servingSize} {$selectedRecipeForEditing.servingSize === 1 ? `person` : `people`}</span>
         </Label>
       </div>
       <div class="sm:col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
-          {#each ingredients as ingredient, index}
-          <div class="flex items-center gap-2 my-2">
-              <Input type="text" placeholder="Item" bind:value={ingredient.item} />
+          {#each $ingredients as ingredient, index}
+          <div class="flex items-center gap-2 mt-2">
+              <Input type="text" placeholder="Item" bind:value={ingredient.item}/>
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />
               <Checkbox bind:checked={ingredient.acquired} class="p-2"/>
               <Button on:click={() => removeIngredient(index)} size="xs" color="red">X</Button>
           </div>
           {/each}
-          <Button on:click={() => addIngredient()} class="my-4" size="sm" color='green'>Add ingredient</Button>
+          <Button on:click={() => addIngredient()} class="mt-3" size="sm">Add ingredient</Button>
       </div>
-      <Button type="submit" class="w-52">
-        Save recipe
+    </div>
+    <div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4">
+      <Button type="submit" class="w-26" color='green'>
+        Save changes
+      </Button>
+      <Button type="button" class="w-26" color='red' on:click={() => showEditRecipe.set(false)}>
+        Discard changes
       </Button>
     </div>
   </form>

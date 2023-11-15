@@ -7,13 +7,13 @@
     -   [ ] Add recipe button with pop-out. Component should be re-used in Recipe Explorer
     -   [ ] Recommendation engine: 1 random suggestion, optional filtering.
 -   [ ] Recipe structure: description, ingredients, cuisine, meal type, image, comments
-    -   [X] Create writable and type
-    -   [X] Create Supabase database
+    -   [x] Create writable and type
+    -   [x] Create Supabase database
     -   [ ] Integrate cloud image hosting provider
-    -   [X] Checklist for buying ingredients
+    -   [x] Checklist for buying ingredients
 -   [ ] Recipe Explorer page
     -   [ ] Search bar
-    -   [X] List of recipes
+    -   [x] List of recipes
     -   [ ] Sort & filter
         -   [ ] Sort by: date created, meal type, cuisine.
         -   [ ] Filter by: meal type,
@@ -27,14 +27,19 @@
 -   instructions: text
 -   rating: 1-5
 
-### Features to add
+## Features to add
 
-#### RecipeDetailsModal
+### RecipeDetailsModal
 
+-   [ ] Capitalize first letter of mealType.
 -   [ ] Confirmation modal for delete recipe.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
 
-### Bugs
+### Add / Edit recipe
+
+-   [ ] After adding an ingredient, auto-focus on the new ingredient (and make it possible to access it with tab or arrows on keyboard)
+
+## Bugs
 
 -   [x] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
 -   [x] newRecipes isn't clearing after successful submission of recipes.
@@ -46,18 +51,22 @@
 -   [ ] Make serialized ingredients JSONB instead of JSON.
 -   [ ] Figure out how to avoid instantiating an empty ingredient for each recipe. Currently this is necessary to have Svelte's conditional rendering to display the different ingredients.
 
+### EditRecipeModal
+
+-   [ ] Discrepancy between saving and editing ingredients.
+-   [ ] When adding a new ingredient, autofocus works on that ingredient, but then you can't tab to further buttons in the modal.
+
 # Progress report
 
 ## 2023-11-15
 
 -   [ ] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
 
-
 ## 2023-11-13
 
--   [X] Need to add servingSize to each recipe, inc. the Supabase item and the types.
--   [X] Have to add edit and delete buttons to the recipes.
--   [X] Need to think about the easiest way to edit the recipes.
+-   [x] Need to add servingSize to each recipe, inc. the Supabase item and the types.
+-   [x] Have to add edit and delete buttons to the recipes.
+-   [x] Need to think about the easiest way to edit the recipes.
 
 ## 2023-11-4
 

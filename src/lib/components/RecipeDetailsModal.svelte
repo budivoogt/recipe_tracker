@@ -30,6 +30,14 @@
             console.log("selectedRecipe is null");
         }
     }
+
+    function firstIngredientEmpty (): boolean {
+        if ($selectedRecipe.ingredients[0].item.trim() !== '') {
+            return true
+        } else {
+            return false
+        }
+    }
 </script>
 
 <Modal bind:open={$showRecipeDetails} class="min-w-full" outsideclose>
@@ -58,7 +66,7 @@
         <h1 class="font-semibold text-gray-700 mt-4 border-t-2 border-slate-300 pt-4">Ingredients</h1>
     </div>
     <dl class="grid grid-cols-3 gap-4 text-gray-700">
-        {#if $selectedRecipe.ingredients[0].item.trim() !== ''}
+        {#if firstIngredientEmpty}
             <dt class="font-semibold">Item</dt>
             <dt class="font-semibold">Quantity</dt>
             <dt class="font-semibold">Acquired</dt>
@@ -68,7 +76,7 @@
                 <dd class="">{ingredient.item}</dd>
                 <dd class="">{ingredient.quantity}</dd>
                 <Checkbox bind:checked={ingredient.acquired} on:change={updateHandler}/>
-            {:else}
+            {:else if firstIngredientEmpty}
                 <dd class="">No ingredients added yet.</dd>
             {/if}
         {/each}

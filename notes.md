@@ -31,9 +31,9 @@
 
 ### RecipeDetailsModal
 
--   [x] Capitalize first letter of mealType.
 -   [ ] Confirmation modal for delete recipe.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
+-   [x] Capitalize first letter of mealType.
 
 ### Add / Edit recipe
 
@@ -41,26 +41,28 @@
 
 ## Bugs
 
+-   [ ] When on the /recipes page, logging out doesn't redirect you.
+-   [ ] Make serialized ingredients JSONB instead of JSON.
+-   [ ] Figure out how to avoid instantiating an empty ingredient for each recipe. Currently this is necessary to have Svelte's conditional rendering to display the different ingredients.
 -   [x] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
 -   [x] newRecipes isn't clearing after successful submission of recipes.
 -   [x] When refreshing the page it's not loading the stored data?
 -   [x] It's also calling the deletedRecipes and updatedRecipes logs, while it shouldn't.
 -   [x] Resolve the ingredients having unnecessary parentheses in the stingified JSON.
 -   [x] When successfully adding a recipe, field values aren't reset.
--   [ ] When on the /recipes page, logging out doesn't redirect you.
--   [ ] Make serialized ingredients JSONB instead of JSON.
--   [ ] Figure out how to avoid instantiating an empty ingredient for each recipe. Currently this is necessary to have Svelte's conditional rendering to display the different ingredients.
 
 ### EditRecipeModal
 
 -   [ ] Discrepancy between saving and editing ingredients.
 -   [ ] When adding a new ingredient, autofocus works on that ingredient, but then you can't tab to further buttons in the modal.
 
+### RecipeDetailsModal
+
+-   [X] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
+
 # Progress report
 
 ## 2023-11-15
-
--   [ ] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
 
 ## 2023-11-13
 

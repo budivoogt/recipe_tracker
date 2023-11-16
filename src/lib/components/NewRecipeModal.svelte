@@ -110,9 +110,11 @@
               <Button on:click={() => removeIngredient(index)} size="xs" color="red">X</Button>
           </div>
           {/each}
-          <Button on:click={() => addIngredient()} class="my-4" size="sm">Add ingredient</Button>
+          <Button on:click={() => addIngredient()} class="mt-2" size="sm">Add ingredient</Button>
       </div>
-      <Button type="submit" class="w-52" color='green'>
+    </div>
+    <div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4">
+      <Button type="submit" class="w-min-max" color='green'>
         Save recipe
       </Button>
     </div>

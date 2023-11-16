@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { capitalizeFirstLetter, showNewRecipe, showRecipeDetails } from "$lib/utils/recipeModals"
+	import { capitalizeFirstLetter, showNewRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from "flowbite-svelte"
 	import { deleteAllRecipes, recipesStore, selectedRecipe } from '../../stores/recipeStore'
@@ -8,6 +8,7 @@
 	import RecipeDetailsModal from "./RecipeDetailsModal.svelte"
   
   export let supabase: SupabaseClient
+  $: supabase = supabase
   
   function handleRecipeClick(recipe: Recipe) {
     selectedRecipe.set(recipe)

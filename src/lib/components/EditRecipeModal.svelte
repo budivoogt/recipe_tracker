@@ -1,15 +1,18 @@
 <script lang="ts">
-    import { mealTypes, showEditRecipe } from "$lib/utils/recipeModals"
+    import { deepCopyRecipe, mealTypes, showEditRecipe } from "$lib/utils/recipeHelpers"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
+    import { writable } from "svelte/store"
     import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
 
-    export let supabase: SupabaseClient    
+    export let supabase: SupabaseClient
+    $: supabase = supabase  
 
     const handleSubmit = () => {
-        $selectedRecipeForEditing.ingredients = ingredients
+        $selectedRecipeForEditing.ingredients = $ingredients
         updateRecipe(supabase, $selectedRecipeForEditing)
-        selectedRecipe.set({...$selectedRecipeForEditing}) // trigger reactivity on the parent RecipeDetailsModal component
+        // trigger reactivity on the parent RecipeDetailsModal component
+        $selectedRecipe = $selectedRecipeForEditing
         console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
         console.log("selectedRecipe updated to: ", $selectedRecipe)
         showEditRecipe.set(false)
@@ -29,46 +32,36 @@
     }
     
     // Ingredient logic
-    // const ingredients = writable<Ingredient[]>([])
-    let ingredients: Ingredient[] = []
+    const ingredients = writable<Ingredient[]>([])
     let lastInitializedRecipeId: number | undefined = undefined
 
     // Only refresh ingredients when selecting a new Recipe
     $: if ($selectedRecipeForEditing.ingredients && $selectedRecipeForEditing.id !== lastInitializedRecipeId) { 
-      ingredients = $selectedRecipeForEditing.ingredients.map((i) => ({...i}))
-      // ingredients.set($selectedRecipeForEditing.ingredients.map((i) => ({...i})))
+      $ingredients = $selectedRecipeForEditing.ingredients.map((i) => ({...i}))
       lastInitializedRecipeId = $selectedRecipeForEditing.id
-      console.log("Ingredients updated to: ", ingredients);
+      console.log("Ingredients updated to: ", $ingredients);
     }
 
     const addIngredient = () => {
         const newIngredient = {item: "", quantity: "", acquired: false}
-        ingredients.push(newIngredient)
-        // $ingredients.push(newIngredient)
-        // ingredients.set($ingredients.map((i) => ({...i})))
-        console.log("Ingredient added. Ingredients now: ", ingredients);
-        
-        // selectedRecipeForEditing.set(ingredients)
-        // $selectedRecipeForEditing.ingredients?.push({item: "", quantity: "", acquired: false})
-        // selectedRecipeForEditing.set({...$selectedRecipeForEditing})
+        $ingredients.push(newIngredient)
+        $ingredients = $ingredients.map((i) => ({...i}))
+        console.log("Ingredient added. Ingredients now: ", $ingredients);
       }
       
       const removeIngredient = (index: number) => {
-        let deletedIngredient = ingredients.splice(index, (index + 1))
-        ingredients.splice(index, 1)
-        // $ingredients.splice(index, 1)
-        // ingredients.set($ingredients.map((i) => ({...i})))
+        let deletedIngredient = $ingredients.splice(index, (index + 1))
+        $ingredients.splice(index, 1)
+        $ingredients = $ingredients.map((i) => ({...i}))
         console.log("Ingredient removed: ", deletedIngredient);
-        
-        // $selectedRecipeForEditing.ingredients?.splice(index, 1)
-        // selectedRecipeForEditing.set({...$selectedRecipeForEditing})
     }
 
     // Handle discards
     function discardHandler () {
-        let originalRecipe: Recipe = {...$recipesStore.find(r => r.id === $selectedRecipeForEditing.id)}
-        selectedRecipeForEditing.set(originalRecipe)
-        if (ingredients) $selectedRecipeForEditing.ingredients
+        let originalRecipe: Recipe = $recipesStore.find(r => r.id === $selectedRecipeForEditing.id)
+        let deepCopy = deepCopyRecipe(originalRecipe)
+        $selectedRecipeForEditing = deepCopy
+        if ($ingredients) $selectedRecipeForEditing.ingredients?.map((i) => ({...i}))
         showEditRecipe.set(false)
         console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
     }
@@ -120,13 +113,12 @@
       <div class="sm:col-span-2">
           <Label for="servingSize" class="mb-2">Serving size
             <Range id="servingSize" min="1" max="8" bind:value={$selectedRecipeForEditing.servingSize} class="my-2"/>
-            <!-- <Range id="servingSize" min="1" max="8" bind:value={servingSizeValue} on:change={() => updateServingSize(servingSizeValue)} class="my-2"/> -->
             <span class=" font-light italic ">Serves {$selectedRecipeForEditing.servingSize} {$selectedRecipeForEditing.servingSize === 1 ? `person` : `people`}</span>
         </Label>
       </div>
       <div class="sm:col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
-          {#each ingredients as ingredient, index}
+          {#each $ingredients as ingredient, index}
           <div class="flex items-center gap-2 mt-2">
               <Input type="text" placeholder="Item" bind:value={ingredient.item}/>
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />

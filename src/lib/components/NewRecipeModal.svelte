@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { mealTypes, showNewRecipe } from "$lib/utils/recipeModals"
+    import { mealTypes, showNewRecipe } from "$lib/utils/recipeHelpers"
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"

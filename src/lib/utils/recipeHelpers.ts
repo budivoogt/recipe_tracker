@@ -17,3 +17,10 @@ export const showNewRecipe = writable<boolean>(false)
 export function capitalizeFirstLetter(string: string) {
 	return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+export function deepCopyRecipe(recipe: Recipe): Recipe {
+	return {
+		...recipe,
+		ingredients: recipe.ingredients ? recipe.ingredients?.map((i) => ({ ...i })) : null
+	}
+}

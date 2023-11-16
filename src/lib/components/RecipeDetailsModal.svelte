@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { showEditRecipe, showRecipeDetails } from "$lib/utils/recipeModals"
+	import { showEditRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Modal, Range } from "flowbite-svelte"
 	import { deleteRecipe, selectedRecipe, selectedRecipeForEditing, updateRecipe, recipesStore } from "../../stores/recipeStore"
 	import EditRecipeModal from "./EditRecipeModal.svelte"
-    import { capitalizeFirstLetter } from "$lib/utils/recipeModals"
+    import { capitalizeFirstLetter } from "$lib/utils/recipeHelpers"
 
     export let supabase: SupabaseClient
 
@@ -31,8 +31,8 @@
         }
     }
 
-    function firstIngredientEmpty (): boolean {
-        if ($selectedRecipe.ingredients[0].item.trim() !== '') {
+    function firstIngredientEmpty (index: number): boolean {
+        if ($selectedRecipe.ingredients[index].item.trim() !== '') {
             return true
         } else {
             return false
@@ -76,7 +76,7 @@
                 <dd class="">{ingredient.item}</dd>
                 <dd class="">{ingredient.quantity}</dd>
                 <Checkbox bind:checked={ingredient.acquired} on:change={updateHandler}/>
-            {:else if firstIngredientEmpty}
+            {:else if firstIngredientEmpty(index)}
                 <dd class="">No ingredients added yet.</dd>
             {/if}
         {/each}

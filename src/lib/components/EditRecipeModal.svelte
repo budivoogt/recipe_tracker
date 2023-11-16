@@ -14,7 +14,7 @@
         updateRecipe(supabase, $selectedRecipeForEditing)
         // trigger reactivity on the parent RecipeDetailsModal component
         $selectedRecipe = $selectedRecipeForEditing
-        console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
+        // console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
         $showEditRecipe = false
     };
 
@@ -38,14 +38,14 @@
         const newIngredient = {item: "", quantity: "", acquired: false}
         $ingredients.push(newIngredient)
         $ingredients = $ingredients.map((i) => ({...i}))
-        console.log("Ingredient added. Ingredients now: ", $ingredients);
+        // console.log("Ingredient added. Ingredients now: ", $ingredients);
       }
       
       const removeIngredient = (index: number) => {
         let deletedIngredient = $ingredients.splice(index, (index + 1))
         $ingredients.splice(index, 1)
         $ingredients = $ingredients.map((i) => ({...i}))
-        console.log("Ingredient removed: ", deletedIngredient);
+        // console.log("Ingredient removed: ", deletedIngredient);
     }
 
     // Discard & exit logic
@@ -54,8 +54,8 @@
         $selectedRecipeForEditing = deepCopyRecipe(originalRecipe)
         $ingredients = $selectedRecipeForEditing.ingredients?.map((i) => ({...i}))
         showEditRecipe.set(false)
-        console.log("$ingredients reset to: ", $ingredients);
-        console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
+        // console.log("$ingredients reset to: ", $ingredients);
+        // console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
     }
     let editFormSubmitted: boolean = false
 

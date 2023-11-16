@@ -53,16 +53,30 @@
 
 ### EditRecipeModal
 
--   [ ] Discrepancy between saving and editing ingredients.
+-   [x] Discrepancy between saving and editing ingredients.
 -   [ ] When adding a new ingredient, autofocus works on that ingredient, but then you can't tab to further buttons in the modal.
 
 ### RecipeDetailsModal
 
--   [X] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
+-   [x] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
 
 # Progress report
 
-## 2023-11-15
+## 2023-11-16
+
+### Svelte reactivity
+
+Struggled with reactivity a lot today.
+
+Learned that `{...}` and `[...]` can be used for objects and arrays respectively, but that these only make _shallow_ copies of items. Therefore, to make deep copies, you need to use .map (if an array) or create a deepCopy function that returns
+`{{...object}, property: object.property ? object.property.map((i) => ({...i}))}`.
+
+Additionally, `$x = y` is the same as `x.set(y)`.
+
+Any variable in Svelte needs to be assigned to a new value for reactivity to trigger. And in a reactive block `$:` the only variables that trigger are the ones that are:
+
+1. In the scope of that reactive block.
+2. Below that reactive block. Svelte cannot look in functions and thus won't update based on variables first declared nested within a function.
 
 ## 2023-11-13
 

@@ -50,7 +50,15 @@
         <dt class="font-semibold mt-4">Cuisine</dt>
         <dd class="row-start-2">{$selectedRecipe?.cuisine}</dd>
         <dt class="font-semibold mt-4">Rating</dt>
-        <dd class="row-start-2">{$selectedRecipe?.rating || "None"}</dd>
+        <dd class="row-start-2">
+            {#each [1, 2, 3, 4, 5] as num}
+                {#if $selectedRecipe.rating}
+                    {$selectedRecipe.rating >= num ? '⭐' : '☆'}
+                {:else}
+                    <!-- Intentionally empty -->
+                {/if}
+            {/each}
+        </dd>
     </dl>
     <dl class="grid grid-cols-1 gap-4 text-gray-700 ">
         <!-- Discover how to make these dd fields rich text -->

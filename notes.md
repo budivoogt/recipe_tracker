@@ -2,7 +2,7 @@
 
 -   [ ] Descriptive landing page
 -   [x] Supabase authentication with username and password
--   [ ] Page structure: Dashboard, Recipe Explorer
+-   [x] Page structure: Dashboard, Recipe Explorer
 -   [ ] Dashboard page: Add recipe, get recommendation, analytics
     -   [ ] Add recipe button with pop-out. Component should be re-used in Recipe Explorer
     -   [ ] Recommendation engine: 1 random suggestion, optional filtering.
@@ -12,7 +12,7 @@
     -   [ ] Integrate cloud image hosting provider
     -   [x] Checklist for buying ingredients
 -   [ ] Recipe Explorer page
-    -   [ ] Search bar
+    -   [x] Search bar
     -   [x] List of recipes
     -   [ ] Sort & filter
         -   [ ] Sort by: date created, meal type, cuisine.
@@ -33,6 +33,7 @@
 
 -   [ ] Confirmation modal for delete recipe.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
+-   [x] Added rating icons
 -   [x] Capitalize first letter of mealType.
 
 ### Add / Edit recipe
@@ -58,6 +59,7 @@
 
 ### RecipeDetailsModal
 
+-   [x] Added rating icons
 -   [x] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
 
 # Progress report

@@ -15,6 +15,10 @@
     showRecipeDetails.set(true)
   }
 
+  function returnRatingIcon (rating: number) {
+    
+  }
+
   // Search logic
   let searchTerm: string = ''
   $: filteredItems = $recipesStore.filter((r) => r.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
@@ -24,7 +28,7 @@
 <div class="mx-auto m-6 md:w-3/4 w-4/5">
   <div class="shadow-lg relative overflow-hidden bg-white rounded-t-md">
     <div class="flex flex-col md:flex-row items-center justify-between m-4 md:mx-4">
-      <TableSearch placeholder="Search" bind:inputValue={searchTerm} searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg overflow-hidden' divClass='relative overflow-x-auto m-2 md:mx-2'/>
+      <TableSearch placeholder="Search by name" bind:inputValue={searchTerm} searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg overflow-hidden' divClass='relative overflow-x-auto m-2 md:mx-2'/>
     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-end gap-2 my-2 md:mx-2">
         <Button on:click={() => (showNewRecipe.set(true))} color='green'>✚ Add recipe</Button>
         <Button>🔍 Filter</Button>
@@ -33,7 +37,7 @@
   </div>
   <Table hoverable shadow divClass=''>
     <TableHead class=" bg-orange-400 font-bold text-md">
-      <TableHeadCell>Recipe</TableHeadCell>
+      <TableHeadCell>Recipe name</TableHeadCell>
       <TableHeadCell>Meal Type</TableHeadCell>
       <TableHeadCell>Cuisine</TableHeadCell>
       <TableHeadCell>Rating</TableHeadCell>
@@ -45,7 +49,15 @@
                 <TableBodyCell>{recipe.name}</TableBodyCell>
                 <TableBodyCell>{capitalizeFirstLetter(recipe.mealType)}</TableBodyCell>
                 <TableBodyCell>{recipe.cuisine}</TableBodyCell>
-                <TableBodyCell>{recipe.rating || ""}</TableBodyCell>
+                <TableBodyCell>
+                  {#each [1, 2, 3, 4, 5] as num}
+                    {#if recipe.rating}
+                      {recipe.rating >= num ? '⭐' : '☆'}
+                    {:else}
+                    <!-- Intentionally empty -->
+                    {/if}
+                  {/each}
+                </TableBodyCell>
             </TableBodyRow>
           {/each}
         </TableBody>

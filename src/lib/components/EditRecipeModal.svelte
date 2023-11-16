@@ -6,16 +6,16 @@
     import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
 
     export let supabase: SupabaseClient
-    $: supabase = supabase  
+    $: supabase = supabase
 
     const handleSubmit = () => {
+        editFormSubmitted = true
         $selectedRecipeForEditing.ingredients = $ingredients
         updateRecipe(supabase, $selectedRecipeForEditing)
         // trigger reactivity on the parent RecipeDetailsModal component
         $selectedRecipe = $selectedRecipeForEditing
         console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
-        console.log("selectedRecipe updated to: ", $selectedRecipe)
-        showEditRecipe.set(false)
+        $showEditRecipe = false
     };
 
     // Star rating logic
@@ -33,14 +33,6 @@
     
     // Ingredient logic
     const ingredients = writable<Ingredient[]>([])
-    let lastInitializedRecipeId: number | undefined = undefined
-
-    // Only refresh ingredients when selecting a new Recipe
-    $: if ($selectedRecipeForEditing.ingredients && $selectedRecipeForEditing.id !== lastInitializedRecipeId) { 
-      $ingredients = $selectedRecipeForEditing.ingredients.map((i) => ({...i}))
-      lastInitializedRecipeId = $selectedRecipeForEditing.id
-      console.log("Ingredients updated to: ", $ingredients);
-    }
 
     const addIngredient = () => {
         const newIngredient = {item: "", quantity: "", acquired: false}
@@ -56,18 +48,22 @@
         console.log("Ingredient removed: ", deletedIngredient);
     }
 
-    // Handle discards
+    // Discard & exit logic
     function discardHandler () {
         let originalRecipe: Recipe = $recipesStore.find(r => r.id === $selectedRecipeForEditing.id)
-        let deepCopy = deepCopyRecipe(originalRecipe)
-        $selectedRecipeForEditing = deepCopy
-        if ($ingredients) $selectedRecipeForEditing.ingredients?.map((i) => ({...i}))
+        $selectedRecipeForEditing = deepCopyRecipe(originalRecipe)
+        $ingredients = $selectedRecipeForEditing.ingredients?.map((i) => ({...i}))
         showEditRecipe.set(false)
+        console.log("$ingredients reset to: ", $ingredients);
         console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
     }
+    let editFormSubmitted: boolean = false
 
     $: if (!$showEditRecipe) {
-      discardHandler()
+      if (!editFormSubmitted) {
+        discardHandler()
+      } 
+      editFormSubmitted = false
     }
 </script>
 

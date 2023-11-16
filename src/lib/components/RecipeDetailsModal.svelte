@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { showEditRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
+	import { deepCopyRecipe, showEditRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Modal, Range } from "flowbite-svelte"
 	import { deleteRecipe, selectedRecipe, selectedRecipeForEditing, updateRecipe, recipesStore } from "../../stores/recipeStore"
@@ -9,7 +9,7 @@
     export let supabase: SupabaseClient
 
     function editRecipeHandler() {
-        selectedRecipeForEditing.set({...$selectedRecipe})
+        $selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
         console.log("selectedRecipeForEditing set as: ", $selectedRecipe);
         showEditRecipe.set(true)
     }

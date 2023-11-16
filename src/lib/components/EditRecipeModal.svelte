@@ -67,7 +67,7 @@
     }
 </script>
 
-<Modal title="Edit recipe" bind:open={$showEditRecipe} class="min-w-full" outsideclose>
+<Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-min max-h-full" outsideclose>
   <form on:submit|preventDefault={handleSubmit}>
     <div class="grid gap-4 mb-4 sm:grid-cols-2">
       <div>

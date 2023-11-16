@@ -40,7 +40,7 @@
     }
 </script>
 
-<Modal bind:open={$showRecipeDetails} class="min-w-full" outsideclose>
+<Modal bind:open={$showRecipeDetails} class="w-4/5 md:w-3/4 min-w-full min-h-min max-h-full" outsideclose>
     <div class="border-b-2 border-slate-300 pb-2">
         <h1 class="text-xl font-bold text-gray-700">{$selectedRecipe?.name}</h1>
     </div>

@@ -14,12 +14,17 @@
     selectedRecipe.set(recipe)
     showRecipeDetails.set(true)
   }
+
+  // Search logic
+  let searchTerm: string = ''
+  $: filteredItems = $recipesStore.filter((r) => r.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+
 </script>
 
 <div class="mx-auto m-6 md:w-3/4 w-4/5">
   <div class="shadow-lg relative overflow-hidden bg-white rounded-t-md">
     <div class="flex flex-col md:flex-row items-center justify-between m-4 md:mx-4">
-      <TableSearch placeholder="Search" searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg overflow-hidden' divClass='relative overflow-x-auto m-2 md:mx-2'/>
+      <TableSearch placeholder="Search" bind:inputValue={searchTerm} searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg overflow-hidden' divClass='relative overflow-x-auto m-2 md:mx-2'/>
     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-end gap-2 my-2 md:mx-2">
         <Button on:click={() => (showNewRecipe.set(true))} color='green'>✚ Add recipe</Button>
         <Button>🔍 Filter</Button>
@@ -34,7 +39,8 @@
       <TableHeadCell>Rating</TableHeadCell>
         </TableHead>
         <TableBody tableBodyClass=''>
-          {#each $recipesStore as recipe}
+          <!-- {#each $recipesStore as recipe} -->
+          {#each filteredItems as recipe}
             <TableBodyRow on:click={() => {handleRecipeClick(recipe)}}>
                 <TableBodyCell>{recipe.name}</TableBodyCell>
                 <TableBodyCell>{capitalizeFirstLetter(recipe.mealType)}</TableBodyCell>

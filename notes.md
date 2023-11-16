@@ -31,7 +31,7 @@
 
 ### RecipeDetailsModal
 
--   [ ] Capitalize first letter of mealType.
+-   [x] Capitalize first letter of mealType.
 -   [ ] Confirmation modal for delete recipe.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
 

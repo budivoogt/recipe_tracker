@@ -4,6 +4,7 @@
 	import { Button, Checkbox, Modal, Range } from "flowbite-svelte"
 	import { deleteRecipe, selectedRecipe, selectedRecipeForEditing, updateRecipe, recipesStore } from "../../stores/recipeStore"
 	import EditRecipeModal from "./EditRecipeModal.svelte"
+    import { capitalizeFirstLetter } from "$lib/utils/recipeModals"
 
     export let supabase: SupabaseClient
 
@@ -37,7 +38,7 @@
     </div>
     <dl class="grid grid-cols-3 gap-4 text-gray-700">
         <dt class="font-semibold mt-4">Meal type</dt>
-        <dd class="row-start-2">{$selectedRecipe?.mealType}</dd>
+        <dd class="row-start-2">{capitalizeFirstLetter($selectedRecipe?.mealType)}</dd>
         <dt class="font-semibold mt-4">Cuisine</dt>
         <dd class="row-start-2">{$selectedRecipe?.cuisine}</dd>
         <dt class="font-semibold mt-4">Rating</dt>
@@ -57,13 +58,19 @@
         <h1 class="font-semibold text-gray-700 mt-4 border-t-2 border-slate-300 pt-4">Ingredients</h1>
     </div>
     <dl class="grid grid-cols-3 gap-4 text-gray-700">
-        <dt class="font-semibold">Item</dt>
-        <dt class="font-semibold">Quantity</dt>
-        <dt class="font-semibold">Acquired</dt>
-        {#each $selectedRecipe.ingredients as ingredient}
-            <dd class="">{ingredient.item}</dd>
-            <dd class="">{ingredient.quantity}</dd>
-            <Checkbox bind:checked={ingredient.acquired} on:change={updateHandler}/>
+        {#if $selectedRecipe.ingredients[0].item.trim() !== ''}
+            <dt class="font-semibold">Item</dt>
+            <dt class="font-semibold">Quantity</dt>
+            <dt class="font-semibold">Acquired</dt>
+        {/if}
+        {#each $selectedRecipe.ingredients as ingredient, index}
+            {#if ingredient.item.trim() !== ''}
+                <dd class="">{ingredient.item}</dd>
+                <dd class="">{ingredient.quantity}</dd>
+                <Checkbox bind:checked={ingredient.acquired} on:change={updateHandler}/>
+            {:else}
+                <dd class="">No ingredients added yet.</dd>
+            {/if}
         {/each}
     </dl>
     <div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4" >

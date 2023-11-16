@@ -2,16 +2,16 @@
     import { mealTypes, showEditRecipe } from "$lib/utils/recipeModals"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
-    import { writable } from "svelte/store"
     import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
 
     export let supabase: SupabaseClient    
 
     const handleSubmit = () => {
-        $selectedRecipeForEditing.ingredients = $ingredients
+        $selectedRecipeForEditing.ingredients = ingredients
         updateRecipe(supabase, $selectedRecipeForEditing)
         selectedRecipe.set({...$selectedRecipeForEditing}) // trigger reactivity on the parent RecipeDetailsModal component
         console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
+        console.log("selectedRecipe updated to: ", $selectedRecipe)
         showEditRecipe.set(false)
     };
 
@@ -29,21 +29,24 @@
     }
     
     // Ingredient logic
-    const ingredients = writable<Ingredient[]>([])
+    // const ingredients = writable<Ingredient[]>([])
+    let ingredients: Ingredient[] = []
     let lastInitializedRecipeId: number | undefined = undefined
 
     // Only refresh ingredients when selecting a new Recipe
     $: if ($selectedRecipeForEditing.ingredients && $selectedRecipeForEditing.id !== lastInitializedRecipeId) { 
-      ingredients.set($selectedRecipeForEditing.ingredients.map((i) => ({...i})))
+      ingredients = $selectedRecipeForEditing.ingredients.map((i) => ({...i}))
+      // ingredients.set($selectedRecipeForEditing.ingredients.map((i) => ({...i})))
       lastInitializedRecipeId = $selectedRecipeForEditing.id
-      console.log("Ingredients updated to: ", $ingredients);
+      console.log("Ingredients updated to: ", ingredients);
     }
 
     const addIngredient = () => {
         const newIngredient = {item: "", quantity: "", acquired: false}
-        $ingredients.push(newIngredient)
-        ingredients.set($ingredients.map((i) => ({...i})))
-        console.log("Ingredient added. Ingredients now: ", $ingredients);
+        ingredients.push(newIngredient)
+        // $ingredients.push(newIngredient)
+        // ingredients.set($ingredients.map((i) => ({...i})))
+        console.log("Ingredient added. Ingredients now: ", ingredients);
         
         // selectedRecipeForEditing.set(ingredients)
         // $selectedRecipeForEditing.ingredients?.push({item: "", quantity: "", acquired: false})
@@ -51,9 +54,11 @@
       }
       
       const removeIngredient = (index: number) => {
-        $ingredients.splice(index, 1)
-        ingredients.set($ingredients.map((i) => ({...i})))
-        console.log("Ingredient removed.");
+        let deletedIngredient = ingredients.splice(index, (index + 1))
+        ingredients.splice(index, 1)
+        // $ingredients.splice(index, 1)
+        // ingredients.set($ingredients.map((i) => ({...i})))
+        console.log("Ingredient removed: ", deletedIngredient);
         
         // $selectedRecipeForEditing.ingredients?.splice(index, 1)
         // selectedRecipeForEditing.set({...$selectedRecipeForEditing})
@@ -63,7 +68,7 @@
     function discardHandler () {
         let originalRecipe: Recipe = {...$recipesStore.find(r => r.id === $selectedRecipeForEditing.id)}
         selectedRecipeForEditing.set(originalRecipe)
-        ingredients.set($selectedRecipeForEditing.ingredients.map((i) => ({...i})))
+        if (ingredients) $selectedRecipeForEditing.ingredients
         showEditRecipe.set(false)
         console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
     }
@@ -121,7 +126,7 @@
       </div>
       <div class="sm:col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
-          {#each $ingredients as ingredient, index}
+          {#each ingredients as ingredient, index}
           <div class="flex items-center gap-2 mt-2">
               <Input type="text" placeholder="Item" bind:value={ingredient.item}/>
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />

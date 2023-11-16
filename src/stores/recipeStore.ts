@@ -1,3 +1,4 @@
+import { resetAllRecipes } from "$lib/utils/resetRecipes"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { writable } from "svelte/store"
 
@@ -133,5 +134,17 @@ export async function deleteRecipe(supabaseClient: SupabaseClient, deletedRecipe
 	}
 	if (data) {
 		deleteRecipeHelper(deletedRecipe)
+	}
+}
+
+export async function deleteAllRecipes(supabaseClient: SupabaseClient) {
+	const { data, error } = await supabaseClient.from("recipes").delete().neq("id", 0).select("*")
+	if (error) {
+		console.error("Error deleting recipe: ", error)
+		throw error
+	}
+	if (data) {
+		resetAllRecipes
+		console.log("All recipes deleted from Supabase and local stores.")
 	}
 }

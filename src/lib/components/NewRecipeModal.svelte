@@ -13,6 +13,7 @@
 
     $: if (!$servingSizeValue) {
       $servingSizeValue = 2
+      $newRecipe.servingSize = 2
     }
 
     function updateServingSize (newValue: number) {

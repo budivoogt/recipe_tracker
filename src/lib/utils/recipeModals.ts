@@ -13,3 +13,7 @@ export const mealTypes = [
 export const showEditRecipe = writable<boolean>(false)
 export const showRecipeDetails = writable<boolean>(false)
 export const showNewRecipe = writable<boolean>(false)
+
+export function capitalizeFirstLetter(string: string) {
+	return string.charAt(0).toUpperCase() + string.slice(1)
+}

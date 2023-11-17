@@ -5,6 +5,8 @@
 	import { deleteRecipe, selectedRecipe, selectedRecipeForEditing, updateRecipe, recipesStore } from "../../stores/recipeStore"
 	import EditRecipeModal from "./EditRecipeModal.svelte"
     import { capitalizeFirstLetter } from "$lib/utils/recipeHelpers"
+	import AlertModal from "./AlertModal.svelte"
+	import { writable } from "svelte/store"
 
     export let supabase: SupabaseClient
 
@@ -26,7 +28,9 @@
     async function deleteHandler () {
         if ($selectedRecipe) {
             await deleteRecipe(supabase, $selectedRecipe)
-            showRecipeDetails.set(false)
+            $showRecipeDetails = false
+            $selectedRecipe = null
+            $showDeleteRecipeConfirmation = false
         } else {
             console.log("selectedRecipe is null");
         }
@@ -39,8 +43,22 @@
             return false
         }
     }
+
+    // Del recipe modal
+    export const showDeleteRecipeConfirmation = writable<boolean>(false)
+
+    $: {
+        if ($showDeleteRecipeConfirmation) {
+            $showRecipeDetails = false
+        } else if (!$showDeleteRecipeConfirmation) {
+            $showRecipeDetails = true
+        }
+        console.log("showDeleteRecipeConfirmation is: ", $showDeleteRecipeConfirmation);
+    }
+
 </script>
 
+{#if $selectedRecipe}
 <Modal bind:open={$showRecipeDetails} class="w-4/5 md:w-3/4 min-w-full min-h-full" outsideclose>
     <div class="border-b-2 border-slate-300 pb-2">
         <h1 class="text-xl font-bold text-gray-700">{$selectedRecipe?.name}</h1>
@@ -95,11 +113,23 @@
         on:click={editRecipeHandler} 
         >Edit recipe</Button>
         <Button color='red' 
-        on:click={deleteHandler}
+        on:click={() => $showDeleteRecipeConfirmation = true}
         >Delete recipe</Button>
     </div>    
 </Modal>
+{/if}
 
 {#if $selectedRecipeForEditing}
 <EditRecipeModal {supabase}/>
 {/if}
+
+<AlertModal
+    showModal = {$showDeleteRecipeConfirmation}
+    title = "You're about to delete this recipe"
+    message = "Are you sure you want to proceed? This is irreversible."
+    confirmButtonText = "Yes 💣"
+    cancelButtonText = "No"
+    confirmHandler = {deleteHandler}
+    cancelHandler = {() => $showDeleteRecipeConfirmation = false}
+    closeHandler = {() => $showDeleteRecipeConfirmation = false}
+/>

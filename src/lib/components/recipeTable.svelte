@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { capitalizeFirstLetter, showNewRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
 	import type { SupabaseClient } from "@supabase/supabase-js"
-	import { Button, Modal, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch } from "flowbite-svelte"
+	import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch } from "flowbite-svelte"
 	import { writable } from "svelte/store"
 	import { deleteAllRecipes, recipesStore, selectedRecipe } from '../../stores/recipeStore'
+	import AlertModal from "./AlertModal.svelte"
 	import NewRecipeModal from "./NewRecipeModal.svelte"
-	import Recipe from "./Recipe.svelte"
 	import RecipeDetailsModal from "./RecipeDetailsModal.svelte"
   
   export let supabase: SupabaseClient
   $: supabase = supabase
   
   function handleRecipeClick(recipe: Recipe) {
-    selectedRecipe.set(recipe)
-    showRecipeDetails.set(true)
+    $selectedRecipe = recipe
+    $showRecipeDetails = true
   }
 
   // delete recipes logic
@@ -25,7 +25,7 @@
       showDeleteRecipesConfirmation = false
   }
 
-  $: $recipesStore = $recipesStore
+  // $: $recipesStore = $recipesStore
 
   // Search logic
   let searchTerm: string = ''
@@ -41,7 +41,7 @@
     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-end gap-2 my-2 md:mx-2">
         <Button on:click={() => (showNewRecipe.set(true))} color='green'>✚ Add recipe</Button>
         <Button>🔍 Filter</Button>
-        <Button on:click={() => showDeleteRecipesConfirmation = true} color='red'>☠️ Reset recipes</Button>
+        <Button on:click={() => showDeleteRecipesConfirmation = true} color='red'>☠️ Delete recipes</Button>
     </div>
   </div>
   <Table hoverable shadow divClass='overflow-x-auto'>
@@ -76,14 +76,13 @@
       
 <NewRecipeModal {supabase} />
 <RecipeDetailsModal {supabase} />
-
-<Modal bind:open={showDeleteRecipesConfirmation} class="w-26" outsideclose>
-  <div class="flex flex-col gap-4 text-black">
-    <span class=" text-xl font-bold">You're about to delete all recipes</span>
-    <span>Are you sure you want to proceed? This is irreversible.</span>
-    <div class="flex flex-row gap-4 mx-auto">
-      <Button on:click={deleteRecipesHandler} color='red'>Yes 💣</Button>
-      <Button on:click={() => showDeleteRecipesConfirmation = false}>No</Button>
-    </div>
-  </div>
-</Modal>
+<AlertModal
+    showModal = {showDeleteRecipesConfirmation}
+    title = "You're about to delete all recipes"
+    message = "Are you sure you want to proceed? This is irreversible."
+    confirmButtonText = "Yes 💣"
+    cancelButtonText = "No"
+    confirmHandler = {deleteRecipesHandler}
+    cancelHandler = {() => showDeleteRecipesConfirmation = false}
+    closeHandler = {() => showDeleteRecipesConfirmation = false}
+/>

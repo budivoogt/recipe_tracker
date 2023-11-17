@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { deepCopyRecipe, mealTypes, showEditRecipe } from "$lib/utils/recipeHelpers"
+    import { deepCopyRecipe, mealTypes, showEditRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
     import { writable } from "svelte/store"
@@ -64,11 +64,12 @@
         discardHandler()
       } 
       editFormSubmitted = false
+      $showRecipeDetails = true
     }
 </script>
 
-<Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-min max-h-full" outsideclose>
-  <form on:submit|preventDefault={handleSubmit}>
+<Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-full" outsideclose>
+<form on:submit|preventDefault={handleSubmit}>
     <div class="grid gap-4 mb-4 sm:grid-cols-2">
       <div>
         <Label for="name" class="mb-2">Name</Label>

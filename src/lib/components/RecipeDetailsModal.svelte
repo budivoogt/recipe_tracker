@@ -11,7 +11,8 @@
     function editRecipeHandler() {
         $selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
         console.log("selectedRecipeForEditing set as: ", $selectedRecipe);
-        showEditRecipe.set(true)
+        $showEditRecipe = true
+        $showRecipeDetails = false
     }
     
     function updateHandler () {
@@ -40,7 +41,7 @@
     }
 </script>
 
-<Modal bind:open={$showRecipeDetails} class="w-4/5 md:w-3/4 min-w-full min-h-min max-h-full" outsideclose>
+<Modal bind:open={$showRecipeDetails} class="w-4/5 md:w-3/4 min-w-full min-h-full" outsideclose>
     <div class="border-b-2 border-slate-300 pb-2">
         <h1 class="text-xl font-bold text-gray-700">{$selectedRecipe?.name}</h1>
     </div>
@@ -90,7 +91,7 @@
         {/each}
     </dl>
     <div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4" >
-        <Button color='green'
+        <Button
         on:click={editRecipeHandler} 
         >Edit recipe</Button>
         <Button color='red' 

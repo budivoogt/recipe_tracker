@@ -4,6 +4,7 @@
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
     import { writable } from "svelte/store"
     import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
+    import AlertModal from "./AlertModal.svelte"
 
     export let supabase: SupabaseClient
     $: supabase = supabase
@@ -136,3 +137,16 @@
     </div>
   </form>
 </Modal>
+
+
+<!-- THIS NEEDS TO WORK ON AN OUTSIDECLICK TOO -->
+<!-- <AlertModal
+    showModal = {$showDeleteRecipeConfirmation}
+    title = "You're about to delete this recipe"
+    message = "Are you sure you want to proceed? This is irreversible."
+    confirmButtonText = "Yes 💣"
+    cancelButtonText = "No"
+    confirmHandler = {deleteHandler}
+    cancelHandler = {() => $showDeleteRecipeConfirmation = false}
+    closeHandler = {() => $showDeleteRecipeConfirmation = false}
+/> -->

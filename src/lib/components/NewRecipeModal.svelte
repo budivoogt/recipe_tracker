@@ -11,7 +11,7 @@
     // servingSize logic
     let servingSizeValue = writable($newRecipe.servingSize)
 
-    $: if (!$servingSizeValue) {
+    $: if (!$servingSizeValue || $servingSizeValue <= 0) {
       $servingSizeValue = 2
       $newRecipe.servingSize = 2
     }

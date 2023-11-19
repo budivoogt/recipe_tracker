@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { deepCopyRecipe, mealTypes, showEditRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
+    import { deepCopyRecipe, mealTypes, showEditRecipe } from "$lib/utils/recipeHelpers"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
     import { writable } from "svelte/store"
@@ -10,13 +10,12 @@
     $: supabase = supabase
 
     const handleSubmit = () => {
-        editFormSubmitted = true
-        $selectedRecipeForEditing.ingredients = $ingredients
-        updateRecipe(supabase, $selectedRecipeForEditing)
-        // trigger reactivity on the parent RecipeDetailsModal component
-        $selectedRecipe = $selectedRecipeForEditing
-        // console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
-        $showEditRecipe = false
+      $selectedRecipeForEditing.ingredients = $ingredients
+      updateRecipe(supabase, $selectedRecipeForEditing)
+      // trigger reactivity on the parent RecipeDetailsModal component
+      $selectedRecipe = $selectedRecipeForEditing
+      // console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
+      $showEditRecipe = false
     };
 
     // Star rating logic
@@ -50,26 +49,31 @@
     }
 
     // Discard & exit logic
-    function discardHandler () {
+    let showDiscardAlert: boolean = false
+    
+    function discardButtonHandler () {
+        showDiscardAlert = true
+        $showEditRecipe = false
+    }
+
+    function discardConfirmHandler () {
         let originalRecipe: Recipe = $recipesStore.find(r => r.id === $selectedRecipeForEditing.id)
         $selectedRecipeForEditing = deepCopyRecipe(originalRecipe)
         $ingredients = $selectedRecipeForEditing.ingredients?.map((i) => ({...i}))
-        showEditRecipe.set(false)
+        showDiscardAlert = false
         // console.log("$ingredients reset to: ", $ingredients);
         // console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
     }
-    let editFormSubmitted: boolean = false
-
-    $: if (!$showEditRecipe) {
-      if (!editFormSubmitted) {
-        discardHandler()
-      } 
-      editFormSubmitted = false
-      $showRecipeDetails = true
+    
+    function discardCancelHandler () {
+      showDiscardAlert = false
+      $showEditRecipe = true
     }
+
+    
 </script>
 
-<Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-full" outsideclose>
+<Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-full">
 <form on:submit|preventDefault={handleSubmit}>
     <div class="grid gap-4 mb-4 sm:grid-cols-2">
       <div>
@@ -131,22 +135,20 @@
       <Button type="submit" class="w-26" color='green'>
         Save changes
       </Button>
-      <Button type="button" class="w-26" color='red' on:click={() => showEditRecipe.set(false)}>
+      <Button type="button" class="w-26" color='red' on:click={discardButtonHandler}>
         Discard changes
       </Button>
     </div>
   </form>
 </Modal>
 
-
-<!-- THIS NEEDS TO WORK ON AN OUTSIDECLICK TOO -->
-<!-- <AlertModal
-    showModal = {$showDeleteRecipeConfirmation}
-    title = "You're about to delete this recipe"
-    message = "Are you sure you want to proceed? This is irreversible."
+<AlertModal
+    showModal = {showDiscardAlert}
+    title = "Discard changes"
+    message = "Are you sure you want to discard all unsaved changes?"
     confirmButtonText = "Yes 💣"
     cancelButtonText = "No"
-    confirmHandler = {deleteHandler}
-    cancelHandler = {() => $showDeleteRecipeConfirmation = false}
-    closeHandler = {() => $showDeleteRecipeConfirmation = false}
-/> -->
+    confirmHandler = {discardConfirmHandler}
+    cancelHandler = {discardCancelHandler}
+    closeHandler = {discardCancelHandler}
+/>

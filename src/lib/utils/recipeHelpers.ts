@@ -23,6 +23,7 @@ export function capitalizeFirstLetter(string: string) {
 export function deepCopyRecipe(recipe: Recipe): Recipe {
 	return {
 		...recipe,
-		ingredients: recipe.ingredients ? recipe.ingredients?.map((i) => ({ ...i })) : null
+		ingredients: recipe.ingredients ? recipe.ingredients?.map((i) => ({ ...i })) : null,
+		servingSize: recipe.servingSize ? recipe.servingSize : 2
 	}
 }

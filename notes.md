@@ -64,6 +64,10 @@
 
 # Progress report
 
+## 2023-11-19
+
+Stuck working on the Alert Modals for the showEditRecipe page.
+
 ## 2023-11-16
 
 ### Svelte reactivity

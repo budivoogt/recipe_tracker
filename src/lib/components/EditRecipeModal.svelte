@@ -60,6 +60,7 @@
         let originalRecipe: Recipe = $recipesStore.find(r => r.id === $selectedRecipeForEditing.id)
         $selectedRecipeForEditing = deepCopyRecipe(originalRecipe)
         $ingredients = $selectedRecipeForEditing.ingredients?.map((i) => ({...i}))
+        $showEditRecipe = false
         showDiscardAlert = false
         // console.log("$ingredients reset to: ", $ingredients);
         // console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
@@ -69,8 +70,6 @@
       showDiscardAlert = false
       $showEditRecipe = true
     }
-
-    
 </script>
 
 <Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-full">
@@ -150,5 +149,4 @@
     cancelButtonText = "No"
     confirmHandler = {discardConfirmHandler}
     cancelHandler = {discardCancelHandler}
-    closeHandler = {discardCancelHandler}
 />

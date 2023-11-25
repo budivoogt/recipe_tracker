@@ -64,17 +64,24 @@
 
 # Progress report
 
+## 2023-11-25
+
+**Bugs:**
+
+
+**To build:**
+
+-   [] categorical search and/or filter.
+
+**Shipped:**
+
+-   [x] Displayed ingredients during editing weren't triggering reactivity.
+-   [x] sorting for the table based on clicking the columns.
+-   [x] Add AlertModal to the "logout" button in the TopMenu.
+
 ## 2023-11-19
 
 Added composable AlertModal which can be re-used throughout the application.
-
-Critical bug: I don't see ingredients in the edit window after originally submitting a recipe.
-
-Next:
-
--   [] sorting for the table based on clicking the columns.
--   [] categorical search and/or filter.
--   [x] Add AlertModal to the "logout" button in the TopMenu.
 
 ## 2023-11-16
 

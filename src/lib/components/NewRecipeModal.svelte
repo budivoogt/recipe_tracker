@@ -25,7 +25,7 @@
         addRecipe(supabase, $newRecipe)
         console.log("Form submitted with $newRecipe: ", $newRecipe);
         resetNewRecipe()
-        showNewRecipe.set(false)
+        $showNewRecipe = false
     };
 
     // Star rating logic

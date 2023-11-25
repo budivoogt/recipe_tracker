@@ -32,7 +32,7 @@
     }
     
     // Ingredient logic
-    const ingredients = writable<Ingredient[]>([])
+    $: ingredients = writable($selectedRecipeForEditing.ingredients || [])
 
     const addIngredient = () => {
         const newIngredient = {item: "", quantity: "", acquired: false}

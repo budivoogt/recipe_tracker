@@ -18,7 +18,7 @@
     <span>{message}</span>
     <div class="flex flex-row gap-4 mx-auto">
       <Button on:click={confirmHandler} color='red'>{confirmButtonText}</Button>
-      <Button on:click={cancelHandler}>{cancelButtonText}</Button>
+      <Button on:click={cancelHandler} color='green'>{cancelButtonText}</Button>
     </div>
   </div>
 </Modal>

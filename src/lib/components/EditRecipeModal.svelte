@@ -145,8 +145,8 @@
     showModal = {showDiscardAlert}
     title = "Discard changes"
     message = "Are you sure you want to discard all unsaved changes?"
-    confirmButtonText = "Yes 💣"
-    cancelButtonText = "No"
+    confirmButtonText = "Discard 💣"
+    cancelButtonText = "Return"
     confirmHandler = {discardConfirmHandler}
     cancelHandler = {discardCancelHandler}
 />

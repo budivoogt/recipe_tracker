@@ -43,8 +43,8 @@
     showModal = {$showLogoutAlert}
     title = "You're about to log out"
     message = "Want to proceed?"
-    confirmButtonText = "Yes"
-    cancelButtonText = "No"
+    confirmButtonText = "Logout"
+    cancelButtonText = "Return"
     confirmHandler = {handleLogout}
     cancelHandler = {() => $showLogoutAlert = false}
     closeHandler = {() => $showLogoutAlert = false}

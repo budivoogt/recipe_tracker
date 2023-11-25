@@ -127,8 +127,8 @@
     showModal = {$showDeleteRecipeConfirmation}
     title = "You're about to delete this recipe"
     message = "Are you sure you want to proceed? This is irreversible."
-    confirmButtonText = "Yes 💣"
-    cancelButtonText = "No"
+    confirmButtonText = "Delete 💣"
+    cancelButtonText = "Return"
     confirmHandler = {deleteHandler}
     cancelHandler = {() => $showDeleteRecipeConfirmation = false}
     closeHandler = {() => $showDeleteRecipeConfirmation = false}

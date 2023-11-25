@@ -68,10 +68,10 @@
 
 **Bugs:**
 
-
 **To build:**
 
 -   [] categorical search and/or filter.
+-   [] Improve styling on sorting icons in RecipeTable.
 
 **Shipped:**
 

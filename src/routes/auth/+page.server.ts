@@ -19,12 +19,12 @@ export const actions: Actions = {
 		}
 
 		console.log("User signed up with: ", email, password)
-		redirect(302, "/")
+		throw redirect(302, "/")
 
-		return {
-			message: "Please check your email for a magic link to log into the website.",
-			success: true
-		}
+		// return {
+		// 	message: "Please check your email for a magic link to log into the website.",
+		// 	success: true
+		// }
 	},
 	login: async ({ request, url, locals: { supabase } }) => {
 		const formData = await request.formData()
@@ -46,10 +46,10 @@ export const actions: Actions = {
 		}
 
 		console.log("User logged in with: ", email)
-		redirect(302, "/")
-		return {
-			success: true
-		}
+		throw redirect(302, "/")
+		// return {
+		// 	success: true
+		// }
 	},
 	logout: async ({ locals: { supabase } }) => {
 		console.log("Logout action started.")
@@ -61,11 +61,12 @@ export const actions: Actions = {
 		}
 
 		console.log("User logged out")
+		throw redirect(302, "/")
 
-		return {
-			message: "Logged out.",
-			success: true
-		}
+		// return {
+		// 	message: "Logged out.",
+		// 	success: true
+		// }
 	},
 	reset: async ({ request, url, locals: { supabase } }) => {
 		const formData = await request.formData()

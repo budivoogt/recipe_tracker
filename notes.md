@@ -31,7 +31,7 @@
 
 ### RecipeDetailsModal
 
--   [ ] Confirmation modal for delete recipe.
+-   [x] Confirmation modal for delete recipe.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
 -   [x] Added rating icons
 -   [x] Capitalize first letter of mealType.
@@ -66,7 +66,15 @@
 
 ## 2023-11-19
 
-Stuck working on the Alert Modals for the showEditRecipe page.
+Added composable AlertModal which can be re-used throughout the application.
+
+Critical bug: I don't see ingredients in the edit window after originally submitting a recipe.
+
+Next:
+
+-   [] sorting for the table based on clicking the columns.
+-   [] categorical search and/or filter.
+-   [x] Add AlertModal to the "logout" button in the TopMenu.
 
 ## 2023-11-16
 

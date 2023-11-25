@@ -27,3 +27,6 @@ export function deepCopyRecipe(recipe: Recipe): Recipe {
 		servingSize: recipe.servingSize ? recipe.servingSize : 2
 	}
 }
+export function deepCopyRecipes(recipes: Recipe[]): Recipe[] {
+	return recipes.map((recipe) => deepCopyRecipe(recipe))
+}

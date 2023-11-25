@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { capitalizeFirstLetter, showNewRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
+	import { capitalizeFirstLetter, deepCopyRecipes, showNewRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch } from "flowbite-svelte"
-	import { writable } from "svelte/store"
+	import { derived, writable } from "svelte/store"
 	import { deleteAllRecipes, recipesStore, selectedRecipe } from '../../stores/recipeStore'
 	import AlertModal from "./AlertModal.svelte"
 	import NewRecipeModal from "./NewRecipeModal.svelte"
@@ -11,6 +11,32 @@
   export let supabase: SupabaseClient
   $: supabase = supabase
   
+  // Sorting logic
+  const sortKey = writable<string>("name")
+  const sortDirection = writable<number>(1)
+
+  function sortTable (key: string) {
+    if ($sortKey === key) {
+      sortDirection.update(value => -value)
+    } else {
+      $sortKey = key
+      $sortDirection = 1
+    }
+  }
+
+  const sortedRecipes = derived([recipesStore, sortKey, sortDirection], ([$recipesStore, $sortKey, $sortDirection]) => {
+      const recipes = deepCopyRecipes($recipesStore)
+      return recipes.sort((a, b) => {
+        if (a[$sortKey] < b[$sortKey]) {
+          return -1 * $sortDirection
+        }
+        if (a[$sortKey] > b[$sortKey]) {
+          return 1 * $sortDirection
+        }
+        return 0
+      })
+  })
+
   function handleRecipeClick(recipe: Recipe) {
     $selectedRecipe = recipe
     $showRecipeDetails = true
@@ -25,12 +51,11 @@
       showDeleteRecipesConfirmation = false
   }
 
-  // $: $recipesStore = $recipesStore
-
   // Search logic
   let searchTerm: string = ''
   let filteredItems = writable<Recipe[]>([])
-  $: $filteredItems = $recipesStore.filter((r) => r.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+  // $: $filteredItems = $recipesStore.filter((r) => r.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+  $: $filteredItems = $sortedRecipes.filter((r) => r.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 
 </script>
 
@@ -46,13 +71,13 @@
   </div>
   <Table hoverable shadow divClass='overflow-x-auto'>
     <TableHead class=" bg-orange-400 font-bold text-md">
-      <TableHeadCell>Recipe name</TableHeadCell>
-      <TableHeadCell>Meal Type</TableHeadCell>
-      <TableHeadCell>Cuisine</TableHeadCell>
-      <TableHeadCell>Rating</TableHeadCell>
+      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("name")}>Recipe name</TableHeadCell>
+      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("mealType")}>Meal Type</TableHeadCell>
+      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("cuisine")}>Cuisine</TableHeadCell>
+      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("rating")}>Rating</TableHeadCell>
         </TableHead>
         <TableBody tableBodyClass=''>
-          <!-- {#each $recipesStore as recipe} -->
+          <!-- {#each $filteredItems as recipe} -->
           {#each $filteredItems as recipe}
             <TableBodyRow on:click={() => {handleRecipeClick(recipe)}}>
                 <TableBodyCell>{recipe.name}</TableBodyCell>

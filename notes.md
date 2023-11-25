@@ -42,9 +42,9 @@
 
 ## Bugs
 
--   [ ] When on the /recipes page, logging out doesn't redirect you.
 -   [ ] Make serialized ingredients JSONB instead of JSON.
 -   [ ] Figure out how to avoid instantiating an empty ingredient for each recipe. Currently this is necessary to have Svelte's conditional rendering to display the different ingredients.
+-   [x] When on the /recipes page, logging out doesn't redirect you.
 -   [x] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
 -   [x] newRecipes isn't clearing after successful submission of recipes.
 -   [x] When refreshing the page it's not loading the stored data?

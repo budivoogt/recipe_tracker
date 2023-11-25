@@ -1,7 +1,6 @@
-import { deepCopyRecipes } from "$lib/utils/recipeHelpers"
 import { resetAllRecipes } from "$lib/utils/resetRecipes"
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { get, writable } from "svelte/store"
+import { writable } from "svelte/store"
 
 export const recipesStore = writable<Recipe[]>([])
 export const selectedRecipe = writable<Recipe>()

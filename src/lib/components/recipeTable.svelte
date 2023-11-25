@@ -24,7 +24,7 @@
     }
   }
 
-  const sortedRecipes = derived([recipesStore, sortKey, sortDirection], ([$recipesStore, $sortKey, $sortDirection]) => {
+  const sortedRecipes: Recipe[] = derived([recipesStore, sortKey, sortDirection], ([$recipesStore, $sortKey, $sortDirection]) => {
       const recipes = deepCopyRecipes($recipesStore)
       return recipes.sort((a, b) => {
         if (a[$sortKey] < b[$sortKey]) {

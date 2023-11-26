@@ -2,7 +2,7 @@
 	import { capitalizeFirstLetter, deepCopyRecipes, mealTypes, showNewRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Dropdown, DropdownItem, Radio, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch } from "flowbite-svelte"
-	import { ChevronSortSolid } from "flowbite-svelte-icons"
+	import { ChevronRightSolid, ChevronSortSolid } from "flowbite-svelte-icons"
 	import { derived, writable } from "svelte/store"
 	import { deleteAllRecipes, recipesStore, selectedRecipe } from '../../stores/recipeStore'
 	import AlertModal from "./AlertModal.svelte"
@@ -53,16 +53,6 @@
   }
 
   // Filter logic
-  let filterOptions = {
-    id: "All",
-    name: "Name",
-    mealType: "MealType",
-    cuisine: "Cuisine",
-    rating: "Rating",
-  }
-
-  let filterBy = "id"
-
   let ratingOptions = [1, 2, 3, 4, 5]
 
   let filterMealType = "All"
@@ -104,10 +94,10 @@
       <TableSearch placeholder="Search by name" bind:inputValue={searchTerm} searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg' divClass='relative overflow-x-auto m-2 md:mx-2'/>
     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-end gap-2 my-2 md:mx-2 overflow-visible">
         <Button on:click={() => (showNewRecipe.set(true))} color='green'>✚ Add recipe</Button>
-        <Button>🔍 Filter: {filterOptions[filterBy]}</Button>
-        <Dropdown class="m-4 w-fit">
-            <DropdownItem>
-                Meal Type
+        <Button>🔍 Filter</Button>
+        <Dropdown class="w-fit px-1">
+            <DropdownItem class="flex flex-row">
+                Meal Type <ChevronRightSolid size="xs" class="my-auto pl-2"/>
             </DropdownItem>
             <Dropdown placement="right-start">
                 <DropdownItem>
@@ -119,8 +109,8 @@
                 </DropdownItem>
                 {/each}
             </Dropdown>
-            <DropdownItem>
-                Cuisine
+            <DropdownItem class="flex flex-row">
+                Cuisine <ChevronRightSolid size="xs" class="my-auto pl-2"/>
             </DropdownItem>
             <Dropdown placement="right-start">
                 <DropdownItem>
@@ -132,14 +122,17 @@
                 </DropdownItem>
                 {/each}
             </Dropdown>
-            <DropdownItem>
-                Rating
+            <DropdownItem class="flex flex-row">
+                Rating <ChevronRightSolid size="xs" class="my-auto pl-2"/>
             </DropdownItem>
             <Dropdown placement="right-start">
-              <!-- GOTTA FIX HOW THE STARS APPEAR -->
-                {#each ratingOptions as rating, index}
+                {#each ratingOptions as rating}
                 <DropdownItem>
-                  <Radio bind:group={filterRating} value={rating}>{rating >= (index - 1) ? '⭐' : '☆'} +</Radio>
+                  <Radio bind:group={filterRating} value={rating}>
+                  {#each ratingOptions as num}
+                      {rating >= num ? '⭐' : '☆'}
+                  {/each}
+                  </Radio>
                 </DropdownItem>
                 {/each}
             </Dropdown>

@@ -64,17 +64,26 @@
 
 # Progress report
 
+## 2023-11-26
+
+**Bugs:**
+
+-   [ ] Make chevron icons appear inline in the RecipeTable.
+
+**To build:**
+
+**Shipped:**
+
 ## 2023-11-25
 
 **Bugs:**
 
 **To build:**
 
--   [] categorical search and/or filter.
--   [] Improve styling on sorting icons in RecipeTable.
-
 **Shipped:**
 
+-   [x] Improve styling on sorting icons in RecipeTable.
+-   [x] categorical search and/or filter.
 -   [x] Displayed ingredients during editing weren't triggering reactivity.
 -   [x] sorting for the table based on clicking the columns.
 -   [x] Add AlertModal to the "logout" button in the TopMenu.

@@ -141,12 +141,28 @@
     </div>
   </div>
   <Table hoverable shadow divClass='overflow-x-auto'>
-    <TableHead class=" bg-orange-400 font-bold text-md">
-      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer flex-row" on:click={() => sortTable("name")}>Recipe name <ChevronSortSolid size='xs' class="flex flex-row my-auto ml-1"/></TableHeadCell>
-      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("mealType")}>Meal Type <ChevronSortSolid size='xs' class="flex flex-row my-auto ml-1"/></TableHeadCell>
-      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer " on:click={() => sortTable("cuisine")}>Cuisine <ChevronSortSolid size='xs' class="flex flex-row my-auto ml-1"/></TableHeadCell>
-      <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer " on:click={() => sortTable("rating")}>Rating <ChevronSortSolid size='xs' class="flex flex-row my-auto ml-1"/></TableHeadCell>
-        </TableHead>
+      <TableHead class=" bg-orange-400 font-bold text-md">
+        <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("name")}>
+          <div class="flex flex-row justify-between">
+          Recipe name <ChevronSortSolid size='xs' class="my-auto ml-1"/>
+          </div>
+        </TableHeadCell>
+        <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("mealType")}>
+          <div class="flex flex-row  justify-between">
+            Meal Type <ChevronSortSolid size='xs' class="my-auto ml-1"/>
+          </div>
+        </TableHeadCell>
+        <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer " on:click={() => sortTable("cuisine")}>
+          <div class="flex flex-row  justify-between">
+            Cuisine <ChevronSortSolid size='xs' class="my-auto ml-1"/>
+          </div>
+        </TableHeadCell>
+        <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer " on:click={() => sortTable("rating")}>
+          <div class="flex flex-row  justify-between">
+            Rating <ChevronSortSolid size='xs' class="my-auto ml-1"/>
+          </div>
+        </TableHeadCell>
+      </TableHead>
         <TableBody tableBodyClass=''>
           {#each $searchedItems as recipe}
             <TableBodyRow on:click={() => {handleRecipeClick(recipe)}}>

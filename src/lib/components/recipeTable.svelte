@@ -44,12 +44,12 @@
   }
 
   // delete recipes logic
-  let showDeleteRecipesConfirmation: boolean = false
+  let showDeleteRecipesConfirmation = writable<boolean>(false)
 
   function deleteRecipesHandler(){
       deleteAllRecipes(supabase)
       $searchedItems = []
-      showDeleteRecipesConfirmation = false
+      $showDeleteRecipesConfirmation = false
   }
 
   // Filter logic
@@ -137,7 +137,7 @@
                 {/each}
             </Dropdown>
         </Dropdown>
-        <Button on:click={() => showDeleteRecipesConfirmation = true} color='red'>☠️ Delete recipes</Button>
+        <Button on:click={() => $showDeleteRecipesConfirmation = true} color='red'>☠️ Delete recipes</Button>
     </div>
   </div>
   <Table hoverable shadow divClass='overflow-x-auto'>
@@ -188,12 +188,12 @@
 <NewRecipeModal {supabase} />
 <RecipeDetailsModal {supabase} />
 <AlertModal
-    showModal = {showDeleteRecipesConfirmation}
+    showModal = {$showDeleteRecipesConfirmation}
     title = "You're about to delete all recipes"
     message = "Are you sure you want to proceed? This is irreversible."
     confirmButtonText = "Yes 💣"
     cancelButtonText = "No"
     confirmHandler = {deleteRecipesHandler}
-    cancelHandler = {() => showDeleteRecipesConfirmation = false}
-    closeHandler = {() => showDeleteRecipesConfirmation = false}
+    cancelHandler = {() => $showDeleteRecipesConfirmation = false}
+    closeHandler = {() => $showDeleteRecipesConfirmation = false}
 />

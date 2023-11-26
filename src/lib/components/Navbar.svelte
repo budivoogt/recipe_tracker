@@ -27,6 +27,7 @@
 <nav class="flex flex-row justify-center gap-2 my-4">
     <Button size="sm" href="/" class={`shadow ${isActive('/')}`}>Home</Button>
     {#if $user}
+    <Button size="sm" href="/randomizer" class={`shadow ${isActive('/randomizer')}`}>Randomizer</Button>
     <Button size="sm" href="/recipes" class={`shadow ${isActive('/recipes')}`}>Browse recipes</Button>
     {/if}
     <Button size="sm" href="/about" class={`shadow ${isActive('/about')}`}>About</Button>

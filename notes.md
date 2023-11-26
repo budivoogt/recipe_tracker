@@ -68,9 +68,29 @@
 
 **Bugs:**
 
--   [ ] Make chevron icons appear inline in the RecipeTable.
+-   [x] Make chevron icons appear inline in the RecipeTable.
+-   [] recipeDetailsModal shows when navigating to a different page than /recipes and then back. Something is resulting in it being switched.
 
 **To build:**
+
+RECIPE RANDOMIZER
+
+How to approach?
+
+1. Dedicated page with dropdown for mealType, which serves 2 options, preferably from unique cuisines.
+
+Section "Randomizer" with "need meal inspiration?" text.
+
+Dropdown menu with mealType options, then button to "randomize!". Could add a fun animation.
+
+2 results are shown below the randomizer, in card format. Clicking them opens the recipeDetailsModal for those recipes.
+
+Architecture:
+
+-   [x] Dedicated page
+-   [x] Add button to Navbar
+-   [x] Create initial layout
+-   [] Style layout
 
 **Shipped:**
 

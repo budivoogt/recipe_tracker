@@ -1,9 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { v4 as uuidv4 } from "uuid"
 
-const cdnUrl =
-	"https://kfzeokcflwatdsxiprwl.supabase.co/storage/v1/object/public/meal-pics/scrambled-eggs-1bd9e5da-1220-4cf9-a01c-e07cc1bada8c"
-
 export function toSlug(str: string) {
 	return (
 		str
@@ -34,7 +31,7 @@ export async function handleFileInput(event, recipeName: string, supabase: Supab
 	if (data) {
 		// something to pull the image and upload it on the recipe.
 		console.log("File uploaded successfully. Data: ", data)
-		return await getImage(data.path, supabase)
+		return await getImageUrl(data.path, supabase)
 	}
 	if (error) {
 		console.error(error)
@@ -42,12 +39,10 @@ export async function handleFileInput(event, recipeName: string, supabase: Supab
 	}
 }
 
-async function getImage(path: string, supabase: SupabaseClient) {
+async function getImageUrl(path: string, supabase: SupabaseClient) {
 	const { data } = await supabase.storage.from("meal-pics").getPublicUrl(path)
 
 	if (data) {
-		// something to pull the image and upload it on the recipe.
-		console.log("Image URL successfully pulled: ", data)
 		return data.publicUrl
 	}
 }

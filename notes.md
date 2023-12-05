@@ -6,10 +6,10 @@
 -   [ ] Dashboard page: Add recipe, get recommendation, analytics
     -   [ ] Add recipe button with pop-out. Component should be re-used in Recipe Explorer
     -   [x] Recommendation engine: 2 random suggestions based on mealType, prioritising unique cuisines.
--   [ ] Recipe structure: description, ingredients, cuisine, meal type, image, comments
+-   [ ] Recipe structure: description, ingredients, cuisine, meal type, image
     -   [x] Create writable and type
     -   [x] Create Supabase database
-    -   [ ] Integrate cloud image hosting provider
+    -   [x] Integrate cloud image hosting provider
     -   [x] Checklist for buying ingredients
 -   [ ] Recipe Explorer page
     -   [x] Search bar
@@ -32,12 +32,13 @@
 
 ### RecipeDetailsModal
 
--   [ ] Make search apply to ingredients too.
+-   [x] Make search apply to ingredients too.
 
 ### RecipeDetailsModal
 
--   [x] Confirmation modal for delete recipe.
+-   [ ] Show recipe image.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
+-   [x] Confirmation modal for delete recipe.
 -   [x] Added rating icons
 -   [x] Capitalize first letter of mealType.
 
@@ -68,6 +69,16 @@
 -   [x] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
 
 # Progress report
+
+## 2023-12-05
+
+**Adding images:**
+
+When creating a recipe, I can add the path to the recipeStore and in Supabase.
+
+When then displaying that recipe's details, I can show the image based on the path stored.
+
+Need to think about where I can best display the image. And how to make deleting and updating possible.
 
 ## 2023-11-26
 
@@ -112,7 +123,6 @@ Add ability to upload recipe when creating or editing a recipe.
 Research if Supabase can do this or alternatively if I need to use a compression service, like what we'd used with MusicCareers.
 
 Images should display on the RecipeDetailsModal and perhaps a miniature version on the recipe in the table upon double-clicking (in an expanded version of the table, like shown in the Flowbite docs).
-
 
 **Shipped:**
 

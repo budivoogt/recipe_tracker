@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { handleFileInput } from "$lib/utils/imageHelper"
     import { mealTypes, showNewRecipe } from "$lib/utils/recipeHelpers"
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
     import type { SupabaseClient } from "@supabase/supabase-js"
@@ -53,6 +54,16 @@
         $newRecipe.ingredients?.splice(index, 1)
         newRecipe.set({...$newRecipe})
     }
+
+    // Display image
+    let imageUrl: string | undefined
+
+    async function uploadImage (e) {
+        imageUrl = await handleFileInput(e, $newRecipe.name, supabase)
+    }
+
+    $: console.log("imageUrl is: ", imageUrl);
+    
 </script>
 
 <Modal title="Add recipe" bind:open={$showNewRecipe} class="min-w-full" outsideclose>
@@ -111,6 +122,20 @@
           </div>
           {/each}
           <Button on:click={() => addIngredient()} class="mt-2" size="sm">Add ingredient</Button>
+          <Label class="mt-4 flex flex-col">
+            <span class="my-2 text-lg font-normal">
+              Upload photo
+            </span>
+            <input 
+            type="file" 
+            placeholder="Upload image"
+            accept="image/*"
+            on:change={(e) => uploadImage(e)}
+            >
+          </Label>
+          {#if imageUrl}
+            <img src="{imageUrl}" alt=""/>
+          {/if}
       </div>
     </div>
     <div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4">

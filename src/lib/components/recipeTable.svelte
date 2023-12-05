@@ -91,7 +91,7 @@
     r.ingredients[0].item !== "" 
     && 
     r.ingredients?.some((i) => 
-    i.item.toLowerCase().includes(searchTerm.toLocaleLowerCase()))
+       i.item.toLowerCase().includes(searchTerm.toLocaleLowerCase()))
     return nameMatches || ingredientMatches
   });
 

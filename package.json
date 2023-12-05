@@ -37,6 +37,8 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/ssr": "^0.0.6",
-		"@supabase/supabase-js": "^2.38.1"
+		"@supabase/supabase-js": "^2.38.1",
+		"@types/uuid": "^9.0.7",
+		"uuid": "^9.0.1"
 	}
 }

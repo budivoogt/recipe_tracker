@@ -5,7 +5,7 @@
 -   [x] Page structure: Dashboard, Recipe Explorer
 -   [ ] Dashboard page: Add recipe, get recommendation, analytics
     -   [ ] Add recipe button with pop-out. Component should be re-used in Recipe Explorer
-    -   [ ] Recommendation engine: 1 random suggestion, optional filtering.
+    -   [x] Recommendation engine: 2 random suggestions based on mealType, prioritising unique cuisines.
 -   [ ] Recipe structure: description, ingredients, cuisine, meal type, image, comments
     -   [x] Create writable and type
     -   [x] Create Supabase database
@@ -14,10 +14,11 @@
 -   [ ] Recipe Explorer page
     -   [x] Search bar
     -   [x] List of recipes
-    -   [ ] Sort & filter
-        -   [ ] Sort by: date created, meal type, cuisine.
-        -   [ ] Filter by: meal type,
+    -   [x] Sort & filter
+        -   [x] Sort by: date created, meal type, cuisine.
+        -   [x] Filter by: meal type,
 -   [ ] Analytics: # of recipies, most popular ingredients, most cooked
+-   [ ] Making the application mobile responsive. Test on iPhone 12-14 and iPad formats. Pay special attention to using the application on mobile where you don't have a cursor.
 
 # Recipe database
 
@@ -85,12 +86,29 @@ Dropdown menu with mealType options, then button to "randomize!". Could add a fu
 
 2 results are shown below the randomizer, in card format. Clicking them opens the recipeDetailsModal for those recipes.
 
+Learned about the use of Set and Math.floor and Math.random() to generate random numbers.
+
 Architecture:
 
 -   [x] Dedicated page
 -   [x] Add button to Navbar
 -   [x] Create initial layout
 -   [] Style layout
+
+2. Integrate RecipeDetailsModal upon click of the recipe.
+
+Import the RecipeDetailsModal and set the relevant recipe to the one being clicked.
+
+Need to test if this allows for editing of this recipe too. Randomly suggested recipes must not reset after click.
+
+IMAGE ADD TO RECIPE
+
+Add ability to upload recipe when creating or editing a recipe.
+
+Research if Supabase can do this or alternatively if I need to use a compression service, like what we'd used with MusicCareers.
+
+Images should display on the RecipeDetailsModal and perhaps a miniature version on the recipe in the table upon double-clicking (in an expanded version of the table, like shown in the Flowbite docs).
+
 
 **Shipped:**
 

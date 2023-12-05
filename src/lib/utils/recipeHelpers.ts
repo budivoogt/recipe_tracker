@@ -35,6 +35,11 @@ export function deepCopyRecipes(recipes: Recipe[]): Recipe[] {
 export function generateRandomRecipes(mealType: string) {
 	const filteredRecipes = get(recipesStore).filter((r) => r.mealType === mealType)
 
+	if (filteredRecipes.length <= 0) {
+		console.error("There are no recipes for the selected meal type.")
+		return null
+	}
+
 	// Shuffle recipes
 	filteredRecipes.sort(() => 0.5 - Math.random())
 
@@ -63,6 +68,6 @@ export function generateRandomRecipes(mealType: string) {
 
 		selectedRecipes.push(additionalRecipe)
 	}
-
+	
 	return selectedRecipes
 }

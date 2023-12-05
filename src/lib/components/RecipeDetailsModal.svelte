@@ -10,6 +10,8 @@
 
     export let supabase: SupabaseClient
 
+    $: console.log("showRecipeDetails changed to: ", $showRecipeDetails); 
+
     function editRecipeHandler() {
         $selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
         console.log("selectedRecipeForEditing set as: ", $selectedRecipe);
@@ -47,13 +49,10 @@
     // Del recipe modal
     export const showDeleteRecipeConfirmation = writable<boolean>(false)
 
-    $: {
-        if ($showDeleteRecipeConfirmation) {
-            $showRecipeDetails = false
-        } else if (!$showDeleteRecipeConfirmation) {
-            $showRecipeDetails = true
-        }
-        console.log("showDeleteRecipeConfirmation is: ", $showDeleteRecipeConfirmation);
+    
+    function closeAndCancelHandler () {
+        $showDeleteRecipeConfirmation = false
+        $showRecipeDetails = true
     }
 
 </script>
@@ -113,7 +112,10 @@
         on:click={editRecipeHandler} 
         >Edit recipe</Button>
         <Button color='red' 
-        on:click={() => $showDeleteRecipeConfirmation = true}
+        on:click={() => {
+            $showDeleteRecipeConfirmation = true
+            $showRecipeDetails = false
+            }}
         >Delete recipe</Button>
     </div>    
 </Modal>
@@ -130,6 +132,6 @@
     confirmButtonText = "Delete 💣"
     cancelButtonText = "Return"
     confirmHandler = {deleteHandler}
-    cancelHandler = {() => $showDeleteRecipeConfirmation = false}
-    closeHandler = {() => $showDeleteRecipeConfirmation = false}
+    cancelHandler = {closeAndCancelHandler}
+    closeHandler = {closeAndCancelHandler}
 />

@@ -70,7 +70,7 @@
 **Bugs:**
 
 -   [x] Make chevron icons appear inline in the RecipeTable.
--   [] recipeDetailsModal shows when navigating to a different page than /recipes and then back. Something is resulting in it being switched.
+-   [x] recipeDetailsModal shows when navigating to a different page than /recipes and then back. Something is resulting in it being switched.
 
 **To build:**
 

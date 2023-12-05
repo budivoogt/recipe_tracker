@@ -10,8 +10,6 @@
 
     export let supabase: SupabaseClient
 
-    $: console.log("showRecipeDetails changed to: ", $showRecipeDetails); 
-
     function editRecipeHandler() {
         $selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
         console.log("selectedRecipeForEditing set as: ", $selectedRecipe);

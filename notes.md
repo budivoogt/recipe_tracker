@@ -32,6 +32,10 @@
 
 ### RecipeDetailsModal
 
+-   [ ] Make search apply to ingredients too.
+
+### RecipeDetailsModal
+
 -   [x] Confirmation modal for delete recipe.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
 -   [x] Added rating icons

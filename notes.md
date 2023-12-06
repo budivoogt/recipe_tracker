@@ -80,6 +80,10 @@ When then displaying that recipe's details, I can show the image based on the pa
 
 Need to think about where I can best display the image. And how to make deleting and updating possible.
 
+- [] Need to create an edit image function. I suspect this'll just require a new input field, where I replace the existing image with a new one. Although I've been told it's better to delete the old image. So I'll do that.
+
+
+
 ## 2023-11-26
 
 **Bugs:**

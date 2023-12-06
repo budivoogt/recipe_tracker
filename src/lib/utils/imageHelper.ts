@@ -15,21 +15,26 @@ export function toSlug(str: string) {
 	)
 }
 
-export async function handleFileInput(event, recipeName: string, supabase: SupabaseClient) {
-	const recipeSlug: string = toSlug(recipeName)
-
+export async function handleFileInput(event: InputEvent) {
 	const file = event.target.files[0]
 	if (!file) {
-		console.error("No file uploaded.")
+		console.error("No file input.")
 		return
 	}
+	if (file) {
+		console.log("File input successful.")
+		return file
+	}
+}
+
+export async function uploadImage(file, recipeName: string, supabase: SupabaseClient) {
+	const recipeSlug: string = toSlug(recipeName)
 
 	const { data, error } = await supabase.storage
 		.from("meal-pics")
 		.upload(recipeSlug + "-" + uuidv4(), file)
 
 	if (data) {
-		// something to pull the image and upload it on the recipe.
 		console.log("File uploaded successfully. Data: ", data)
 		return data
 	}
@@ -59,4 +64,20 @@ export async function deleteImage(imagePath: string, SupabaseClient: SupabaseCli
 		console.error(error)
 		return error
 	}
+}
+
+// Dropzone logic
+
+const dropzoneFiles = {
+	accepted: [],
+	rejected: []
+}
+
+export function handleFileSelect(e) {
+	const { acceptedFiles, fileRejections } = e.detail
+
+	dropzoneFiles.accepted = [...dropzoneFiles.accepted, ...acceptedFiles]
+	dropzoneFiles.rejected = [...dropzoneFiles.rejected, ...fileRejections]
+
+	return { acceptedFiles: dropzoneFiles.accepted, rejectedFiles: dropzoneFiles.rejected }
 }

@@ -1,9 +1,10 @@
 <script lang="ts">
-    import { deleteImage, getImage, handleFileInput } from "$lib/utils/imageHelper"
+    import { deleteImage, getImage, handleFileSelect, uploadImage } from "$lib/utils/imageHelper"
     import { mealTypes, showNewRecipe } from "$lib/utils/recipeHelpers"
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
+    import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
     import { writable } from "svelte/store"
     import { addRecipe, newRecipe } from "../../stores/recipeStore"
 
@@ -58,9 +59,12 @@
     // Display image
     let imageUrl: string | null = null
     let imagePath: string | null = null
- 
-    async function uploadImage (e) {
-        const response = await handleFileInput(e, $newRecipe.name, supabase)
+
+    async function dropzoneFileUploadHandler (e) {
+        const { acceptedFiles, rejectedFiles } = handleFileSelect(e)
+
+        const response = await uploadImage(acceptedFiles[0], $newRecipe.name, supabase)
+
         const { publicUrl, path } = await getImage(response?.path, supabase)
         imageUrl = publicUrl
         imagePath = path
@@ -72,12 +76,13 @@
     // Delete image
 
     async function deleteImageHandler () {
-      const response = await deleteImage(imagePath, supabase)
-      if (response) {
-        imageUrl = null
-        imagePath = null
-      }
+        const response = await deleteImage(imagePath, supabase)
+          if (response) {
+            imageUrl = null
+            imagePath = null
+          }
     }
+
     
 </script>
 
@@ -113,20 +118,12 @@
           </div>
       </div>
       {#if !imageUrl}
-      <form action="" class="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center">
-          <Label class="mt-4 flex flex-col">
-              <span class="text-lg font-normal mx-auto flex">
-                Upload photo
-              </span>
-              <input 
-              type="file" 
-              placeholder="Upload image"
-              accept="image/*"
-              class="my-2 flex"
-              on:change={(e) => uploadImage(e)}
-              >
-          </Label>
-      </form>
+      <Dropzone 
+          on:drop={dropzoneFileUploadHandler}
+          accept="image/*"
+          multiple={false}
+          containerClasses="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center"
+      />
       {:else}
       <div class="col-start-2 row-start-1 row-span-3 mt-6 mx-2">
           <img src="{imageUrl}" alt=""/>

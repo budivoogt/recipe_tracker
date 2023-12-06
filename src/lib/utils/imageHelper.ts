@@ -31,7 +31,7 @@ export async function handleFileInput(event, recipeName: string, supabase: Supab
 	if (data) {
 		// something to pull the image and upload it on the recipe.
 		console.log("File uploaded successfully. Data: ", data)
-		return await getImageUrl(data.path, supabase)
+		return data
 	}
 	if (error) {
 		console.error(error)
@@ -39,19 +39,24 @@ export async function handleFileInput(event, recipeName: string, supabase: Supab
 	}
 }
 
-async function getImageUrl(path: string, supabase: SupabaseClient) {
+export async function getImage(path: string, supabase: SupabaseClient) {
 	const { data } = await supabase.storage.from("meal-pics").getPublicUrl(path)
 
 	if (data) {
-		return data.publicUrl
+		return { publicUrl: data.publicUrl, path: path }
 	}
 }
 
-export async function deleteImage(imageName: string, SupabaseClient: SupabaseClient) {
-	const { error } = await SupabaseClient.storage.from("meal-pics").remove(imageName)
+export async function deleteImage(imagePath: string, SupabaseClient: SupabaseClient) {
+	const { data, error } = await SupabaseClient.storage.from("meal-pics").remove([imagePath])
+
+	if (data) {
+		console.log("Image with path ", imagePath, " has been deleted. Data: ", data)
+		return data
+	}
 
 	if (error) {
 		console.error(error)
-		return
+		return error
 	}
 }

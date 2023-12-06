@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { handleFileInput } from "$lib/utils/imageHelper"
+    import { deleteImage, getImage, handleFileInput } from "$lib/utils/imageHelper"
     import { mealTypes, showNewRecipe } from "$lib/utils/recipeHelpers"
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
     import type { SupabaseClient } from "@supabase/supabase-js"
@@ -56,33 +56,48 @@
     }
 
     // Display image
-    let imageUrl: string | undefined
-
+    let imageUrl: string | null = null
+    let imagePath: string | null = null
+ 
     async function uploadImage (e) {
-        imageUrl = await handleFileInput(e, $newRecipe.name, supabase)
+        const response = await handleFileInput(e, $newRecipe.name, supabase)
+        const { publicUrl, path } = await getImage(response?.path, supabase)
+        imageUrl = publicUrl
+        imagePath = path
     }
 
     $: console.log("imageUrl is: ", imageUrl);
+    $: console.log("imagePath is: ", imagePath);
+
+    // Delete image
+
+    async function deleteImageHandler () {
+      const response = await deleteImage(imagePath, supabase)
+      if (response) {
+        imageUrl = null
+        imagePath = null
+      }
+    }
     
 </script>
 
 <Modal title="Add recipe" bind:open={$showNewRecipe} class="min-w-full" outsideclose>
   <form on:submit|preventDefault={handleSubmit}>
     <div class="grid gap-4 mb-4 sm:grid-cols-2">
-      <div>
+      <div class="">
         <Label for="name" class="mb-2">Name</Label>
         <Input type="text" id="name" placeholder="Recipe name" bind:value={$newRecipe.name} required />
       </div>
-      <div>
+      <div class=" col-start-1">
         <Label for="mealType" class="mb-2">Meal type
           <Select class="mt-2" items={mealTypes} bind:value={$newRecipe.mealType} required />
         </Label>
       </div>
-      <div>
+      <div class=" col-start-1">
           <Label for="cuisine" class="mb-2">Cuisine</Label>
           <Input type="text" id="cuisine" placeholder="Italian, Greek, etc." bind:value={$newRecipe.cuisine} required />
       </div>
-      <div class="text-xl cursor-pointer flex flex-col items-center">
+      <div class="text-xl cursor-pointer flex flex-col items-center col-start-1">
           <span class="text-sm font-medium block text-gray-900 dark:text-gray-300 mb-3">Rating</span>
           <div class="">
           {#each [1, 2, 3, 4, 5] as num}
@@ -97,6 +112,35 @@
           {/each}
           </div>
       </div>
+      {#if !imageUrl}
+      <form action="" class="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center">
+          <Label class="mt-4 flex flex-col">
+              <span class="text-lg font-normal mx-auto flex">
+                Upload photo
+              </span>
+              <input 
+              type="file" 
+              placeholder="Upload image"
+              accept="image/*"
+              class="my-2 flex"
+              on:change={(e) => uploadImage(e)}
+              >
+          </Label>
+      </form>
+      {:else}
+      <div class="col-start-2 row-start-1 row-span-3 mt-6 mx-2">
+          <img src="{imageUrl}" alt=""/>
+          <div class="flex flex-row gap-4 mt-2 justify-center">
+            <Button on:click={deleteImageHandler} color='red'>
+              Delete image
+            </Button>
+            <!-- NEED TO CREATE AN EDIT FUNCTION -->
+            <Button>
+              Edit image
+            </Button>
+          </div>
+      </div>
+      {/if}
       <div class="sm:col-span-2">
         <Label for="description" class="mb-2">Description</Label>
         <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description" bind:value={$newRecipe.description}/>
@@ -122,20 +166,7 @@
           </div>
           {/each}
           <Button on:click={() => addIngredient()} class="mt-2" size="sm">Add ingredient</Button>
-          <Label class="mt-4 flex flex-col">
-            <span class="my-2 text-lg font-normal">
-              Upload photo
-            </span>
-            <input 
-            type="file" 
-            placeholder="Upload image"
-            accept="image/*"
-            on:change={(e) => uploadImage(e)}
-            >
-          </Label>
-          {#if imageUrl}
-            <img src="{imageUrl}" alt=""/>
-          {/if}
+
       </div>
     </div>
     <div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4">

@@ -66,11 +66,14 @@
         const response = await uploadImage(acceptedFile[0], $newRecipe.name, supabase)
 
         const { publicUrl, path } = await getImage(response?.path, supabase)
-        imageUrl = publicUrl
-        imagePath = path
+        if (publicUrl) imageUrl = publicUrl
+        if (path) imagePath = path
+
+        $newRecipe.imageUrl = imageUrl
     }
 
     $: console.log("imageUrl is: ", imageUrl);
+    $: console.log("$newRecipe.imageUrl is: ", $newRecipe.imageUrl);
     $: console.log("imagePath is: ", imagePath);
 
     // Delete image
@@ -130,7 +133,7 @@
       </Dropzone>
       {:else}
       <div class="col-start-2 row-start-1 row-span-3 mt-6 mx-2">
-          <img src="{imageUrl}" alt=""/>
+          <img src="{imageUrl}" alt="" class="aspect-4/3 rounded-lg"/>
           <div class="flex flex-row gap-4 mt-2 justify-center">
             <Button on:click={deleteImageHandler} color='red'>
               Delete image

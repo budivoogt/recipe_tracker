@@ -68,11 +68,6 @@ export async function deleteImage(imagePath: string, SupabaseClient: SupabaseCli
 
 // Dropzone logic
 
-const dropzoneFiles = {
-	accepted: [],
-	rejected: []
-}
-
 export function handleFileSelect(e) {
 	const { acceptedFiles, fileRejections } = e.detail
 	const acceptedFile = [...acceptedFiles]

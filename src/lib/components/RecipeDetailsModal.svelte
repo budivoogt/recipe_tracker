@@ -60,21 +60,28 @@
     <div class="border-b-2 border-slate-300 pb-2">
         <h1 class="text-xl font-bold text-gray-700">{$selectedRecipe?.name}</h1>
     </div>
-    <dl class="grid grid-cols-3 gap-4 text-gray-700">
-        <dt class="font-semibold mt-4">Meal type</dt>
-        <dd class="row-start-2">{capitalizeFirstLetter($selectedRecipe?.mealType)}</dd>
-        <dt class="font-semibold mt-4">Cuisine</dt>
-        <dd class="row-start-2">{$selectedRecipe?.cuisine}</dd>
-        <dt class="font-semibold mt-4">Rating</dt>
-        <dd class="row-start-2">
-            {#each [1, 2, 3, 4, 5] as num}
+    <dl class="grid grid-cols-4 gap-4 text-gray-700">
+        <div class="col-start-1 my-auto">
+            <dt class="font-semibold mt-4">Meal type</dt>
+            <dd class="row-start-2">{capitalizeFirstLetter($selectedRecipe?.mealType)}</dd>
+            <dt class="font-semibold mt-4">Cuisine</dt>
+            <dd class="row-start-2">{$selectedRecipe?.cuisine}</dd>
+            <dt class="font-semibold mt-4">Rating</dt>
+            <dd class="row-start-2">
                 {#if $selectedRecipe.rating}
-                    {$selectedRecipe.rating >= num ? '⭐' : '☆'}
+                    {#each [1, 2, 3, 4, 5] as num}
+                        {$selectedRecipe.rating >= num ? '⭐' : '☆'}
+                    {/each}
                 {:else}
-                    <!-- Intentionally empty -->
+                    Not rated
                 {/if}
-            {/each}
-        </dd>
+            </dd>
+        </div>
+        {#if $selectedRecipe.imageUrl}
+        <div class="col-start-3 col-span-2 row-span-3 mx-4 my-auto">
+            <img src="{$selectedRecipe.imageUrl}" alt="" class="aspect-4/3 rounded-lg"/>
+        </div>
+        {/if}
     </dl>
     <dl class="grid grid-cols-1 gap-4 text-gray-700 ">
         <!-- Discover how to make these dd fields rich text -->

@@ -121,19 +121,20 @@
           </div>
       </div>
       {#if !imageUrl}
-      <Dropzone 
-          on:drop={dropzoneFileUploadHandler}
-          accept="image/*"
-          multiple={false}
-          containerClasses="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center"
+      <Dropzone
+        on:drop={dropzoneFileUploadHandler}
+        accept="image/*"
+        multiple={false}
+        containerClasses="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center"
+        maxSize={5 * 1024 * 1024}
       >
         <p class="">
           Drag and drop, or click, to upload an image.
         </p>
       </Dropzone>
       {:else}
-      <div class="col-start-2 row-start-1 row-span-3 mt-6 mx-2">
-          <img src="{imageUrl}" alt="" class="aspect-4/3 rounded-lg"/>
+      <div class="col-start-2 row-start-1 row-span-3 mt-6">
+          <img src="{imageUrl}" alt="" class="rounded-lg object-contain max-h-48 mx-auto"/>
           <div class="flex flex-row gap-4 mt-2 justify-center">
             <Button on:click={deleteImageHandler} color='red'>
               Delete image

@@ -11,6 +11,7 @@ type Recipe = {
 	ingredients: Ingredient[] | null
 	rating: number | null
 	order: number | null
+	imageUrl: string | null
 }
 
 type Ingredient = {

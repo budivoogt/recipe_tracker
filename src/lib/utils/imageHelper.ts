@@ -75,9 +75,9 @@ const dropzoneFiles = {
 
 export function handleFileSelect(e) {
 	const { acceptedFiles, fileRejections } = e.detail
+	const acceptedFile = [...acceptedFiles]
+	const rejectedFile = [...fileRejections]
+	console.log("acceptedFile is: ", acceptedFile)
 
-	dropzoneFiles.accepted = [...dropzoneFiles.accepted, ...acceptedFiles]
-	dropzoneFiles.rejected = [...dropzoneFiles.rejected, ...fileRejections]
-
-	return { acceptedFiles: dropzoneFiles.accepted, rejectedFiles: dropzoneFiles.rejected }
+	return { acceptedFile, rejectedFile }
 }

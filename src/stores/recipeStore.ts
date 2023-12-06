@@ -15,7 +15,8 @@ const defaultNewRecipe: Recipe = {
 	servingSize: null,
 	ingredients: [{ item: "", quantity: "", acquired: false }],
 	rating: null,
-	order: null
+	order: null,
+	imageUrl: null
 }
 
 export const newRecipe = writable<Recipe>(defaultNewRecipe)
@@ -30,7 +31,8 @@ export function getDefaultNewRecipe() {
 		servingSize: null,
 		ingredients: [{ item: "", quantity: "", acquired: false }],
 		rating: null,
-		order: null
+		order: null,
+		imageUrl: null
 	}
 }
 

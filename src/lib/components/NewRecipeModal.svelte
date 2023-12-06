@@ -61,9 +61,9 @@
     let imagePath: string | null = null
 
     async function dropzoneFileUploadHandler (e) {
-        const { acceptedFiles, rejectedFiles } = handleFileSelect(e)
+        const { acceptedFile, rejectedFile } = handleFileSelect(e)
 
-        const response = await uploadImage(acceptedFiles[0], $newRecipe.name, supabase)
+        const response = await uploadImage(acceptedFile[0], $newRecipe.name, supabase)
 
         const { publicUrl, path } = await getImage(response?.path, supabase)
         imageUrl = publicUrl
@@ -123,7 +123,11 @@
           accept="image/*"
           multiple={false}
           containerClasses="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center"
-      />
+      >
+        <p class="">
+          Drag and drop, or click, to upload an image.
+        </p>
+      </Dropzone>
       {:else}
       <div class="col-start-2 row-start-1 row-span-3 mt-6 mx-2">
           <img src="{imageUrl}" alt=""/>

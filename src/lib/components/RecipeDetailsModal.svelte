@@ -60,7 +60,7 @@
     <div class="border-b-2 border-slate-300 pb-2">
         <h1 class="text-xl font-bold text-gray-700">{$selectedRecipe?.name}</h1>
     </div>
-    <dl class="grid grid-cols-2 gap-4 text-gray-700">
+    <dl class="grid grid-cols-2 text-gray-700">
         <div class="col-start-1 my-auto">
             <dt class="font-semibold mt-4">Meal type</dt>
             <dd class="row-start-2">{capitalizeFirstLetter($selectedRecipe?.mealType)}</dd>
@@ -78,8 +78,8 @@
             </dd>
         </div>
         {#if $selectedRecipe.imageUrl}
-        <div class="col-start-2 row-span-3 mx-2 my-auto">
-            <img src="{$selectedRecipe.imageUrl}" alt="" class="rounded-lg object-contain max-h-56"/>
+        <div class="col-start-2 row-start-1 row-span-3 mx-auto my-auto">
+            <img src="{$selectedRecipe.imageUrl}" alt="" class="rounded-lg aspect-4/3 object-cover"/>
         </div>
         {/if}
     </dl>

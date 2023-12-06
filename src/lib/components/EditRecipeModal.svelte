@@ -1,7 +1,9 @@
 <script lang="ts">
+    import { deleteImage, getImage, handleFileSelect, uploadImage } from "$lib/utils/imageHelper"
     import { deepCopyRecipe, mealTypes, showEditRecipe } from "$lib/utils/recipeHelpers"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
+    import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
     import { writable } from "svelte/store"
     import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
     import AlertModal from "./AlertModal.svelte"
@@ -70,25 +72,56 @@
       showDiscardAlert = false
       $showEditRecipe = true
     }
+
+    // Display image
+    let imageUrl: string | null = null
+    let imagePath: string | null = null
+
+    async function dropzoneFileUploadHandler (e) {
+        const { acceptedFile, rejectedFile } = handleFileSelect(e)
+
+        const response = await uploadImage(acceptedFile[0], $selectedRecipeForEditing.name, supabase)
+
+        const { publicUrl, path } = await getImage(response?.path, supabase)
+        if (publicUrl) imageUrl = publicUrl
+        if (path) imagePath = path
+
+        $selectedRecipeForEditing.imageUrl = imageUrl
+    }
+
+    $: console.log("imageUrl is: ", imageUrl);
+    $: console.log("$newRecipe.imageUrl is: ", $selectedRecipeForEditing.imageUrl);
+    $: console.log("imagePath is: ", imagePath);
+
+    // Delete image
+
+    async function deleteImageHandler () {
+        const response = await deleteImage(imagePath, supabase)
+          if (response) {
+            $selectedRecipeForEditing.imageUrl = null
+            imageUrl = null
+            imagePath = null
+          }
+    }
 </script>
 
 <Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-full">
 <form on:submit|preventDefault={handleSubmit}>
-    <div class="grid gap-4 mb-4 sm:grid-cols-2">
-      <div>
+    <div class="grid gap-4 mb-4 grid-cols-2">
+      <div class="col-start-1">
         <Label for="name" class="mb-2">Name</Label>
         <Input type="text" id="name" placeholder="Recipe name" bind:value={$selectedRecipeForEditing.name} required />
       </div>
-      <div>
+      <div class="col-start-1">
         <Label for="mealType" class="mb-2">Meal type
           <Select class="mt-2" items={mealTypes} bind:value={$selectedRecipeForEditing.mealType} required />
         </Label>
       </div>
-      <div>
+      <div class="col-start-1">
           <Label for="cuisine" class="mb-2">Cuisine</Label>
           <Input type="text" id="cuisine" placeholder="Italian, Greek, etc." bind:value={$selectedRecipeForEditing.cuisine} required />
       </div>
-      <div class="text-xl cursor-pointer flex flex-col items-center">
+      <div class="text-xl cursor-pointer flex flex-col items-center col-start-1">
           <span class="text-sm font-medium block text-gray-900 dark:text-gray-300 mb-3">Rating</span>
           <div class="">
           {#each [1, 2, 3, 4, 5] as num}
@@ -103,6 +136,34 @@
           {/each}
           </div>
       </div>
+      {#if !$selectedRecipeForEditing.imageUrl}
+      <div class="col-start-2 row-start-1 row-span-2 mt-6 my-auto flex h-full">
+        <Dropzone
+          on:drop={dropzoneFileUploadHandler}
+          accept="image/*"
+          multiple={false}
+          containerClasses="my-auto mx-auto items-center"
+          maxSize={5 * 1024 * 1024}
+        >
+          <p class="">
+            Drag and drop, or click, to upload an image.
+          </p>
+        </Dropzone>
+      </div>
+      {:else}
+      <div class="col-start-2 row-start-1 row-span-4 mt-6 flex flex-col">
+          <img src="{$selectedRecipeForEditing.imageUrl}" alt="" class="rounded-lg aspect-4/3 object-cover"/>
+          <div class="flex flex-row gap-4 mt-2 justify-center">
+            <Button on:click={deleteImageHandler} color='red'>
+              Delete image
+            </Button>
+            <!-- NEED TO CREATE AN EDIT FUNCTION -->
+            <Button>
+              Edit image
+            </Button>
+          </div>
+      </div>
+      {/if}
       <div class="sm:col-span-2">
         <Label for="description" class="mb-2">Description</Label>
         <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description" bind:value={$selectedRecipeForEditing.description}/>

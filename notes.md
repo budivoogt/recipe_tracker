@@ -30,14 +30,13 @@
 
 ## Features to add
 
-### RecipeDetailsModal
-
--   [x] Make search apply to ingredients too.
 
 ### RecipeDetailsModal
 
--   [ ] Show recipe image.
+-   [ ] Add animations to uploads when they aren't completed yet.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
+-   [x] Show recipe image.
+-   [x] Make search apply to ingredients too.
 -   [x] Confirmation modal for delete recipe.
 -   [x] Added rating icons
 -   [x] Capitalize first letter of mealType.

@@ -101,7 +101,7 @@
   <div class="shadow-lg relative bg-white rounded-t-md pt-1">
     <div class="flex flex-col md:flex-row items-center justify-between m-4 md:mx-4">
       <TableSearch placeholder="Search name or ingredient" bind:inputValue={searchTerm} searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg' divClass='relative overflow-x-auto m-2 md:mx-2'/>
-    <div class="flex flex-col md:flex-row items-stretch md:items-center justify-end gap-2 my-2 md:mx-2 overflow-visible">
+    <div class="flex flex-row items-center gap-2 my-2 md:mx-2 overflow-visible">
         <Button on:click={() => (showNewRecipe.set(true))} color='green'>✚ Add recipe</Button>
         <Button>🔍 Filter</Button>
         <Dropdown class="w-fit px-1">

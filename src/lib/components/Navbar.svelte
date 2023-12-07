@@ -24,7 +24,7 @@
     $: isActive = (path: string) => $page.url.pathname === path ? 'bg-orange-400' : ""
 </script>
 
-<nav class="flex flex-row justify-center gap-2 my-4">
+<nav class="flex flex-wrap gap-2 justify-center my-4">
     <Button size="sm" href="/" class={`shadow ${isActive('/')}`}>Home</Button>
     {#if $user}
     <Button size="sm" href="/randomizer" class={`shadow ${isActive('/randomizer')}`}>Randomizer</Button>

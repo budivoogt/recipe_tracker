@@ -52,8 +52,8 @@
 
 <div class="flex flex-col min-h-screen bg-orange-200">
 	<Navbar/>
-	<slot />
-	<div class="mt-auto">
+	<slot class=""/>
+	<div class="">
 		<Footer/>
 	</div>
 </div>

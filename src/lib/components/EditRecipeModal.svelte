@@ -40,14 +40,12 @@
         const newIngredient = {item: "", quantity: "", acquired: false}
         $ingredients.push(newIngredient)
         $ingredients = $ingredients.map((i) => ({...i}))
-        // console.log("Ingredient added. Ingredients now: ", $ingredients);
       }
       
       const removeIngredient = (index: number) => {
         let deletedIngredient = $ingredients.splice(index, (index + 1))
         $ingredients.splice(index, 1)
         $ingredients = $ingredients.map((i) => ({...i}))
-        // console.log("Ingredient removed: ", deletedIngredient);
     }
 
     // Discard & exit logic
@@ -64,8 +62,6 @@
         $ingredients = $selectedRecipeForEditing.ingredients?.map((i) => ({...i}))
         $showEditRecipe = false
         showDiscardAlert = false
-        // console.log("$ingredients reset to: ", $ingredients);
-        // console.log("selectedRecipeForEditing reset to: ", $selectedRecipeForEditing);
     }
     
     function discardCancelHandler () {
@@ -107,7 +103,7 @@
 
 <Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-full">
 <form on:submit|preventDefault={handleSubmit}>
-    <div class="grid gap-4 mb-4 grid-cols-2">
+    <div class="grid gap-y-2 gap-x-4 grid-cols-2">
       <div class="col-start-1">
         <Label for="name" class="mb-2">Name</Label>
         <Input type="text" id="name" placeholder="Recipe name" bind:value={$selectedRecipeForEditing.name} required />
@@ -122,7 +118,7 @@
           <Input type="text" id="cuisine" placeholder="Italian, Greek, etc." bind:value={$selectedRecipeForEditing.cuisine} required />
       </div>
       <div class="text-xl cursor-pointer flex flex-col items-center col-start-1">
-          <span class="text-sm font-medium block text-gray-900 dark:text-gray-300 mb-3">Rating</span>
+          <span class="text-sm font-medium block text-gray-900 dark:text-gray-300 mb-2">Rating</span>
           <div class="">
           {#each [1, 2, 3, 4, 5] as num}
               <span 
@@ -158,27 +154,27 @@
               Delete image
             </Button>
             <!-- NEED TO CREATE AN EDIT FUNCTION -->
-            <Button>
+            <!-- <Button>
               Edit image
-            </Button>
+            </Button> -->
           </div>
       </div>
       {/if}
-      <div class="sm:col-span-2">
+      <div class="col-span-2">
         <Label for="description" class="mb-2">Description</Label>
         <Textarea id="description" placeholder="A short description of the recipe." rows="1" name="description" bind:value={$selectedRecipeForEditing.description}/>
       </div>
-      <div class="sm:col-span-2">
+      <div class="col-span-2">
         <Label for="instructions" class="mb-2">Instructions</Label>
         <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="3" name="instructions" bind:value={$selectedRecipeForEditing.instructions}/>
       </div>
-      <div class="sm:col-span-2">
+      <div class="col-span-2">
           <Label for="servingSize" class="mb-2">Serving size
             <Range id="servingSize" min="1" max="8" bind:value={$selectedRecipeForEditing.servingSize} class="my-2"/>
             <span class=" font-light italic ">Serves {$selectedRecipeForEditing.servingSize} {$selectedRecipeForEditing.servingSize === 1 ? `person` : `people`}</span>
         </Label>
       </div>
-      <div class="sm:col-span-2 gap-2">
+      <div class="col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
           {#each $ingredients as ingredient, index}
           <div class="flex items-center gap-2 mt-2">

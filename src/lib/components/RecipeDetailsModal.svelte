@@ -61,12 +61,12 @@
         <h1 class="text-xl font-bold text-gray-700">{$selectedRecipe?.name}</h1>
     </div>
     <dl class="grid grid-cols-2 text-gray-700">
-        <div class="col-start-1 my-auto">
-            <dt class="font-semibold mt-4">Meal type</dt>
+        <div class="col-start-1 grid-flow-col">
+            <dt class="font-semibold">Meal type</dt>
             <dd class="row-start-2">{capitalizeFirstLetter($selectedRecipe?.mealType)}</dd>
-            <dt class="font-semibold mt-4">Cuisine</dt>
+            <dt class="font-semibold">Cuisine</dt>
             <dd class="row-start-2">{$selectedRecipe?.cuisine}</dd>
-            <dt class="font-semibold mt-4">Rating</dt>
+            <dt class="font-semibold">Rating</dt>
             <dd class="row-start-2">
                 {#if $selectedRecipe.rating}
                     {#each [1, 2, 3, 4, 5] as num}

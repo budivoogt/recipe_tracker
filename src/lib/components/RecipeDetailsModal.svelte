@@ -83,9 +83,9 @@
         </div>
         {/if}
     </dl>
-    <dl class="grid grid-cols-1 gap-4 text-gray-700 ">
+    <dl class="grid grid-cols-1  text-gray-700 ">
         <!-- Discover how to make these dd fields rich text -->
-        <dt class="font-semibold mt-4 border-t-2 border-slate-300 pt-4">Description</dt>
+        <dt class="font-semibold border-t-2 border-slate-300 pt-4">Description</dt>
         <dd class="">{$selectedRecipe?.description}</dd>
         <dt class="font-semibold mt-4">Instructions</dt>
         <dd class="">{$selectedRecipe?.instructions}</dd>

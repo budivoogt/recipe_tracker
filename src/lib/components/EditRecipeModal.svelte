@@ -166,11 +166,11 @@
       {/if}
       <div class="sm:col-span-2">
         <Label for="description" class="mb-2">Description</Label>
-        <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description" bind:value={$selectedRecipeForEditing.description}/>
+        <Textarea id="description" placeholder="A short description of the recipe." rows="1" name="description" bind:value={$selectedRecipeForEditing.description}/>
       </div>
       <div class="sm:col-span-2">
         <Label for="instructions" class="mb-2">Instructions</Label>
-        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="4" name="instructions" bind:value={$selectedRecipeForEditing.instructions}/>
+        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="3" name="instructions" bind:value={$selectedRecipeForEditing.instructions}/>
       </div>
       <div class="sm:col-span-2">
           <Label for="servingSize" class="mb-2">Serving size

@@ -97,12 +97,13 @@
 
 </script>
 
-<div class="mx-auto mt-6 md:w-3/4 px-4 w-11/12">
+<div class="mx-auto mt-4 md:mt-6 md:w-3/4 px-2 w-full">
   <div class="shadow-lg relative bg-white rounded-t-md pt-1">
+    <h1 class="text-2xl text-center my-4">Browse recipes</h1>
     <div class="flex flex-col md:flex-row items-center justify-between m-4 md:mx-4">
-      <TableSearch placeholder="Search name or ingredient" bind:inputValue={searchTerm} searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg' divClass='relative overflow-x-auto m-2 md:mx-2'/>
-    <div class="flex flex-row items-center gap-2 my-2 md:mx-2 overflow-visible">
-        <Button on:click={() => (showNewRecipe.set(true))} color='green'>✚ Add recipe</Button>
+      <TableSearch placeholder="Search name or ingredient" bind:inputValue={searchTerm} searchClass="w-full md:w-1/2 relative" innerDivClass='relative sm:rounded-lg' divClass='relative overflow-x-auto mb-2 md:mx-2'/>
+    <div class="flex flex-row gap-2 my-auto md:mb-2 md:mx-2 overflow-visible">
+        <Button on:click={() => (showNewRecipe.set(true))} color='green'>✚ Add</Button>
         <Button>🔍 Filter</Button>
         <Dropdown class="w-fit px-1">
             <DropdownItem class="flex flex-row">
@@ -146,11 +147,11 @@
                 {/each}
             </Dropdown>
         </Dropdown>
-        <Button on:click={() => $showDeleteRecipesConfirmation = true} color='red'>☠️ Delete recipes</Button>
+        <Button on:click={() => $showDeleteRecipesConfirmation = true} color='red'>☠️ Delete all</Button>
     </div>
   </div>
   <Table hoverable shadow divClass='overflow-x-auto'>
-      <TableHead class=" bg-orange-400 font-bold text-md">
+      <TableHead class=" bg-orange-400 font-bold text-black text-md">
         <TableHeadCell class="hover:bg-orange-500 hover:cursor-pointer" on:click={() => sortTable("name")}>
           <div class="flex flex-row justify-between">
           Recipe name <ChevronSortSolid size='xs' class="my-auto ml-1"/>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RecipeTable from "./../../lib/components/recipetable.svelte"
+    import RecipeTable from '$lib/components/RecipeTable.svelte'
     
     export let data
     let { supabase } = data

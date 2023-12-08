@@ -3,8 +3,10 @@
     import { deepCopyRecipe, mealTypes, showEditRecipe } from "$lib/utils/recipeHelpers"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
+    import { tick } from "svelte"
     import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
     import { writable } from "svelte/store"
+    import { v4 as uuidv4 } from "uuid"
     import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
     import AlertModal from "./AlertModal.svelte"
 
@@ -35,15 +37,17 @@
     
     // Ingredient logic
     $: ingredients = writable($selectedRecipeForEditing.ingredients || [])
+    let ingredientRefs: HTMLInputElement[] = []
 
-    const addIngredient = () => {
-        const newIngredient = {item: "", quantity: "", acquired: false}
+    const addIngredient = async () => {
+        const newIngredient = {item: "", quantity: "", acquired: false, id: uuidv4()}
         $ingredients.push(newIngredient)
         $ingredients = $ingredients.map((i) => ({...i}))
+        await tick()
+        ingredientRefs[$ingredients.length - 1].focus()
       }
       
       const removeIngredient = (index: number) => {
-        let deletedIngredient = $ingredients.splice(index, (index + 1))
         $ingredients.splice(index, 1)
         $ingredients = $ingredients.map((i) => ({...i}))
     }
@@ -84,10 +88,6 @@
 
         $selectedRecipeForEditing.imageUrl = imageUrl
     }
-
-    $: console.log("imageUrl is: ", imageUrl);
-    $: console.log("$newRecipe.imageUrl is: ", $selectedRecipeForEditing.imageUrl);
-    $: console.log("imagePath is: ", imagePath);
 
     // Delete image
 
@@ -153,10 +153,6 @@
             <Button on:click={deleteImageHandler} color='red'>
               Delete image
             </Button>
-            <!-- NEED TO CREATE AN EDIT FUNCTION -->
-            <!-- <Button>
-              Edit image
-            </Button> -->
           </div>
       </div>
       {/if}
@@ -176,9 +172,9 @@
       </div>
       <div class="col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
-          {#each $ingredients as ingredient, index}
+          {#each $ingredients as ingredient, index (ingredient.id)}
           <div class="flex items-center gap-2 mt-2">
-              <Input type="text" placeholder="Item" bind:value={ingredient.item}/>
+              <input type="text" placeholder="Item" bind:value={ingredient.item} bind:this={ingredientRefs[index]} class="block w-full disabled:cursor-not-allowed disabled:opacity-50 p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-500 text-sm rounded-lg "/>
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />
               <Checkbox bind:checked={ingredient.acquired} class="p-2"/>
               <Button on:click={() => removeIngredient(index)} size="xs" color="red">X</Button>

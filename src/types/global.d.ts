@@ -18,4 +18,5 @@ type Ingredient = {
 	item: string
 	quantity: string
 	acquired: boolean
+	id: string | null
 }

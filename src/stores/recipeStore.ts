@@ -1,6 +1,7 @@
 import { resetAllRecipes } from "$lib/utils/resetRecipes"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { writable } from "svelte/store"
+import { v4 as uuidv4 } from "uuid"
 
 export const recipesStore = writable<Recipe[]>([])
 export const selectedRecipe = writable<Recipe>()
@@ -13,7 +14,7 @@ const defaultNewRecipe: Recipe = {
 	description: "",
 	instructions: "",
 	servingSize: null,
-	ingredients: [{ item: "", quantity: "", acquired: false }],
+	ingredients: [{ item: "", quantity: "", acquired: false, id: uuidv4() }],
 	rating: null,
 	order: null,
 	imageUrl: null
@@ -29,7 +30,7 @@ export function getDefaultNewRecipe() {
 		description: "",
 		instructions: "",
 		servingSize: null,
-		ingredients: [{ item: "", quantity: "", acquired: false }],
+		ingredients: [{ item: "", quantity: "", acquired: false, id: uuidv4() }],
 		rating: null,
 		order: null,
 		imageUrl: null

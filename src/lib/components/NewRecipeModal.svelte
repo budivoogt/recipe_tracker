@@ -4,8 +4,10 @@
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
     import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
+    import { tick } from "svelte"
     import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
     import { writable } from "svelte/store"
+    import { v4 as uuidv4 } from "uuid"
     import { addRecipe, newRecipe } from "../../stores/recipeStore"
 
     export let supabase: SupabaseClient
@@ -45,10 +47,13 @@
 
     // Ingredient logic
     $: ingredients = $newRecipe.ingredients || []
+    let ingredientRefs: HTMLInputElement[] = []
 
-    const addIngredient = () => {
-        $newRecipe.ingredients?.push({item: "", quantity: "", acquired: false})
+    const addIngredient = async () => {
+        $newRecipe.ingredients?.push({item: "", quantity: "", acquired: false, id: uuidv4()})
         newRecipe.set({...$newRecipe})
+        await tick()
+        if ($newRecipe.ingredients) ingredientRefs[$newRecipe.ingredients.length - 1].focus()
     }
 
     const removeIngredient = (index: number) => {
@@ -71,10 +76,6 @@
 
         $newRecipe.imageUrl = imageUrl
     }
-
-    $: console.log("imageUrl is: ", imageUrl);
-    $: console.log("$newRecipe.imageUrl is: ", $newRecipe.imageUrl);
-    $: console.log("imagePath is: ", imagePath);
 
     // Delete image
 
@@ -133,8 +134,8 @@
         </p>
       </Dropzone>
       {:else}
-      <div class="col-start-2 row-start-1 row-span-3 mt-6">
-          <img src="{imageUrl}" alt="" class="rounded-lg object-contain max-h-48 mx-auto"/>
+      <div class="col-start-2 row-start-1 row-span-4 mt-6 flex flex-col">
+          <img src="{imageUrl}" alt="" class="rounded-lg aspect-4/3 object-cover"/>
           <div class="flex flex-row gap-4 mt-2 justify-center">
             <Button on:click={deleteImageHandler} color='red'>
               Delete image
@@ -146,25 +147,27 @@
           </div>
       </div>
       {/if}
-      <div class="sm:col-span-2">
+      <div class="col-span-2">
         <Label for="description" class="mb-2">Description</Label>
         <Textarea id="description" placeholder="A short description of the recipe." rows="2" name="description" bind:value={$newRecipe.description}/>
       </div>
-      <div class="sm:col-span-2">
+      <div class="col-span-2">
         <Label for="instructions" class="mb-2">Instructions</Label>
-        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="4" name="instructions" bind:value={$newRecipe.instructions}/>
+        <Textarea id="instructions" placeholder="How do you prepare this recipe?" rows="3" name="instructions" bind:value={$newRecipe.instructions}/>
       </div>
-      <div class="sm:col-span-2">
+      <div class="col-span-2">
           <Label for="servingSize" class="mb-2">Serving size
             <Range id="servingSize" min="1" max="8" bind:value={$servingSizeValue} on:change={(e) => updateServingSize($servingSizeValue)} class="my-2"/>
             <span class=" font-light italic ">Serves {$servingSizeValue} {$servingSizeValue === 1 ? `person` : `people`}</span>
         </Label>
       </div>
-      <div class="sm:col-span-2 gap-2">
+      <div class="col-span-2 gap-2">
           <Label for="ingredients" class="mb-2">Ingredients</Label>
-          {#each ingredients as ingredient, index}
+          {#each ingredients as ingredient, index (ingredient.id)}
           <div class="flex items-center gap-2 my-2">
-              <Input type="text" placeholder="Item" bind:value={ingredient.item}/>
+              <input type="text" placeholder="Item" bind:value={ingredient.item} bind:this={ingredientRefs[index]} class="block w-full disabled:cursor-not-allowed disabled:opacity-50 p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-500 text-sm rounded-lg "/>
+              <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />
+              <!-- <Input type="text" placeholder="Item" bind:value={ingredient.item}/> -->
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />
               <Checkbox bind:checked={ingredient.acquired} class="p-2"/>
               <Button on:click={() => removeIngredient(index)} size="xs" color="red">X</Button>

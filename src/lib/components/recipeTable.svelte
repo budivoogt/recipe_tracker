@@ -119,18 +119,18 @@
 	})
 </script>
 
-<div class="mx-auto mt-4 md:mt-6 md:w-3/4 px-2 w-full">
-	<div class="shadow-lg relative bg-white rounded-t-md pt-1">
-		<h1 class="text-2xl text-center my-4">Browse recipes</h1>
-		<div class="flex flex-col md:flex-row items-center justify-between m-4 md:mx-4">
+<div class="mx-auto mt-4 w-full px-2 md:mt-6 md:w-3/4">
+	<div class="relative rounded-t-md bg-white pt-1 shadow-lg">
+		<h1 class="my-4 text-center text-2xl">Browse recipes</h1>
+		<div class="m-4 flex flex-col items-center justify-between md:mx-4 md:flex-row">
 			<TableSearch
 				placeholder="Search name or ingredient"
 				bind:inputValue={searchTerm}
-				searchClass="w-full md:w-1/2 relative"
+				searchClass="relative w-full md:w-1/2 "
 				innerDivClass="relative sm:rounded-lg"
-				divClass="relative overflow-x-auto mb-2 md:mx-2"
+				divClass="relative mb-2 overflow-x-auto md:mx-2"
 			/>
-			<div class="flex flex-row gap-2 my-auto md:mb-2 md:mx-2 overflow-visible">
+			<div class="my-auto flex flex-row gap-2 overflow-visible md:mx-2 md:mb-2">
 				<Button on:click={() => showNewRecipe.set(true)} color="green">✚ Add</Button>
 				<Button>🔍 Filter</Button>
 				<Dropdown class="w-fit px-1">
@@ -187,9 +187,9 @@
 			</div>
 		</div>
 		<Table hoverable shadow divClass="overflow-x-auto">
-			<TableHead class=" bg-orange-400 font-bold text-black text-md">
+			<TableHead class=" text-md bg-orange-400 font-bold text-black">
 				<TableHeadCell
-					class="hover:bg-orange-500 hover:cursor-pointer"
+					class="hover:cursor-pointer hover:bg-orange-500"
 					on:click={() => sortTable("name")}
 				>
 					<div class="flex flex-row justify-between">
@@ -197,7 +197,7 @@
 					</div>
 				</TableHeadCell>
 				<TableHeadCell
-					class="hover:bg-orange-500 hover:cursor-pointer"
+					class="hover:cursor-pointer hover:bg-orange-500"
 					on:click={() => sortTable("mealType")}
 				>
 					<div class="flex flex-row justify-between">
@@ -205,7 +205,7 @@
 					</div>
 				</TableHeadCell>
 				<TableHeadCell
-					class="hover:bg-orange-500 hover:cursor-pointer "
+					class="hover:cursor-pointer hover:bg-orange-500 "
 					on:click={() => sortTable("cuisine")}
 				>
 					<div class="flex flex-row justify-between">
@@ -213,7 +213,7 @@
 					</div>
 				</TableHeadCell>
 				<TableHeadCell
-					class="hover:bg-orange-500 hover:cursor-pointer "
+					class="hover:cursor-pointer hover:bg-orange-500 "
 					on:click={() => sortTable("rating")}
 				>
 					<div class="flex flex-row justify-between">

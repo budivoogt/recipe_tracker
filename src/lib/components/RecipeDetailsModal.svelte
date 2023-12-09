@@ -53,6 +53,12 @@
         $showRecipeDetails = true
     }
 
+    // Image loading
+    let imageLoaded = false
+    function handleImageLoad () {
+        imageLoaded = true
+    }
+
 </script>
 
 {#if $selectedRecipe}
@@ -78,9 +84,9 @@
             </dd>
         </div>
         {#if $selectedRecipe.imageUrl}
-        <div class="col-start-2 row-start-1 row-span-3 mx-auto my-auto">
-            <img src="{$selectedRecipe.imageUrl}" alt="" class="rounded-lg aspect-4/3 object-cover"/>
-        </div>
+            <div class="col-start-2 row-start-1 row-span-3 mx-auto my-auto">
+                <img src="{$selectedRecipe.imageUrl}" alt="" class="rounded-lg aspect-4/3 object-cover"/>
+            </div>
         {/if}
     </dl>
     <dl class="grid grid-cols-1  text-gray-700 ">

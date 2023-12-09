@@ -64,17 +64,26 @@
     // Display image
     let imageUrl: string | null = null
     let imagePath: string | null = null
+    let imageLoading: boolean = false
 
     async function dropzoneFileUploadHandler (e) {
         const { acceptedFile, rejectedFile } = handleFileSelect(e)
 
-        const response = await uploadImage(acceptedFile[0], $newRecipe.name, supabase)
-
-        const { publicUrl, path } = await getImage(response?.path, supabase)
-        if (publicUrl) imageUrl = publicUrl
-        if (path) imagePath = path
-
-        $newRecipe.imageUrl = imageUrl
+        try {
+            imageLoading = true
+            
+            const response = await uploadImage(acceptedFile[0], $newRecipe.name, supabase)
+    
+            const { publicUrl, path } = await getImage(response?.path, supabase)
+            if (publicUrl) imageUrl = publicUrl
+            if (path) imagePath = path
+    
+            $newRecipe.imageUrl = imageUrl
+        } catch (error) {
+            console.error("File couldn't be uploaded ", error);
+        } finally {
+            imageLoading= false
+        }
     }
 
     // Delete image
@@ -122,17 +131,27 @@
           </div>
       </div>
       {#if !imageUrl}
-      <Dropzone
-        on:drop={dropzoneFileUploadHandler}
-        accept="image/*"
-        multiple={false}
-        containerClasses="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center"
-        maxSize={5 * 1024 * 1024}
-      >
-        <p class="">
-          Drag and drop, or click, to upload an image.
-        </p>
-      </Dropzone>
+          {#if !imageLoading}
+          <Dropzone
+            on:drop={dropzoneFileUploadHandler}
+            accept="image/*"
+            multiple={false}
+            containerClasses="col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center"
+            maxSize={5 * 1024 * 1024}
+          >
+            <p class="">
+              Drag and drop, or click, to upload an image.
+            </p>
+          </Dropzone>
+          {:else}
+          <div class="rounded text-lg col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center">
+              Loading...
+              <svg stroke="currentColor" fill="none" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="w-1/2 h-1/2 my-4 animate-spin mx-auto">
+                  <path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor">
+                  </path>
+                  <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>
+          </div>
+          {/if}
       {:else}
       <div class="col-start-2 row-start-1 row-span-4 mt-6 flex flex-col">
           <img src="{imageUrl}" alt="" class="rounded-lg aspect-4/3 object-cover"/>
@@ -140,7 +159,6 @@
             <Button on:click={deleteImageHandler} color='red'>
               Delete image
             </Button>
-            <!-- NEED TO CREATE AN EDIT FUNCTION -->
             <Button>
               Edit image
             </Button>

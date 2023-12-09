@@ -30,8 +30,8 @@
 
 ### RecipeDetailsModal
 
--   [ ] Add animations to uploads when they aren't completed yet.
 -   [ ] Clear all feature for ingredients after you cooked the recipe.
+-   [x] Add animations to uploads when they aren't completed yet.
 -   [x] Show recipe image.
 -   [x] Make search apply to ingredients too.
 -   [x] Confirmation modal for delete recipe.
@@ -41,7 +41,6 @@
 ## Bugs
 
 -   [ ] Make serialized ingredients JSONB instead of JSON.
--   [ ] Figure out how to avoid instantiating an empty ingredient for each recipe. Currently this is necessary to have Svelte's conditional rendering to display the different ingredients.
 -   [x] When on the /recipes page, logging out doesn't redirect you.
 -   [x] When adding a recipe, the push to the Supabase database is giving a 400 Bad Request error.
 -   [x] newRecipes isn't clearing after successful submission of recipes.

@@ -22,7 +22,6 @@
         $selectedRecipe = recipe
         $showRecipeDetails = true
         console.log("handleRecipeClick clicked with recipe: ", recipe);
-        
   }
 		
 </script>

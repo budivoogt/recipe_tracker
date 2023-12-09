@@ -44,30 +44,34 @@ export function generateRandomRecipes(mealType: string) {
 	filteredRecipes.sort(() => 0.5 - Math.random())
 
 	const selectedRecipes: Recipe[] = []
+	const uniqueCuisines = new Set(filteredRecipes.map((r) => r.cuisine))
 	const selectedCuisines = new Set()
 
 	for (const recipe of filteredRecipes) {
 		if (selectedRecipes.length >= 2) break
 
-		// Keep adding recipes as long as they are from distinct cuisines
+		// Add first recipe
 		if (selectedRecipes.length === 0 || !selectedCuisines.has(recipe.cuisine)) {
 			selectedRecipes.push(recipe)
 			selectedCuisines.add(recipe.cuisine)
 		}
 	}
 
+	// Add second recipe
 	if (selectedRecipes.length === 1 && filteredRecipes.length > 1) {
 		let additionalRecipe: Recipe
 
+		// Start loop by generating random recipe
 		do {
 			additionalRecipe = filteredRecipes[Math.floor(Math.random() * filteredRecipes.length)]
+			// If the while condition is true, the loop will run again
 		} while (
 			selectedRecipes[0].id === additionalRecipe.id ||
-			selectedCuisines.has(additionalRecipe.cuisine)
+			(selectedCuisines.has(additionalRecipe.cuisine) && uniqueCuisines.size > 1)
 		)
 
 		selectedRecipes.push(additionalRecipe)
 	}
-	
+
 	return selectedRecipes
 }

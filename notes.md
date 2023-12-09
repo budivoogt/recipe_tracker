@@ -3,22 +3,20 @@
 -   [ ] Descriptive landing page
 -   [x] Supabase authentication with username and password
 -   [x] Page structure: Dashboard, Recipe Explorer
--   [ ] Dashboard page: Add recipe, get recommendation, analytics
-    -   [ ] Add recipe button with pop-out. Component should be re-used in Recipe Explorer
-    -   [x] Recommendation engine: 2 random suggestions based on mealType, prioritising unique cuisines.
--   [ ] Recipe structure: description, ingredients, cuisine, meal type, image
+-   [x] Recommendation engine: 2 random suggestions based on mealType, prioritising unique cuisines.
+-   [x] Recipe structure: description, ingredients, cuisine, meal type, image
     -   [x] Create writable and type
     -   [x] Create Supabase database
     -   [x] Integrate cloud image hosting provider
     -   [x] Checklist for buying ingredients
--   [ ] Recipe Explorer page
+-   [x] Recipe Explorer page
     -   [x] Search bar
     -   [x] List of recipes
     -   [x] Sort & filter
         -   [x] Sort by: date created, meal type, cuisine.
         -   [x] Filter by: meal type,
 -   [ ] Analytics: # of recipies, most popular ingredients, most cooked
--   [ ] Making the application mobile responsive. Test on iPhone 12-14 and iPad formats. Pay special attention to using the application on mobile where you don't have a cursor.
+-   [x] Making the application mobile responsive. Test on iPhone 12-14 and iPad formats. Pay special attention to using the application on mobile where you don't have a cursor.
 
 # Recipe database
 
@@ -30,7 +28,6 @@
 
 ## Features to add
 
-
 ### RecipeDetailsModal
 
 -   [ ] Add animations to uploads when they aren't completed yet.
@@ -40,10 +37,6 @@
 -   [x] Confirmation modal for delete recipe.
 -   [x] Added rating icons
 -   [x] Capitalize first letter of mealType.
-
-### Add / Edit recipe
-
--   [ ] After adding an ingredient, auto-focus on the new ingredient (and make it possible to access it with tab or arrows on keyboard)
 
 ## Bugs
 
@@ -60,7 +53,7 @@
 ### EditRecipeModal
 
 -   [x] Discrepancy between saving and editing ingredients.
--   [ ] When adding a new ingredient, autofocus works on that ingredient, but then you can't tab to further buttons in the modal.
+-   [x] When adding a new ingredient, autofocus works on that ingredient, but then you can't tab to further buttons in the modal.
 
 ### RecipeDetailsModal
 
@@ -68,6 +61,11 @@
 -   [x] Resolve issue of empty ingredient list being displayed (when no ingredients are added)
 
 # Progress report
+
+## 2023-12-08
+
+Added automatic focusing of new ingredients once added.
+
 
 ## 2023-12-05
 
@@ -78,8 +76,6 @@ When creating a recipe, I can add the path to the recipeStore and in Supabase.
 When then displaying that recipe's details, I can show the image based on the path stored.
 
 Need to think about where I can best display the image. And how to make deleting and updating possible.
-
-- [] Need to create an edit image function. I suspect this'll just require a new input field, where I replace the existing image with a new one. Although I've been told it's better to delete the old image. So I'll do that.
 
 ## 2023-11-26
 

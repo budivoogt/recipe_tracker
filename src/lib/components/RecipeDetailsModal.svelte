@@ -102,7 +102,7 @@
             <dt class="font-semibold">Quantity</dt>
             <dt class="font-semibold">Acquired</dt>
         {/if}
-        {#each $selectedRecipe.ingredients as ingredient, index}
+        {#each $selectedRecipe.ingredients as ingredient, index (ingredient.id)}
             {#if ingredient.item.trim() !== ''}
                 <dd class="">{ingredient.item}</dd>
                 <dd class="">{ingredient.quantity}</dd>

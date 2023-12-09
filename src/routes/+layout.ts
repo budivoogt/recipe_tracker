@@ -27,13 +27,6 @@ export const load = async ({ fetch, data, depends }) => {
 		}
 	})
 
-	// const supabase = createSupabaseLoadClient<Database>({
-	// 	supabaseUrl: PUBLIC_SUPABASE_URL,
-	// 	supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
-	// 	event: { fetch },
-	// 	serverSession: data.session
-	// })
-
 	const {
 		data: { session }
 	} = await supabase.auth.getSession()

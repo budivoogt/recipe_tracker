@@ -167,8 +167,6 @@
           <div class="flex items-center gap-2 my-2">
               <input type="text" placeholder="Item" bind:value={ingredient.item} bind:this={ingredientRefs[index]} class="block w-full disabled:cursor-not-allowed disabled:opacity-50 p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-500 text-sm rounded-lg "/>
               <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />
-              <!-- <Input type="text" placeholder="Item" bind:value={ingredient.item}/> -->
-              <Input type="text" placeholder="Quantity" bind:value={ingredient.quantity} />
               <Checkbox bind:checked={ingredient.acquired} class="p-2"/>
               <Button on:click={() => removeIngredient(index)} size="xs" color="red">X</Button>
           </div>

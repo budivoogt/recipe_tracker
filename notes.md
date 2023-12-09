@@ -65,7 +65,6 @@
 
 Added automatic focusing of new ingredients once added.
 
-
 ## 2023-12-05
 
 **Adding images:**

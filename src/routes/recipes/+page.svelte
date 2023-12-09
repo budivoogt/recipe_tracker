@@ -1,11 +1,10 @@
 <script lang="ts">
-    import RecipeTable from '$lib/components/RecipeTable.svelte'
-    import { setContext } from 'svelte';
+	import RecipeTable from "$lib/components/RecipeTable.svelte"
+	import { setContext } from "svelte"
 
-    export let data
+	export let data
 
-    setContext("supabase", data)
-		
+	setContext("supabase", data)
 </script>
 
-<RecipeTable/>
+<RecipeTable />

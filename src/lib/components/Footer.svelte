@@ -1,8 +1,7 @@
-<script lang="ts">import { Footer, FooterCopyright, FooterLink, FooterLinkGroup } from 'flowbite-svelte'
-import { Section } from 'flowbite-svelte-blocks'
+<script lang="ts">
+	import { Footer, FooterCopyright, FooterLink, FooterLinkGroup } from "flowbite-svelte"
+	import { Section } from "flowbite-svelte-blocks"
 </script>
-
-
 
 <!-- <Section>
   <Footer class="bg-orange-500 py-2">

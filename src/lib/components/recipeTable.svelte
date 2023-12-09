@@ -8,9 +8,11 @@
 	import AlertModal from "./AlertModal.svelte"
 	import NewRecipeModal from "./NewRecipeModal.svelte"
 	import RecipeDetailsModal from "./RecipeDetailsModal.svelte"
+  import { getContext } from "svelte"
   
-  export let supabase: SupabaseClient
-  $: supabase = supabase
+  // export let supabase: SupabaseClient
+  // $: supabase = supabase
+  $: supabase = getContext("supabase")
   
   // Sorting logic
   const sortKey = writable<string>("name")
@@ -195,8 +197,8 @@
   </div>
 </div>
       
-<NewRecipeModal {supabase} />
-<RecipeDetailsModal {supabase} />
+<NewRecipeModal/>
+<RecipeDetailsModal/>
 <AlertModal
     showModal = {$showDeleteRecipesConfirmation}
     title = "You're about to delete all recipes"

@@ -9,9 +9,9 @@
     import { v4 as uuidv4 } from "uuid"
     import { recipesStore, selectedRecipe, selectedRecipeForEditing, updateRecipe } from "../../stores/recipeStore"
     import AlertModal from "./AlertModal.svelte"
+    import { getContext } from "svelte"
 
-    export let supabase: SupabaseClient
-    $: supabase = supabase
+    $: supabase = getContext("supabase")
 
     const handleSubmit = () => {
       $selectedRecipeForEditing.ingredients = $ingredients

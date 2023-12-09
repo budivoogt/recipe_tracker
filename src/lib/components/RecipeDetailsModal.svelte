@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { deepCopyRecipe, showEditRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
-	import type { SupabaseClient } from "@supabase/supabase-js"
+	import { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Modal, Range } from "flowbite-svelte"
 	import { deleteRecipe, selectedRecipe, selectedRecipeForEditing, updateRecipe, recipesStore } from "../../stores/recipeStore"
 	import EditRecipeModal from "./EditRecipeModal.svelte"
     import { capitalizeFirstLetter } from "$lib/utils/recipeHelpers"
 	import AlertModal from "./AlertModal.svelte"
 	import { writable } from "svelte/store"
+    import { getContext } from "svelte"
 
-    export let supabase: SupabaseClient
+    $: supabase = getContext("supabase")
 
     function editRecipeHandler() {
         $selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
@@ -133,7 +134,7 @@
 {/if}
 
 {#if $selectedRecipeForEditing}
-<EditRecipeModal {supabase}/>
+<EditRecipeModal/>
 {/if}
 
 <AlertModal

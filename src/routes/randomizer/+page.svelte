@@ -64,4 +64,4 @@
 </div>
 
 
-<RecipeDetailsModal {supabase} />
+<RecipeDetailsModal/>

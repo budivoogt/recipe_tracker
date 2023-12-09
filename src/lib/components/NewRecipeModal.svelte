@@ -2,15 +2,14 @@
     import { deleteImage, getImage, handleFileSelect, uploadImage } from "$lib/utils/imageHelper"
     import { mealTypes, showNewRecipe } from "$lib/utils/recipeHelpers"
     import { resetNewRecipe } from "$lib/utils/resetRecipes"
-    import type { SupabaseClient } from "@supabase/supabase-js"
     import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
-    import { tick } from "svelte"
+    import { getContext, tick } from "svelte"
     import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
     import { writable } from "svelte/store"
     import { v4 as uuidv4 } from "uuid"
     import { addRecipe, newRecipe } from "../../stores/recipeStore"
 
-    export let supabase: SupabaseClient
+    $: supabase = getContext("supabase")
 
     // servingSize logic
     let servingSizeValue = writable($newRecipe.servingSize)

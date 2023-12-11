@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RecipeTable from "$lib/components/RecipeTable.svelte"
+	import RecipeTable from "$lib/components/RecipeTables.svelte"
 </script>
 
 <svelte:head>

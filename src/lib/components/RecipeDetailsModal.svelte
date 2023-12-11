@@ -1,24 +1,26 @@
 <script lang="ts">
-	import { deepCopyRecipe, showEditRecipe, showRecipeDetails } from "$lib/utils/recipeHelpers"
-	import { SupabaseClient } from "@supabase/supabase-js"
-	import { Button, Checkbox, Modal, Range } from "flowbite-svelte"
+	import {
+		capitalizeFirstLetter,
+		deepCopyRecipe,
+		showEditRecipe,
+		showRecipeDetails
+	} from "$lib/utils/recipeHelpers"
+	import { Button, Checkbox, Modal } from "flowbite-svelte"
+	import { writable } from "svelte/store"
+	import { supabaseStore } from "../../stores/authStore"
 	import {
 		deleteRecipe,
 		selectedRecipe,
 		selectedRecipeForEditing,
-		updateRecipe,
-		recipesStore
+		updateRecipe
 	} from "../../stores/recipeStore"
-	import EditRecipeModal from "./EditRecipeModal.svelte"
-	import { capitalizeFirstLetter } from "$lib/utils/recipeHelpers"
 	import AlertModal from "./AlertModal.svelte"
-	import { writable } from "svelte/store"
-	import { getContext } from "svelte"
+	import EditRecipeModal from "./EditRecipeModal.svelte"
 
-	$: supabase = getContext("supabase")
+	let supabase = $supabaseStore
 
 	function editRecipeHandler() {
-		$selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
+		if ($selectedRecipe) $selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
 		console.log("selectedRecipeForEditing set as: ", $selectedRecipe)
 		$showEditRecipe = true
 		$showRecipeDetails = false
@@ -44,7 +46,7 @@
 	}
 
 	function firstIngredientEmpty(index: number): boolean {
-		if ($selectedRecipe.ingredients[index].item.trim() !== "") {
+		if ($selectedRecipe?.ingredients && $selectedRecipe.ingredients[index].item.trim() !== "") {
 			return true
 		} else {
 			return false
@@ -67,7 +69,7 @@
 </script>
 
 {#if $selectedRecipe}
-	<Modal bind:open={$showRecipeDetails} class="w-4/5 md:w-3/4 min-w-full min-h-full" outsideclose>
+	<Modal bind:open={$showRecipeDetails} class="min-h-full w-4/5 min-w-full md:w-3/4" outsideclose>
 		<div class="border-b-2 border-slate-300 pb-2">
 			<h1 class="text-xl font-bold text-gray-700">{$selectedRecipe?.name}</h1>
 		</div>
@@ -89,22 +91,22 @@
 				</dd>
 			</div>
 			{#if $selectedRecipe.imageUrl}
-				<div class="col-start-2 row-start-1 row-span-3 mx-auto my-auto">
+				<div class="col-start-2 row-span-3 row-start-1 mx-auto my-auto">
 					<img
 						src={$selectedRecipe.imageUrl}
 						alt=""
-						class="rounded-lg aspect-4/3 object-cover"
+						class="aspect-4/3 rounded-lg object-cover"
 					/>
 				</div>
 			{/if}
 		</dl>
 		<dl class="grid grid-cols-1 text-gray-700">
 			<!-- Discover how to make these dd fields rich text -->
-			<dt class="font-semibold border-t-2 border-slate-300 pt-4">Description</dt>
+			<dt class="border-t-2 border-slate-300 pt-4 font-semibold">Description</dt>
 			<dd class="">{$selectedRecipe?.description}</dd>
-			<dt class="font-semibold mt-4">Instructions</dt>
+			<dt class="mt-4 font-semibold">Instructions</dt>
 			<dd class="">{$selectedRecipe?.instructions}</dd>
-			<dt class="font-semibold mt-4">Serving size</dt>
+			<dt class="mt-4 font-semibold">Serving size</dt>
 			<dd>
 				<span class=""
 					>Serves {$selectedRecipe.servingSize}
@@ -112,12 +114,12 @@
 				>
 			</dd>
 			<div class="">
-				<h1 class="font-semibold text-gray-700 mt-4 border-t-2 border-slate-300 pt-4">
+				<h1 class="mt-4 border-t-2 border-slate-300 pt-4 font-semibold text-gray-700">
 					Ingredients
 				</h1>
 			</div>
 			<dl class="grid grid-cols-3 gap-4 text-gray-700">
-				{#if firstIngredientEmpty}
+				{#if firstIngredientEmpty(0)}
 					<dt class="font-semibold">Item</dt>
 					<dt class="font-semibold">Quantity</dt>
 					<dt class="font-semibold">Acquired</dt>
@@ -132,7 +134,7 @@
 					{/if}
 				{/each}
 			</dl>
-			<div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4">
+			<div class="mt-4 flex flex-row gap-4 border-t-2 border-slate-300 pt-4">
 				<Button on:click={editRecipeHandler}>Edit recipe</Button>
 				<Button
 					color="red"

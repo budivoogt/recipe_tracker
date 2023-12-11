@@ -20,16 +20,15 @@
 		TableSearch
 	} from "flowbite-svelte"
 	import { ChevronRightSolid, ChevronSortSolid } from "flowbite-svelte-icons"
-	import { getContext } from "svelte"
+	import type { Readable } from "svelte/store"
 	import { derived, writable } from "svelte/store"
+	import { supabaseStore } from "../../stores/authStore"
 	import { deleteAllRecipes, recipesStore, selectedRecipe } from "../../stores/recipeStore"
 	import AlertModal from "./AlertModal.svelte"
 	import NewRecipeModal from "./NewRecipeModal.svelte"
 	import RecipeDetailsModal from "./RecipeDetailsModal.svelte"
 
-	// export let supabase: SupabaseClient
-	// $: supabase = supabase
-	$: supabase = getContext("supabase")
+	let supabase = $supabaseStore
 
 	// Sorting logic
 	const sortKey = writable<string>("name")
@@ -44,15 +43,15 @@
 		}
 	}
 
-	const sortedRecipes: Recipe[] = derived(
+	const sortedRecipes: Readable<Recipe[]> = derived(
 		[recipesStore, sortKey, sortDirection],
 		([$recipesStore, $sortKey, $sortDirection]) => {
 			const recipes = deepCopyRecipes($recipesStore)
 			return recipes.sort((a, b) => {
-				if (a[$sortKey] < b[$sortKey]) {
+				if (a[$sortKey as keyof Recipe] < b[$sortKey as keyof Recipe]) {
 					return -1 * $sortDirection
 				}
-				if (a[$sortKey] > b[$sortKey]) {
+				if (a[$sortKey as keyof Recipe] > b[$sortKey as keyof Recipe]) {
 					return 1 * $sortDirection
 				}
 				return 0

@@ -2,7 +2,7 @@
 	import { invalidate } from "$app/navigation"
 	import Footer from "$lib/components/Footer.svelte"
 	import Navbar from "$lib/components/Navbar.svelte"
-	import { onDestroy, onMount } from "svelte"
+	import { onDestroy, onMount, setContext } from "svelte"
 	import { get } from "svelte/store"
 	import "../app.css"
 	import { user } from "../stores/authStore"
@@ -16,6 +16,8 @@
 	$: {
 		;({ supabase, session } = data)
 	}
+
+	setContext("supabase", supabase)
 
 	onMount(() => {
 		console.log("onMount() called with data: ", data)
@@ -51,7 +53,7 @@
 	/>
 </svelte:head>
 
-<div class="flex flex-col min-h-screen bg-orange-200">
+<div class="flex min-h-screen flex-col bg-orange-200">
 	<Navbar />
 	<slot />
 	<div>

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { deleteImage, getImage, handleFileSelect, uploadImage } from "$lib/utils/imageHelper"
 	import { deepCopyRecipe, mealTypes, showEditRecipe } from "$lib/utils/recipeHelpers"
-	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
 	import { tick } from "svelte"
 	import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
 	import { writable } from "svelte/store"
 	import { v4 as uuidv4 } from "uuid"
+	import { supabaseStore } from "../../stores/authStore"
 	import {
 		recipesStore,
 		selectedRecipe,
@@ -14,9 +14,8 @@
 		updateRecipe
 	} from "../../stores/recipeStore"
 	import AlertModal from "./AlertModal.svelte"
-	import { getContext } from "svelte"
 
-	$: supabase = getContext("supabase")
+	let supabase = $supabaseStore
 
 	const handleSubmit = () => {
 		$selectedRecipeForEditing.ingredients = $ingredients
@@ -120,9 +119,9 @@
 	}
 </script>
 
-<Modal title="Edit recipe" bind:open={$showEditRecipe} class="w-4/5 md:w-3/4 min-w-full min-h-full">
+<Modal title="Edit recipe" bind:open={$showEditRecipe} class="min-h-full w-4/5 min-w-full md:w-3/4">
 	<form on:submit|preventDefault={handleSubmit}>
-		<div class="grid gap-y-2 gap-x-4 grid-cols-2">
+		<div class="grid grid-cols-2 gap-x-4 gap-y-2">
 			<div class="col-start-1">
 				<Label for="name" class="mb-2">Name</Label>
 				<Input
@@ -154,8 +153,8 @@
 					required
 				/>
 			</div>
-			<div class="text-xl cursor-pointer flex flex-col items-center col-start-1">
-				<span class="text-sm font-medium block text-gray-900 dark:text-gray-300 mb-2"
+			<div class="col-start-1 flex cursor-pointer flex-col items-center text-xl">
+				<span class="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
 					>Rating</span
 				>
 				<div class="">
@@ -174,7 +173,7 @@
 			</div>
 			{#if !$selectedRecipeForEditing.imageUrl}
 				{#if !imageLoading}
-					<div class="col-start-2 row-start-1 row-span-2 mt-6 my-auto flex h-full">
+					<div class="col-start-2 row-span-2 row-start-1 my-auto mt-6 flex h-full">
 						<Dropzone
 							on:drop={dropzoneFileUploadHandler}
 							accept="image/*"
@@ -187,7 +186,7 @@
 					</div>
 				{:else}
 					<div
-						class="rounded text-lg col-start-2 row-start-1 row-span-2 my-auto mx-auto items-center"
+						class="col-start-2 row-span-2 row-start-1 mx-auto my-auto items-center rounded text-lg"
 					>
 						Loading...
 						<svg
@@ -198,7 +197,7 @@
 							height="1em"
 							width="1em"
 							xmlns="http://www.w3.org/2000/svg"
-							class="w-1/2 h-1/2 my-4 animate-spin mx-auto"
+							class="mx-auto my-4 h-1/2 w-1/2 animate-spin"
 						>
 							<path
 								opacity="0.2"
@@ -216,13 +215,13 @@
 					</div>
 				{/if}
 			{:else}
-				<div class="col-start-2 row-start-1 row-span-4 mt-6 flex flex-col">
+				<div class="col-start-2 row-span-4 row-start-1 mt-6 flex flex-col">
 					<img
 						src={$selectedRecipeForEditing.imageUrl}
 						alt=""
-						class="rounded-lg aspect-4/3 object-cover"
+						class="aspect-4/3 rounded-lg object-cover"
 					/>
-					<div class="flex flex-row gap-4 mt-2 justify-center">
+					<div class="mt-2 flex flex-row justify-center gap-4">
 						<Button on:click={deleteImageHandler} color="red">Delete image</Button>
 					</div>
 				</div>
@@ -266,13 +265,13 @@
 			<div class="col-span-2 gap-2">
 				<Label for="ingredients" class="mb-2">Ingredients</Label>
 				{#each $ingredients as ingredient, index (ingredient.id)}
-					<div class="flex items-center gap-2 mt-2">
+					<div class="mt-2 flex items-center gap-2">
 						<input
 							type="text"
 							placeholder="Item"
 							bind:value={ingredient.item}
 							bind:this={ingredientRefs[index]}
-							class="block w-full disabled:cursor-not-allowed disabled:opacity-50 p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-500 text-sm rounded-lg"
+							class="block w-full rounded-lg border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
 						/>
 						<Input
 							type="text"
@@ -290,7 +289,7 @@
 				>
 			</div>
 		</div>
-		<div class="flex flex-row mt-4 border-t-2 border-slate-300 pt-4 gap-4">
+		<div class="mt-4 flex flex-row gap-4 border-t-2 border-slate-300 pt-4">
 			<Button type="submit" class="w-26" color="green">Save changes</Button>
 			<Button type="button" class="w-26" color="red" on:click={discardButtonHandler}>
 				Discard changes

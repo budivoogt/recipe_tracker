@@ -4,7 +4,7 @@ import { writable } from "svelte/store"
 import { v4 as uuidv4 } from "uuid"
 
 export const recipesStore = writable<Recipe[]>([])
-export const selectedRecipe = writable<Recipe>()
+export const selectedRecipe = writable<Recipe | null>()
 export const selectedRecipeForEditing = writable<Recipe>()
 
 const defaultNewRecipe: Recipe = {
@@ -87,10 +87,7 @@ function deleteRecipeHelper(recipe: Recipe) {
 }
 
 export async function addRecipe(supabaseClient: SupabaseClient, newRecipe: Recipe) {
-	const response = await supabaseClient
-		.from("recipes")
-		.insert(serializeRecipe(newRecipe))
-		.select()
+	const response = await supabaseClient.from("recipes").insert(serializeRecipe(newRecipe)).select()
 	const { data, error } = response
 	if (error) {
 		console.error("Error adding recipe: ", error)

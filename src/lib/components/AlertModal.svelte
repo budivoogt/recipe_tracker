@@ -15,7 +15,7 @@
 	<div class="flex flex-col gap-4 text-black">
 		<span class=" text-xl font-bold">{title}</span>
 		<span>{message}</span>
-		<div class="flex flex-row gap-4 mx-auto">
+		<div class="mx-auto flex flex-row gap-4">
 			<Button on:click={confirmHandler} color="red">{confirmButtonText}</Button>
 			<Button on:click={cancelHandler} color="green">{cancelButtonText}</Button>
 		</div>

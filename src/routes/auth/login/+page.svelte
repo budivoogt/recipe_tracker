@@ -1,13 +1,16 @@
 <script lang="ts">
 	import Auth from "$lib/components/Auth.svelte"
-	import { user } from "../../../stores/authStore.js"
+	import type { LayoutServerData } from "../$types.js"
+
+	export let data: LayoutServerData
+	$: ({ user } = data)
 </script>
 
 <div class="">
-	{#if $user}
-		<div class="text-center my-6">
-			<h1 class="text-xl my-4 font-bold">Welcome</h1>
-			<p>You are logged in as {$user.email}</p>
+	{#if user}
+		<div class="my-6 text-center">
+			<h1 class="my-4 text-xl font-bold">Welcome</h1>
+			<p>You are logged in as {user.email}</p>
 		</div>
 	{:else}
 		<Auth />

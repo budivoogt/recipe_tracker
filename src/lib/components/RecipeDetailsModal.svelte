@@ -5,9 +5,11 @@
 		showEditRecipe,
 		showRecipeDetails
 	} from "$lib/utils/recipeHelpers"
+	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Modal } from "flowbite-svelte"
+	import { getContext } from "svelte"
+	import type { Writable } from "svelte/store"
 	import { writable } from "svelte/store"
-	import { supabaseStore } from "../../stores/authStore"
 	import {
 		deleteRecipe,
 		selectedRecipe,
@@ -17,7 +19,7 @@
 	import AlertModal from "./AlertModal.svelte"
 	import EditRecipeModal from "./EditRecipeModal.svelte"
 
-	let supabase = $supabaseStore
+	const supabase: Writable<SupabaseClient> = getContext("supabase")
 
 	function editRecipeHandler() {
 		if ($selectedRecipe) $selectedRecipeForEditing = deepCopyRecipe($selectedRecipe)
@@ -28,7 +30,7 @@
 
 	function updateHandler() {
 		if ($selectedRecipe) {
-			updateRecipe(supabase, $selectedRecipe)
+			updateRecipe($supabase, $selectedRecipe)
 		} else {
 			console.log("selectedRecipe is null")
 		}
@@ -36,7 +38,7 @@
 
 	async function deleteHandler() {
 		if ($selectedRecipe) {
-			await deleteRecipe(supabase, $selectedRecipe)
+			await deleteRecipe($supabase, $selectedRecipe)
 			$showRecipeDetails = false
 			$selectedRecipe = null
 			$showDeleteRecipeConfirmation = false
@@ -61,11 +63,11 @@
 		$showRecipeDetails = true
 	}
 
-	// Image loading
-	let imageLoaded = false
-	function handleImageLoad() {
-		imageLoaded = true
-	}
+	// Image loading -- NEED TO FINISH THIS
+	// let imageLoaded = false
+	// function handleImageLoad() {
+	// 	imageLoaded = true
+	// }
 </script>
 
 {#if $selectedRecipe}

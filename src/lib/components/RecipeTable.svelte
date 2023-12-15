@@ -6,6 +6,7 @@
 		showNewRecipe,
 		showRecipeDetails
 	} from "$lib/utils/recipeHelpers"
+	import type { SupabaseClient } from "@supabase/supabase-js"
 	import {
 		Button,
 		Dropdown,
@@ -20,15 +21,15 @@
 		TableSearch
 	} from "flowbite-svelte"
 	import { ChevronRightSolid, ChevronSortSolid } from "flowbite-svelte-icons"
-	import type { Readable } from "svelte/store"
+	import { getContext } from "svelte"
+	import type { Readable, Writable } from "svelte/store"
 	import { derived, writable } from "svelte/store"
-	import { supabaseStore } from "../../stores/authStore"
 	import { deleteAllRecipes, recipesStore, selectedRecipe } from "../../stores/recipeStore"
 	import AlertModal from "./AlertModal.svelte"
 	import NewRecipeModal from "./NewRecipeModal.svelte"
 	import RecipeDetailsModal from "./RecipeDetailsModal.svelte"
 
-	let supabase = $supabaseStore
+	const supabase: Writable<SupabaseClient> = getContext("supabase")
 
 	// Sorting logic
 	const sortKey = writable<string>("name")
@@ -68,7 +69,7 @@
 	let showDeleteRecipesConfirmation = writable<boolean>(false)
 
 	function deleteRecipesHandler() {
-		deleteAllRecipes(supabase)
+		deleteAllRecipes($supabase)
 		$searchedItems = []
 		$showDeleteRecipesConfirmation = false
 	}
@@ -98,7 +99,7 @@
 		return (
 			(filterMealType === "All" || r.mealType === filterMealType) &&
 			(filterCuisine === "All" || r.cuisine === filterCuisine) &&
-			(filterRating === "All" || r.rating >= filterRating)
+			(filterRating === "All" || (r.rating !== null && r.rating >= Number(filterRating)))
 		)
 	})
 
@@ -169,6 +170,11 @@
 						Rating <ChevronRightSolid size="xs" class="my-auto pl-2" />
 					</DropdownItem>
 					<Dropdown placement="right-start">
+						<DropdownItem>
+							<Radio bind:group={filterRating} value={"All"}>
+								{"☆☆☆☆☆"}
+							</Radio>
+						</DropdownItem>
 						{#each ratingOptions as rating}
 							<DropdownItem>
 								<Radio bind:group={filterRating} value={rating}>

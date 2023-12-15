@@ -2,29 +2,27 @@
 	import { invalidate } from "$app/navigation"
 	import Footer from "$lib/components/Footer.svelte"
 	import Navbar from "$lib/components/Navbar.svelte"
-	import { onDestroy, onMount, setContext } from "svelte"
+	import type { Session } from "@supabase/supabase-js"
+	import { onMount, setContext } from "svelte"
 	import { get } from "svelte/store"
 	import "../app.css"
-	import { user } from "../stores/authStore"
+	import { supabaseStore, user } from "../stores/authStore"
 	import type { PageData } from "./$types"
 
 	export let data: PageData
-
-	let { supabase, session } = data
-	let unsubscribeFromRecipes: () => void
+	let session: Session | null
 
 	$: {
-		;({ supabase, session } = data)
+		if (data) {
+			;({ supabase: $supabaseStore, session } = data)
+			setContext("supabase", supabaseStore)
+		}
 	}
 
-	setContext("supabase", supabase)
-
 	onMount(() => {
-		console.log("onMount() called with data: ", data)
-
 		const {
 			data: { subscription }
-		} = supabase.auth.onAuthStateChange((event, _session) => {
+		} = data.supabase.auth.onAuthStateChange((event, _session) => {
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate("supabase:auth")
 				console.log("Supabase Auth invalidated.")
@@ -38,10 +36,6 @@
 		})
 
 		return () => subscription.unsubscribe()
-	})
-
-	onDestroy(() => {
-		if (unsubscribeFromRecipes) unsubscribeFromRecipes()
 	})
 </script>
 

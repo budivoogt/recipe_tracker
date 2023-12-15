@@ -1,7 +1,7 @@
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "$env/static/public"
 import { createBrowserClient, isBrowser, parse } from "@supabase/ssr"
 import type { User } from "@supabase/supabase-js"
-import { supabaseStore, user } from "../stores/authStore.js"
+import { user } from "../stores/authStore.js"
 import { recipesStore } from "../stores/recipeStore.js"
 
 export const load = async ({ fetch, data, depends }) => {
@@ -33,8 +33,6 @@ export const load = async ({ fetch, data, depends }) => {
 
 	const initialUser: User | null = session?.user ?? null
 	user.set(initialUser)
-
-	supabaseStore.set(supabase)
 
 	return { supabase, session, initialUser }
 }

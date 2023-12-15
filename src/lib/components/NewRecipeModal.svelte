@@ -2,15 +2,15 @@
 	import { deleteImage, getImage, handleFileSelect, uploadImage } from "$lib/utils/imageHelper"
 	import { mealTypes, showNewRecipe } from "$lib/utils/recipeHelpers"
 	import { resetNewRecipe } from "$lib/utils/resetRecipes"
+	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
-	import { tick } from "svelte"
+	import { getContext, tick } from "svelte"
 	import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
-	import { writable } from "svelte/store"
+	import { writable, type Writable } from "svelte/store"
 	import { v4 as uuidv4 } from "uuid"
-	import { supabaseStore } from "../../stores/authStore"
 	import { addRecipe, newRecipe } from "../../stores/recipeStore"
 
-	let supabase = $supabaseStore
+	const supabase: Writable<SupabaseClient> = getContext("supabase")
 
 	// servingSize logic
 	let servingSizeValue = writable($newRecipe.servingSize)
@@ -26,7 +26,7 @@
 	}
 
 	const handleSubmit = () => {
-		addRecipe(supabase, $newRecipe)
+		addRecipe($supabase, $newRecipe)
 		console.log("Form submitted with $newRecipe: ", $newRecipe)
 		resetNewRecipe()
 		$showNewRecipe = false
@@ -72,9 +72,9 @@
 		try {
 			imageLoading = true
 
-			const response = await uploadImage(acceptedFile[0], $newRecipe.name, supabase)
+			const response = await uploadImage(acceptedFile[0], $newRecipe.name, $supabase)
 
-			const { publicUrl, path } = await getImage(response?.path, supabase)
+			const { publicUrl, path } = await getImage(response?.path, $supabase)
 			if (publicUrl) imageUrl = publicUrl
 			if (path) imagePath = path
 
@@ -89,7 +89,7 @@
 	// Delete image
 
 	async function deleteImageHandler() {
-		const response = await deleteImage(imagePath, supabase)
+		const response = await deleteImage(imagePath, $supabase)
 		if (response) {
 			imageUrl = null
 			imagePath = null

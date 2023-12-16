@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button } from "flowbite-svelte"
 
-	// Make the Supabase data available on the page.
 	export let data
 </script>
 
@@ -16,7 +15,7 @@
 <main>
 	{#if data.session}
 		<div class="mx-auto mt-4 flex flex-col items-center">
-			<span class="text-justify text-lg">Welcome, {data.initialUser?.email}!</span>
+			<span class="text-justify text-lg">Welcome, {data.session.user.email}!</span>
 		</div>
 	{:else}
 		<div class="my-4 flex flex-col items-center text-justify">

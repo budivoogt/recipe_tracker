@@ -14,6 +14,7 @@ declare global {
 		}
 		// interface Error {}
 		interface PageData {
+			supabase: SupabaseClient<Database>
 			session: Session | null
 			user: User | null
 			recipes: Recipe[] | []

@@ -52,8 +52,6 @@ export const actions: Actions = {
 		// }
 	},
 	logout: async ({ locals: { supabase } }) => {
-		console.log("Logout action started.")
-
 		const { error } = await supabase.auth.signOut()
 
 		if (error) {

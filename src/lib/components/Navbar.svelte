@@ -3,7 +3,6 @@
 	import { page } from "$app/stores"
 	import { Button } from "flowbite-svelte"
 	import { writable } from "svelte/store"
-	import { user } from "../../stores/authStore"
 	import AlertModal from "./AlertModal.svelte"
 
 	// logout modal logic
@@ -14,9 +13,8 @@
 	}
 
 	async function handleLogout() {
-		const form = document.querySelector("#logoutForm")
+		const form = document.querySelector("#logoutForm") as HTMLFormElement
 		form.submit()
-		console.log("Logout form has been submitted")
 	}
 
 	// Colour button according to active path
@@ -25,7 +23,7 @@
 
 <nav class="my-4 flex flex-wrap justify-center gap-2">
 	<Button size="sm" href="/" class={`shadow ${isActive("/")}`}>Home</Button>
-	{#if $user}
+	{#if $page.data.session?.user}
 		<Button size="sm" href="/randomizer" class={`shadow ${isActive("/randomizer")}`}
 			>Randomizer</Button
 		>

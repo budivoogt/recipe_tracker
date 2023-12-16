@@ -9,7 +9,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"update-types": "pnpm dlx supabase gen types typescript --project-id \"kfzeokcflwatdsxiprwl\" --schema public > src/types/supabase.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.1.1",

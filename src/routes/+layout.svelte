@@ -2,25 +2,17 @@
 	import { invalidate } from "$app/navigation"
 	import Footer from "$lib/components/Footer.svelte"
 	import Navbar from "$lib/components/Navbar.svelte"
-	import type { Session, SupabaseClient } from "@supabase/supabase-js"
-	import { onMount, setContext } from "svelte"
-	import { get, writable } from "svelte/store"
+	import type { Session } from "@supabase/supabase-js"
+	import { onMount } from "svelte"
+	import { get } from "svelte/store"
 	import "../app.css"
 	import { user } from "../stores/authStore"
-	import type { PageData } from "./$types"
+	import type { LayoutData, LayoutServerData } from "./$types"
 
-	export let data: PageData
+	type CombinedData = LayoutData & LayoutServerData
+
+	export let data: CombinedData
 	let session: Session | null
-
-	// Initializing the supabaseStore that we're using throughout the application here, to avoid any state leakage. This is passed between components using the Context API.
-	const supabaseStore = writable<SupabaseClient>()
-
-	$: {
-		if (data) {
-			;({ supabase: $supabaseStore, session } = data)
-			setContext("supabase", supabaseStore)
-		}
-	}
 
 	onMount(() => {
 		const {

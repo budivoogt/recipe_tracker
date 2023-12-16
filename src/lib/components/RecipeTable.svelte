@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from "$app/stores"
 	import {
 		capitalizeFirstLetter,
 		deepCopyRecipes,
@@ -21,15 +22,14 @@
 		TableSearch
 	} from "flowbite-svelte"
 	import { ChevronRightSolid, ChevronSortSolid } from "flowbite-svelte-icons"
-	import { getContext } from "svelte"
-	import type { Readable, Writable } from "svelte/store"
+	import type { Readable } from "svelte/store"
 	import { derived, writable } from "svelte/store"
 	import { deleteAllRecipes, recipesStore, selectedRecipe } from "../../stores/recipeStore"
 	import AlertModal from "./AlertModal.svelte"
 	import NewRecipeModal from "./NewRecipeModal.svelte"
 	import RecipeDetailsModal from "./RecipeDetailsModal.svelte"
 
-	const supabase: Writable<SupabaseClient> = getContext("supabase")
+	const supabase: SupabaseClient = $page.data.supabase
 
 	// Sorting logic
 	const sortKey = writable<string>("name")
@@ -69,7 +69,7 @@
 	let showDeleteRecipesConfirmation = writable<boolean>(false)
 
 	function deleteRecipesHandler() {
-		deleteAllRecipes($supabase)
+		deleteAllRecipes(supabase)
 		$searchedItems = []
 		$showDeleteRecipesConfirmation = false
 	}

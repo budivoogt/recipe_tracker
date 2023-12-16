@@ -3,13 +3,14 @@ import { createBrowserClient, isBrowser, parse } from "@supabase/ssr"
 import type { User } from "@supabase/supabase-js"
 import { user } from "../stores/authStore.js"
 import { recipesStore } from "../stores/recipeStore.js"
+import type { LayoutLoad } from "./$types.js"
 
-export const load = async ({ fetch, data, depends }) => {
+export const load: LayoutLoad = async ({ fetch, data, depends }) => {
+	depends("supabase:auth")
+
 	recipesStore.set(data.initialRecipes)
 	if (data.initialRecipes.length > 0)
 		console.log("Loaded initialRecipes from client: ", data.initialRecipes)
-
-	depends("supabase:auth")
 
 	const supabase = createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		global: {

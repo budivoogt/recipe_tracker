@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { page } from "$app/stores"
 	import { deleteImage, getImage, handleFileSelect, uploadImage } from "$lib/utils/imageHelper"
 	import { deepCopyRecipe, mealTypes, showEditRecipe } from "$lib/utils/recipeHelpers"
 	import type { SupabaseClient } from "@supabase/supabase-js"
 	import { Button, Checkbox, Input, Label, Modal, Range, Select, Textarea } from "flowbite-svelte"
-	import { getContext, tick } from "svelte"
+	import { tick } from "svelte"
 	import Dropzone from "svelte-file-dropzone/Dropzone.svelte"
-	import type { Writable } from "svelte/store"
 	import { writable } from "svelte/store"
 	import { v4 as uuidv4 } from "uuid"
 	import {
@@ -16,11 +16,11 @@
 	} from "../../stores/recipeStore"
 	import AlertModal from "./AlertModal.svelte"
 
-	const supabase: Writable<SupabaseClient> = getContext("supabase")
+	const supabase: SupabaseClient = $page.data.supabase
 
 	const handleSubmit = () => {
 		$selectedRecipeForEditing.ingredients = $ingredients
-		updateRecipe($supabase, $selectedRecipeForEditing)
+		updateRecipe(supabase, $selectedRecipeForEditing)
 		// trigger reactivity on the parent RecipeDetailsModal component
 		$selectedRecipe = $selectedRecipeForEditing
 		// console.log("Form submitted with updated recipe: ", $selectedRecipeForEditing)
@@ -94,10 +94,10 @@
 			const response = await uploadImage(
 				acceptedFile[0],
 				$selectedRecipeForEditing.name,
-				$supabase
+				supabase
 			)
 
-			const { publicUrl, path } = await getImage(response?.path, $supabase)
+			const { publicUrl, path } = await getImage(response?.path, supabase)
 			if (publicUrl) imageUrl = publicUrl
 			if (path) imagePath = path
 
@@ -111,7 +111,7 @@
 
 	// Delete image
 	async function deleteImageHandler() {
-		const response = await deleteImage(imagePath, $supabase)
+		const response = await deleteImage(imagePath, supabase)
 		if (response) {
 			$selectedRecipeForEditing.imageUrl = null
 			imageUrl = null

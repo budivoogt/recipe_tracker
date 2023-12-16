@@ -23,7 +23,7 @@
 	$: isActive = (path: string) => ($page.url.pathname === path ? "bg-orange-400" : "")
 </script>
 
-<nav class="flex flex-wrap gap-2 justify-center my-4">
+<nav class="my-4 flex flex-wrap justify-center gap-2">
 	<Button size="sm" href="/" class={`shadow ${isActive("/")}`}>Home</Button>
 	{#if $user}
 		<Button size="sm" href="/randomizer" class={`shadow ${isActive("/randomizer")}`}
@@ -32,17 +32,15 @@
 		<Button size="sm" href="/recipes" class={`shadow ${isActive("/recipes")}`}
 			>Browse recipes</Button
 		>
-	{/if}
-	<Button size="sm" href="/about" class={`shadow ${isActive("/about")}`}>About</Button>
-	{#if $user}
+		<Button size="sm" href="/about" class={`shadow ${isActive("/about")}`}>About</Button>
 		<form method="POST" action="/auth?/logout" use:enhance id="logoutForm">
 			<button
 				type="button"
-				class="text-center font-medium focus:ring-4 focus:outline-none inline-flex items-center justify-center px-4 py-2 text-sm text-white bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 focus:ring-primary-300 dark:focus:ring-primary-800 rounded-lg shadow"
+				class="inline-flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-center text-sm font-medium text-white shadow hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 				on:click={triggerLogoutAlert}>Logout</button
 			>
 		</form>
-	{:else if !$user}
+	{:else}
 		<Button size="sm" class="shadow" href="/auth/login">Login</Button>
 	{/if}
 </nav>
